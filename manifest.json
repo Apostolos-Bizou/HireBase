@@ -1,0 +1,25 @@
+{
+  "name": "HireBase — Digital Hiring Platform",
+  "short_name": "HireBase",
+  "description": "Digital hiring platform connecting Filipino talent with Greek employers",
+  "start_url": "./",
+  "display": "standalone",
+  "background_color": "#0B1120",
+  "theme_color": "#0B1120",
+  "orientation": "any",
+  "categories": ["business", "productivity"],
+  "icons": [
+    {
+      "src": "data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 512 512'><rect width='512' height='512' rx='100' fill='%230B1120'/><path d='M102 102H205V410H102Z' fill='%23F8FAFC'/><path d='M256 102H358C435 102 435 230 358 230C435 230 435 358 358 358H256V102' fill='%2360A5FA'/><rect x='205' y='215' width='51' height='51' fill='%23F8FAFC'/></svg>",
+      "sizes": "512x512",
+      "type": "image/svg+xml",
+      "purpose": "any"
+    },
+    {
+      "src": "data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 192 192'><rect width='192' height='192' rx='38' fill='%230B1120'/><path d='M38 38H77V154H38Z' fill='%23F8FAFC'/><path d='M96 38H134C158 38 158 86 134 86C158 86 158 134 134 134H96V38' fill='%2360A5FA'/><rect x='77' y='82' width='19' height='19' fill='%23F8FAFC'/></svg>",
+      "sizes": "192x192",
+      "type": "image/svg+xml",
+      "purpose": "any"
+    }
+  ]
+}
