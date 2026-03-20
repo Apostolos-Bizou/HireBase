@@ -722,29 +722,54 @@ document.getElementById('loginModal').addEventListener('click',function(e){if(e.
 const obs=new IntersectionObserver(e=>{e.forEach(e=>{if(e.isIntersecting){e.target.style.opacity='1';e.target.style.transform=e.target.style.transform.replace(/translateY\([^)]+\)/,'translateY(0)')||'translateY(0)'}})},{threshold:.08,rootMargin:'0px 0px -40px 0px'});
 document.querySelectorAll('.glass-light,.glass-dark,.glass-blue,.glass-strong,.depth-card,.feature-item').forEach((el,i)=>{el.style.opacity='0';const base=el.style.transform||'';el.style.transform=base+' translateY(30px)';el.style.transition=`all .7s cubic-bezier(.16,1,.3,1) ${i%6*.06}s`;obs.observe(el)});
 
-// ═══ LIVE MARKET DATA & RENDERING ═══
-var lmSupply=[
-  {role:"Housekeeper",icon:"🧹",total:86,ready:48,color:"#2563EB"},
-  {role:"Line Cook",icon:"👨‍🍳",total:64,ready:32,color:"#F59E0B"},
-  {role:"Waiter/Server",icon:"🍽️",total:72,ready:41,color:"#F59E0B"},
-  {role:"Care Worker",icon:"💙",total:53,ready:28,color:"#10B981"},
-  {role:"Front Desk",icon:"🛎️",total:38,ready:19,color:"#7C3AED"},
-  {role:"Cleaner",icon:"🧽",total:45,ready:26,color:"#2563EB"},
-  {role:"Electrician",icon:"⚡",total:28,ready:16,color:"#EF4444"},
-  {role:"Nursing Aide",icon:"🏥",total:34,ready:18,color:"#10B981"},
-  {role:"Barista",icon:"☕",total:31,ready:14,color:"#7C3AED"},
-  {role:"Plumber",icon:"🔧",total:22,ready:12,color:"#64748B"},
-  {role:"Laundry Staff",icon:"👕",total:27,ready:15,color:"#60A5FA"},
-  {role:"Farm Worker",icon:"🌾",total:18,ready:8,color:"#10B981"}
-];
-var lmDemand=[
-  {sector:"Hotels & Resorts",icon:"🏨",roles:[{r:"Housekeeper",n:42},{r:"Front Desk",n:15},{r:"Cleaner",n:18}],total:75},
-  {sector:"Food & Beverage",icon:"🍽️",roles:[{r:"Line Cook",n:35},{r:"Waiter/Server",n:40},{r:"Barista",n:22}],total:97},
-  {sector:"Care Services",icon:"💙",roles:[{r:"Care Worker",n:30},{r:"Nursing Aide",n:24}],total:54},
-  {sector:"Housekeeping",icon:"🧹",roles:[{r:"Cleaner",n:28},{r:"Housekeeper",n:12},{r:"Laundry Staff",n:10}],total:50},
-  {sector:"Construction",icon:"🏗️",roles:[{r:"Electrician",n:18},{r:"Plumber",n:14}],total:32},
-  {sector:"Retail & Agri",icon:"🌾",roles:[{r:"Farm Worker",n:20}],total:20}
-];
+// ═══ LIVE MARKET DATA & RENDERING — LOADED FROM data.json ═══
+var lmSupply=[];
+var lmDemand=[];
+var hbData=null;
+
+// Fetch data.json (works on GitHub Pages + local)
+(function(){
+  var base=window.location.href.replace(/\/[^\/]*$/,'/');
+  fetch(base+'data.json').then(function(r){return r.json()}).then(function(data){
+    hbData=data;
+    lmSupply=data.liveMarket.supply;
+    lmDemand=data.liveMarket.demand;
+    // Update hero stats from data
+    if(data.stats){
+      var el;
+      el=document.querySelector('.employer-only [style*="font-size:34px"]');
+      // Worker sector cards are static HTML; stats update below
+    }
+    // If role already selected, render immediately
+    if(document.body.className)renderLiveMarket();
+  }).catch(function(err){
+    console.warn('[HireBase] data.json fetch failed, using inline fallback:',err);
+    // Fallback: hardcoded data so site works without data.json
+    lmSupply=[
+      {role:"Housekeeper",icon:"🧹",total:86,ready:48,color:"#2563EB"},
+      {role:"Line Cook",icon:"👨‍🍳",total:64,ready:32,color:"#F59E0B"},
+      {role:"Waiter/Server",icon:"🍽️",total:72,ready:41,color:"#F59E0B"},
+      {role:"Care Worker",icon:"💙",total:53,ready:28,color:"#10B981"},
+      {role:"Front Desk",icon:"🛎️",total:38,ready:19,color:"#7C3AED"},
+      {role:"Cleaner",icon:"🧽",total:45,ready:26,color:"#2563EB"},
+      {role:"Electrician",icon:"⚡",total:28,ready:16,color:"#EF4444"},
+      {role:"Nursing Aide",icon:"🏥",total:34,ready:18,color:"#10B981"},
+      {role:"Barista",icon:"☕",total:31,ready:14,color:"#7C3AED"},
+      {role:"Plumber",icon:"🔧",total:22,ready:12,color:"#64748B"},
+      {role:"Laundry Staff",icon:"👕",total:27,ready:15,color:"#60A5FA"},
+      {role:"Farm Worker",icon:"🌾",total:18,ready:8,color:"#10B981"}
+    ];
+    lmDemand=[
+      {sector:"Hotels & Resorts",icon:"🏨",roles:[{r:"Housekeeper",n:42},{r:"Front Desk",n:15},{r:"Cleaner",n:18}],total:75},
+      {sector:"Food & Beverage",icon:"🍽️",roles:[{r:"Line Cook",n:35},{r:"Waiter/Server",n:40},{r:"Barista",n:22}],total:97},
+      {sector:"Care Services",icon:"💙",roles:[{r:"Care Worker",n:30},{r:"Nursing Aide",n:24}],total:54},
+      {sector:"Housekeeping",icon:"🧹",roles:[{r:"Cleaner",n:28},{r:"Housekeeper",n:12},{r:"Laundry Staff",n:10}],total:50},
+      {sector:"Construction",icon:"🏗️",roles:[{r:"Electrician",n:18},{r:"Plumber",n:14}],total:32},
+      {sector:"Retail & Agri",icon:"🌾",roles:[{r:"Farm Worker",n:20}],total:20}
+    ];
+    if(document.body.className)renderLiveMarket();
+  });
+})();
 
 function renderLiveMarket(){
   var totalCand=lmSupply.reduce(function(s,x){return s+x.total},0);
