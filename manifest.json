@@ -1,5 +1,6 @@
 {
-  "name": "HireBase — Digital Hiring Platform",
+  "id": "/HireBase/",
+  "name": "HireBase",
   "short_name": "HireBase",
   "description": "Digital hiring platform connecting Filipino talent with Greek employers",
   "start_url": "./index.html",
@@ -8,19 +9,30 @@
   "background_color": "#0B1120",
   "theme_color": "#0B1120",
   "orientation": "any",
-  "categories": ["business", "productivity"],
   "icons": [
     {
       "src": "icon-192.png",
       "sizes": "192x192",
       "type": "image/png",
-      "purpose": "any maskable"
+      "purpose": "any"
     },
     {
       "src": "icon-512.png",
       "sizes": "512x512",
       "type": "image/png",
-      "purpose": "any maskable"
+      "purpose": "any"
+    },
+    {
+      "src": "icon-192.png",
+      "sizes": "192x192",
+      "type": "image/png",
+      "purpose": "maskable"
+    },
+    {
+      "src": "icon-512.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "maskable"
     }
   ]
 }
