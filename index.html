@@ -762,7 +762,8 @@ document.querySelectorAll('a[href^="#"]').forEach(a=>{a.addEventListener('click'
 // (functions defined in early script block above)
 // Remember role
 // Remember role (safe for file:// protocol)
-try{const savedRole=localStorage.getItem('hirebase-role');if(savedRole)selectRole(savedRole)}catch(e){}
+// Role is not auto-restored — always show role selector on fresh visit
+// try{const savedRole=localStorage.getItem('hirebase-role');if(savedRole)selectRole(savedRole)}catch(e){}
 
 // Modal click-outside-to-close
 document.getElementById('loginModal').addEventListener('click',function(e){if(e.target===this)closeModal()});
