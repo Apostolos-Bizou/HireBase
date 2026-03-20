@@ -1,33 +1,28 @@
-const CACHE_NAME = 'hirebase-v2';
-const urlsToCache = [
-  './',
-  './index.html',
-  './admin.html',
-  './manifest.json',
-  './icon-192.png',
-  './icon-512.png'
-];
+var CACHE = 'hirebase-v3';
+var PRECACHE = ['./index.html', './admin.html', './manifest.json', './icon-192.png', './icon-512.png'];
 
-self.addEventListener('install', event => {
-  event.waitUntil(
-    caches.open(CACHE_NAME).then(cache => cache.addAll(urlsToCache))
-  );
+self.addEventListener('install', function(e) {
+  e.waitUntil(caches.open(CACHE).then(function(c) { return c.addAll(PRECACHE); }));
   self.skipWaiting();
 });
 
-self.addEventListener('activate', event => {
-  event.waitUntil(
-    caches.keys().then(keys =>
-      Promise.all(keys.filter(k => k !== CACHE_NAME).map(k => caches.delete(k)))
-    )
-  );
+self.addEventListener('activate', function(e) {
+  e.waitUntil(caches.keys().then(function(k) {
+    return Promise.all(k.filter(function(n) { return n !== CACHE; }).map(function(n) { return caches.delete(n); }));
+  }));
   self.clients.claim();
 });
 
-self.addEventListener('fetch', event => {
-  event.respondWith(
-    fetch(event.request).catch(() =>
-      caches.match(event.request).then(r => r || caches.match('./index.html'))
-    )
+self.addEventListener('fetch', function(e) {
+  e.respondWith(
+    fetch(e.request).then(function(r) {
+      if (r && r.status === 200) {
+        var rc = r.clone();
+        caches.open(CACHE).then(function(c) { c.put(e.request, rc); });
+      }
+      return r;
+    }).catch(function() {
+      return caches.match(e.request);
+    })
   );
 });
