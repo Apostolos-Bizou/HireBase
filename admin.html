@@ -497,6 +497,114 @@ tr:last-child td{border-bottom:none}
       </div>
     </div>
 
+    <!-- ═══ EMPLOYER: COMPANY PROFILE ═══ -->
+    <div class="page" id="pg-employer-profile">
+      <h2 class="page-title">Company Profile</h2>
+      <p style="font-size:14px;color:var(--g500);margin-bottom:24px">Build your company's public profile. Workers will see this when evaluating your job postings.</p>
+      <div style="display:grid;grid-template-columns:2fr 1fr;gap:24px">
+        <div>
+          <!-- Company Photos -->
+          <div style="background:var(--w);border:1px solid var(--g200);border-radius:16px;padding:28px;margin-bottom:20px">
+            <h3 style="font-family:var(--heading);font-size:16px;font-weight:700;color:var(--g800);margin-bottom:6px">📸 Company Photos</h3>
+            <p style="font-size:13px;color:var(--g400);margin-bottom:16px">Upload photos of your business, hotel, workplace, or facilities. Workers will see these.</p>
+            <div id="ep-photos" style="display:flex;gap:12px;flex-wrap:wrap;margin-bottom:16px"></div>
+            <div id="ep-photo-zone" style="border:2px dashed var(--g300);border-radius:12px;padding:32px;text-align:center;cursor:pointer;transition:all .2s" onclick="document.getElementById('ep-photo-input').click()" ondragover="event.preventDefault();this.style.borderColor='var(--blue)'" ondragleave="this.style.borderColor='var(--g300)'" ondrop="event.preventDefault();this.style.borderColor='var(--g300)';handleEpPhoto(event.dataTransfer.files)">
+              <div style="font-size:28px;margin-bottom:8px">🏨</div>
+              <div style="font-size:13px;font-weight:600;color:var(--g700)">Drop photos here or click to browse</div>
+              <div style="font-size:11px;color:var(--g400);margin-top:4px">JPG, PNG — max 5MB each — up to 6 photos</div>
+              <input type="file" id="ep-photo-input" accept="image/*" multiple style="display:none" onchange="handleEpPhoto(this.files)">
+            </div>
+          </div>
+
+          <!-- Company Presentation -->
+          <div style="background:var(--w);border:1px solid var(--g200);border-radius:16px;padding:28px;margin-bottom:20px">
+            <h3 style="font-family:var(--heading);font-size:16px;font-weight:700;color:var(--g800);margin-bottom:6px">🏢 About Your Company</h3>
+            <p style="font-size:13px;color:var(--g400);margin-bottom:16px">Present your business to potential workers — history, philosophy, what makes you a great employer.</p>
+            <div class="form-g"><label>Company Name</label><input id="ep-company" placeholder="Athens Grand Hotel"></div>
+            <div style="display:grid;grid-template-columns:1fr 1fr;gap:14px">
+              <div class="form-g"><label>Industry / Sector</label><select id="ep-sector"><option>Hospitality & Hotels</option><option>Food & Beverage</option><option>Care Services</option><option>Housekeeping & Cleaning</option><option>Construction</option><option>Retail & Agriculture</option><option>Other</option></select></div>
+              <div class="form-g"><label>Year Established</label><input id="ep-year" type="number" placeholder="2005" min="1900" max="2026"></div>
+            </div>
+            <div class="form-g"><label>Company Description</label><textarea id="ep-desc" rows="4" style="width:100%;padding:10px;border:1px solid var(--g200);border-radius:8px;font-size:13px;background:var(--g50);resize:vertical;font-family:var(--body)" placeholder="Describe your business — history, services, philosophy, team size, reputation..."></textarea></div>
+            <div class="form-g"><label>What We Offer Workers</label><textarea id="ep-offer" rows="3" style="width:100%;padding:10px;border:1px solid var(--g200);border-radius:8px;font-size:13px;background:var(--g50);resize:vertical;font-family:var(--body)" placeholder="Accommodation, meals, transportation, training, career growth, etc."></textarea></div>
+          </div>
+
+          <!-- Official / Administrative Data -->
+          <div style="background:var(--w);border:1px solid var(--g200);border-radius:16px;padding:28px;margin-bottom:20px">
+            <h3 style="font-family:var(--heading);font-size:16px;font-weight:700;color:var(--g800);margin-bottom:6px">📋 Administrative & Legal Information</h3>
+            <p style="font-size:13px;color:var(--g400);margin-bottom:16px">Required for DMW accreditation and Greek compliance. Not shown publicly.</p>
+            <div style="display:grid;grid-template-columns:1fr 1fr;gap:14px">
+              <div class="form-g"><label>Legal Company Name</label><input id="ep-legal" placeholder="Full registered name"></div>
+              <div class="form-g"><label>Tax ID (ΑΦΜ)</label><input id="ep-afm" placeholder="123456789"></div>
+              <div class="form-g"><label>Tax Office (ΔΟΥ)</label><input id="ep-doy" placeholder="Α' Θεσσαλονίκης"></div>
+              <div class="form-g"><label>Chamber Registration</label><input id="ep-chamber" placeholder="ΕΒΕΘ / ΕΒΕΑ number"></div>
+              <div class="form-g"><label>EFKA Employer Number</label><input id="ep-efka" placeholder="EFKA registration"></div>
+              <div class="form-g"><label>Annual Gross Revenue (€)</label><input id="ep-revenue" type="number" placeholder="€60,000 minimum per foreign employee"></div>
+              <div class="form-g"><label>Number of Employees</label><input id="ep-employees" type="number" placeholder="Total current staff"></div>
+              <div class="form-g"><label>Legal Representative</label><input id="ep-legal-rep" placeholder="Full name of authorized person"></div>
+            </div>
+          </div>
+
+          <!-- Contact & Location -->
+          <div style="background:var(--w);border:1px solid var(--g200);border-radius:16px;padding:28px;margin-bottom:20px">
+            <h3 style="font-family:var(--heading);font-size:16px;font-weight:700;color:var(--g800);margin-bottom:6px">📍 Contact & Location</h3>
+            <div style="display:grid;grid-template-columns:1fr 1fr;gap:14px">
+              <div class="form-g"><label>Contact Person</label><input id="ep-contact" placeholder="Nikos Papadopoulos"></div>
+              <div class="form-g"><label>Position / Title</label><input id="ep-title" placeholder="General Manager"></div>
+              <div class="form-g"><label>Email</label><input id="ep-email" type="email" placeholder="nikos@hotel.gr"></div>
+              <div class="form-g"><label>Phone</label><input id="ep-phone" type="tel" placeholder="+30 210 123 4567"></div>
+              <div class="form-g"><label>Mobile</label><input id="ep-mobile" type="tel" placeholder="+30 693 123 4567"></div>
+              <div class="form-g"><label>Website</label><input id="ep-web" type="url" placeholder="https://www.hotel.gr"></div>
+            </div>
+            <div class="form-g"><label>Full Address</label><input id="ep-address" placeholder="Leoforos Nikis 25, 546 24 Thessaloniki"></div>
+            <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:14px">
+              <div class="form-g"><label>City</label><input id="ep-city" placeholder="Thessaloniki"></div>
+              <div class="form-g"><label>Region</label><select id="ep-region"><option>Attica</option><option>Central Macedonia</option><option>Crete</option><option>Thessaly</option><option>South Aegean</option><option>Ionian Islands</option><option>Peloponnese</option><option>Western Greece</option><option>Eastern Macedonia</option><option>Other</option></select></div>
+              <div class="form-g"><label>Postal Code</label><input id="ep-zip" placeholder="546 24"></div>
+            </div>
+            <button class="btn btn-g" style="margin-top:8px" onclick="openEpMap()">📍 View on Google Maps</button>
+          </div>
+
+          <!-- Job Requirements -->
+          <div style="background:var(--w);border:1px solid var(--g200);border-radius:16px;padding:28px;margin-bottom:20px">
+            <h3 style="font-family:var(--heading);font-size:16px;font-weight:700;color:var(--g800);margin-bottom:6px">👥 What We're Looking For</h3>
+            <p style="font-size:13px;color:var(--g400);margin-bottom:16px">Define the roles you need and requirements for workers.</p>
+            <div id="ep-job-list"></div>
+            <button class="btn btn-g" style="margin-top:12px" onclick="addEpJobSlot()">+ Add Position</button>
+          </div>
+
+          <div style="display:flex;gap:12px;justify-content:flex-end">
+            <button class="btn btn-p" onclick="saveEmployerProfile()">💾 Save Company Profile</button>
+          </div>
+        </div>
+
+        <!-- Preview Card -->
+        <div>
+          <div style="background:var(--w);border:1px solid var(--g200);border-radius:16px;overflow:hidden;position:sticky;top:20px">
+            <div id="ep-preview-banner" style="height:120px;background:linear-gradient(135deg,var(--blue),var(--navy));display:flex;align-items:center;justify-content:center;color:rgba(255,255,255,.3);font-size:14px">No photos yet</div>
+            <div style="padding:24px">
+              <div id="ep-preview-name" style="font-family:var(--heading);font-size:20px;font-weight:700;color:var(--g800)">Company Name</div>
+              <div id="ep-preview-sector" style="font-size:13px;color:var(--g500);margin-top:2px">Sector</div>
+              <div id="ep-preview-loc" style="font-size:13px;color:var(--g400);margin-top:8px;display:flex;align-items:center;gap:6px">📍 Location</div>
+              <div style="border-top:1px solid var(--g200);margin:16px 0;padding-top:16px">
+                <div style="font-size:12px;font-weight:600;text-transform:uppercase;color:var(--blue);letter-spacing:1px;margin-bottom:10px">Profile Completeness</div>
+                <div style="height:8px;background:var(--g100);border-radius:4px;overflow:hidden;margin-bottom:6px"><div id="ep-completeness" style="height:100%;background:var(--green);border-radius:4px;width:0%;transition:width .5s"></div></div>
+                <div id="ep-completeness-pct" style="font-size:13px;font-weight:600;color:var(--g500);text-align:right">0%</div>
+              </div>
+              <div style="border-top:1px solid var(--g200);margin:16px 0;padding-top:16px">
+                <div style="font-size:12px;font-weight:600;text-transform:uppercase;color:var(--g400);letter-spacing:1px;margin-bottom:10px">Open Positions</div>
+                <div id="ep-preview-jobs" style="font-size:14px;color:var(--g500)">No positions added yet</div>
+              </div>
+              <div style="border-top:1px solid var(--g200);margin:16px 0;padding-top:16px">
+                <div style="font-size:12px;font-weight:600;text-transform:uppercase;color:var(--g400);letter-spacing:1px;margin-bottom:10px">Verification</div>
+                <div id="ep-verify-badges" style="display:flex;flex-wrap:wrap;gap:6px"></div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
     <!-- ═══ WORKER: MY PROFILE ═══ -->
     <div class="page" id="pg-worker-profile">
       <h2 class="page-title">My Profile</h2>
@@ -748,14 +856,14 @@ const badge=s=>`<span class="badge" style="${sc[s]||'background:#E2E8F0;color:#4
 const initials=n=>n.split(' ').map(w=>w[0]).join('').slice(0,2);
 
 // ═══ NAV ═══
-const navMap={admin:[{id:'dashboard',icon:'📊',label:'Dashboard'},{id:'employers',icon:'🏢',label:'Employers'},{id:'candidates',icon:'👥',label:'Candidates'},{id:'matching',icon:'🤖',label:'AI Matching'},{id:'applications',icon:'📋',label:'Applications'},{id:'compliance',icon:'⚖️',label:'Compliance'},{id:'documents',icon:'📁',label:'Documents'},{id:'kpis',icon:'📈',label:'KPIs'},{id:'messaging',icon:'💬',label:'Messages'},{id:'reports',icon:'📊',label:'Reports'},{id:'users',icon:'🔐',label:'Users'},{id:'settings',icon:'⚙️',label:'Settings'}],employer:[{id:'dashboard',icon:'📊',label:'Dashboard'},{id:'matching',icon:'🤖',label:'AI Matching'},{id:'applications',icon:'📋',label:'My Requests'},{id:'candidates',icon:'👥',label:'Candidates'},{id:'documents',icon:'📁',label:'Documents'},{id:'kpis',icon:'📈',label:'Analytics'},{id:'messaging',icon:'💬',label:'Messages'}],worker:[{id:'dashboard',icon:'📊',label:'My Status'},{id:'worker-profile',icon:'📋',label:'My Profile'},{id:'find-jobs',icon:'🏢',label:'Find Jobs'},{id:'worker-docs',icon:'📁',label:'My Documents'},{id:'applications',icon:'📋',label:'My Applications'},{id:'messaging',icon:'💬',label:'Messages'}]};
+const navMap={admin:[{id:'dashboard',icon:'📊',label:'Dashboard'},{id:'employers',icon:'🏢',label:'Employers'},{id:'candidates',icon:'👥',label:'Candidates'},{id:'matching',icon:'🤖',label:'AI Matching'},{id:'applications',icon:'📋',label:'Applications'},{id:'compliance',icon:'⚖️',label:'Compliance'},{id:'documents',icon:'📁',label:'Documents'},{id:'kpis',icon:'📈',label:'KPIs'},{id:'messaging',icon:'💬',label:'Messages'},{id:'reports',icon:'📊',label:'Reports'},{id:'users',icon:'🔐',label:'Users'},{id:'settings',icon:'⚙️',label:'Settings'}],employer:[{id:'dashboard',icon:'📊',label:'Dashboard'},{id:'employer-profile',icon:'🏢',label:'Company Profile'},{id:'matching',icon:'🤖',label:'AI Matching'},{id:'applications',icon:'📋',label:'My Requests'},{id:'candidates',icon:'👥',label:'Candidates'},{id:'documents',icon:'📁',label:'Documents'},{id:'kpis',icon:'📈',label:'Analytics'},{id:'messaging',icon:'💬',label:'Messages'}],worker:[{id:'dashboard',icon:'📊',label:'My Status'},{id:'worker-profile',icon:'📋',label:'My Profile'},{id:'find-jobs',icon:'🏢',label:'Find Jobs'},{id:'worker-docs',icon:'📁',label:'My Documents'},{id:'applications',icon:'📋',label:'My Applications'},{id:'messaging',icon:'💬',label:'Messages'}]};
 let currentUser=null,currentPage='dashboard';
 
 function buildNav(){
   const items=navMap[currentUser.role]||navMap.admin;
   document.getElementById('sb-nav').innerHTML=items.map(i=>`<button class="sb-item${currentPage===i.id?' active':''}" onclick="goPage('${i.id}')"><span>${i.icon}</span><span>${i.label}</span></button>`).join('');
 }
-function goPage(id){currentPage=id;buildNav();document.querySelectorAll('.page').forEach(p=>p.classList.remove('active'));const pg=document.getElementById('pg-'+id);if(pg)pg.classList.add('active');if(id==='employers')renderEmployers();if(id==='candidates')renderCandidates();if(id==='applications')renderApplications();if(id==='users')renderUsers();if(id==='dashboard')renderDashboardPanels();if(id==='compliance')renderCompliance();if(id==='documents')renderDocuments();if(id==='messaging')renderMessaging();if(id==='settings')renderSettings();if(id==='kpis')renderKPIs();if(id==='reports')renderReports();if(id==='matching')renderMatching();if(id==='worker-profile')renderWorkerProfile();if(id==='find-jobs')renderFindJobs();if(id==='worker-docs')renderWorkerDocs();}
+function goPage(id){currentPage=id;buildNav();document.querySelectorAll('.page').forEach(p=>p.classList.remove('active'));const pg=document.getElementById('pg-'+id);if(pg)pg.classList.add('active');if(id==='employers')renderEmployers();if(id==='candidates')renderCandidates();if(id==='applications')renderApplications();if(id==='users')renderUsers();if(id==='dashboard')renderDashboardPanels();if(id==='compliance')renderCompliance();if(id==='documents')renderDocuments();if(id==='messaging')renderMessaging();if(id==='settings')renderSettings();if(id==='kpis')renderKPIs();if(id==='reports')renderReports();if(id==='matching')renderMatching();if(id==='worker-profile')renderWorkerProfile();if(id==='find-jobs')renderFindJobs();if(id==='worker-docs')renderWorkerDocs();if(id==='employer-profile')renderEmployerProfile();}
 
 // ═══ AUTH ═══
 function doLogin(){
@@ -1606,6 +1714,126 @@ function showMatchResults(role,minExp,minEng,minScore,special){
 
 function exportShortlist(){showToast('Shortlist exported as PDF! Check your Downloads.');}
 function createApplicationsFromMatches(){showToast('Applications created for top 3 matches! Check Applications page.');goPage('applications');}
+
+// ═══════════════════════════════════════════
+// EMPLOYER MODULE: COMPANY PROFILE
+// ═══════════════════════════════════════════
+var epPhotos=[];
+var epJobs=[];
+
+function renderEmployerProfile(){
+  const emp=employers.find(e=>e.email===currentUser.email)||employers[0];
+  // Pre-fill from employer data
+  const fields={
+    'ep-company':emp.company,'ep-contact':emp.contact,'ep-email':emp.email,
+    'ep-phone':emp.phone,'ep-city':emp.location
+  };
+  Object.keys(fields).forEach(id=>{const el=document.getElementById(id);if(el&&!el.value)el.value=fields[id]||''});
+  // Pre-fill demand as jobs
+  const demand=employerDemand.find(e=>e.emp===emp.company);
+  if(demand&&!epJobs.length){
+    epJobs=demand.needs.map(n=>({role:n.role,qty:n.qty,desc:'',requirements:'',urgent:false}));
+  }
+  renderEpJobList();
+  renderEpPhotos();
+  updateEpPreview();
+  // Live preview on input
+  ['ep-company','ep-sector','ep-city','ep-address','ep-desc','ep-year','ep-contact','ep-email','ep-phone','ep-afm','ep-revenue','ep-employees'].forEach(id=>{
+    const el=document.getElementById(id);
+    if(el)el.addEventListener('input',updateEpPreview);
+  });
+}
+
+function updateEpPreview(){
+  const name=document.getElementById('ep-company');
+  const sector=document.getElementById('ep-sector');
+  const city=document.getElementById('ep-city');
+  document.getElementById('ep-preview-name').textContent=(name&&name.value)||'Company Name';
+  document.getElementById('ep-preview-sector').textContent=(sector&&sector.value)||'Sector';
+  document.getElementById('ep-preview-loc').innerHTML='📍 '+((city&&city.value)||'Location')+', Greece';
+  // Completeness
+  const checks=['ep-company','ep-sector','ep-desc','ep-contact','ep-email','ep-phone','ep-address','ep-city','ep-afm','ep-revenue','ep-employees','ep-legal-rep'];
+  let filled=0;
+  checks.forEach(id=>{const el=document.getElementById(id);if(el&&el.value&&el.value.trim())filled++});
+  const hasPhotos=epPhotos.length>0;
+  const hasJobs=epJobs.length>0;
+  const total=checks.length+2;
+  const complete=filled+(hasPhotos?1:0)+(hasJobs?1:0);
+  const pct=Math.round(complete/total*100);
+  document.getElementById('ep-completeness').style.width=pct+'%';
+  document.getElementById('ep-completeness-pct').textContent=pct+'%';
+  // Jobs preview
+  const jobsEl=document.getElementById('ep-preview-jobs');
+  if(jobsEl){
+    if(epJobs.length){
+      jobsEl.innerHTML=epJobs.map(j=>'<div style="display:flex;justify-content:space-between;align-items:center;padding:6px 0"><span style="font-size:13px;color:var(--g700)">'+j.role+'</span><span class="badge" style="background:#D1FAE5;color:#065F46">'+j.qty+'</span></div>').join('');
+    } else {
+      jobsEl.textContent='No positions added yet';
+    }
+  }
+  // Verification badges
+  const vb=document.getElementById('ep-verify-badges');
+  if(vb){
+    const afm=document.getElementById('ep-afm');
+    const efka=document.getElementById('ep-efka');
+    const rev=document.getElementById('ep-revenue');
+    vb.innerHTML=[
+      {k:'ΑΦΜ',done:afm&&afm.value.trim()},{k:'EFKA',done:efka&&efka.value.trim()},
+      {k:'Revenue',done:rev&&rev.value.trim()},{k:'Photos',done:epPhotos.length>0},{k:'Profile',done:pct>60}
+    ].map(d=>'<span class="badge" style="'+(d.done?'background:#D1FAE5;color:#065F46':'background:var(--g100);color:var(--g400)')+'">'+d.k+'</span>').join('');
+  }
+}
+
+function handleEpPhoto(files){
+  if(!files)return;
+  Array.from(files).forEach(file=>{
+    if(epPhotos.length>=6)return;
+    const reader=new FileReader();
+    reader.onload=function(e){
+      epPhotos.push({name:file.name,src:e.target.result});
+      renderEpPhotos();
+      updateEpPreview();
+    };
+    reader.readAsDataURL(file);
+  });
+}
+
+function renderEpPhotos(){
+  const c=document.getElementById('ep-photos');if(!c)return;
+  if(!epPhotos.length){c.innerHTML='';return}
+  c.innerHTML=epPhotos.map((p,i)=>'<div style="position:relative;width:120px;height:80px;border-radius:10px;overflow:hidden;border:1px solid var(--g200)"><img src="'+p.src+'" style="width:100%;height:100%;object-fit:cover"><button onclick="epPhotos.splice('+i+',1);renderEpPhotos();updateEpPreview()" style="position:absolute;top:4px;right:4px;width:22px;height:22px;border-radius:50%;background:rgba(0,0,0,.6);color:#fff;border:none;cursor:pointer;font-size:12px;display:flex;align-items:center;justify-content:center">×</button></div>').join('');
+  // Update banner preview
+  const banner=document.getElementById('ep-preview-banner');
+  if(banner&&epPhotos.length){
+    banner.style.background='url('+epPhotos[0].src+') center/cover';
+    banner.textContent='';
+  }
+}
+
+function addEpJobSlot(){
+  epJobs.push({role:'Housekeeper',qty:1,desc:'',requirements:'',urgent:false});
+  renderEpJobList();
+  updateEpPreview();
+}
+
+function renderEpJobList(){
+  const c=document.getElementById('ep-job-list');if(!c)return;
+  if(!epJobs.length){c.innerHTML='<div style="color:var(--g400);font-size:13px;padding:16px;background:var(--g50);border-radius:10px;text-align:center">No positions added yet. Click below to add.</div>';return}
+  const roleOpts=['Housekeeper','Line Cook','Waiter/Server','Care Worker','Front Desk','Cleaner','Electrician','Nursing Aide','Barista','Plumber','Laundry Staff','Farm Worker','Other'].map(r=>'<option>'+r+'</option>').join('');
+  c.innerHTML=epJobs.map((j,i)=>'<div style="background:var(--g50);border-radius:12px;padding:18px;margin-bottom:12px;position:relative"><button onclick="epJobs.splice('+i+',1);renderEpJobList();updateEpPreview()" style="position:absolute;top:10px;right:10px;background:none;border:none;color:var(--g400);cursor:pointer;font-size:16px" title="Remove">×</button><div style="display:grid;grid-template-columns:2fr 1fr 1fr;gap:12px;margin-bottom:10px"><div class="form-g" style="margin:0"><label style="font-size:12px">Role</label><select onchange="epJobs['+i+'].role=this.value;updateEpPreview()" style="font-size:13px;padding:8px">'+roleOpts.replace('<option>'+j.role+'</option>','<option selected>'+j.role+'</option>')+'</select></div><div class="form-g" style="margin:0"><label style="font-size:12px">Positions</label><input type="number" min="1" value="'+j.qty+'" onchange="epJobs['+i+'].qty=+this.value;updateEpPreview()" style="font-size:13px;padding:8px"></div><div class="form-g" style="margin:0"><label style="font-size:12px">Priority</label><select onchange="epJobs['+i+'].urgent=this.value===\'Urgent\'" style="font-size:13px;padding:8px"><option'+(j.urgent?'':' selected')+'>Normal</option><option'+(j.urgent?' selected':'')+'>Urgent</option></select></div></div><div class="form-g" style="margin:0"><label style="font-size:12px">Job Description & Requirements</label><textarea rows="2" style="width:100%;padding:8px;border:1px solid var(--g200);border-radius:6px;font-size:12px;background:var(--w);resize:vertical;font-family:var(--body)" placeholder="Experience required, language level, specific skills..." onchange="epJobs['+i+'].desc=this.value">'+j.desc+'</textarea></div></div>').join('');
+}
+
+function openEpMap(){
+  const addr=document.getElementById('ep-address');
+  const city=document.getElementById('ep-city');
+  const query=encodeURIComponent(((addr&&addr.value)||'')+', '+((city&&city.value)||'Greece'));
+  window.open('https://www.google.com/maps/search/?api=1&query='+query,'_blank');
+}
+
+function saveEmployerProfile(){
+  showToast('Company profile saved successfully!');
+  updateEpPreview();
+}
 
 // ═══════════════════════════════════════════
 // WORKER MODULE: MY PROFILE
