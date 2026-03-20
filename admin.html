@@ -646,18 +646,118 @@ function addUser(){
 
 // ═══ TALENT POOL & EMPLOYER DEMAND DATA ═══
 const talentPool=[
-  {role:"Housekeeper",icon:"🧹",count:14,ready:8,deployed:3,color:"var(--blue)"},
-  {role:"Line Cook",icon:"👨‍🍳",count:11,ready:5,deployed:2,color:"var(--amber)"},
-  {role:"Care Worker",icon:"💙",count:9,ready:4,deployed:2,color:"var(--green)"},
-  {role:"Front Desk",icon:"🛎️",count:7,ready:3,deployed:1,color:"var(--purple)"},
-  {role:"Electrician",icon:"⚡",count:5,ready:3,deployed:0,color:"var(--red)"},
-  {role:"Barista",icon:"☕",count:6,ready:2,deployed:0,color:"#7C3AED"},
-  {role:"Cleaner",icon:"🧽",count:8,ready:4,deployed:1,color:"var(--blue)"},
-  {role:"Nursing Aide",icon:"🏥",count:6,ready:2,deployed:2,color:"var(--green)"},
-  {role:"Waiter/Server",icon:"🍽️",count:10,ready:6,deployed:1,color:"var(--amber)"},
-  {role:"Plumber",icon:"🔧",count:4,ready:2,deployed:0,color:"var(--g500)"},
-  {role:"Laundry Staff",icon:"👕",count:5,ready:3,deployed:0,color:"var(--blue-l)"},
-  {role:"Farm Worker",icon:"🌾",count:3,ready:1,deployed:0,color:"var(--green)"}
+  {role:"Housekeeper",icon:"🧹",count:14,ready:8,deployed:3,color:"var(--blue)",candidates:[
+    {name:"Maria Reyes",status:"Deployed",score:92,loc:"Manila",exp:"6 yrs",eng:"B2",employer:"Athens Grand Hotel"},
+    {name:"Grace Dela Cruz",status:"Ready",score:86,loc:"Quezon City",exp:"4 yrs",eng:"B2",employer:null},
+    {name:"Teresa Villanueva",status:"Ready",score:88,loc:"Manila",exp:"5 yrs",eng:"B1",employer:null},
+    {name:"Carmen Aquino",status:"Ready",score:84,loc:"Cebu",exp:"3 yrs",eng:"B1",employer:null},
+    {name:"Rosalie Mendoza",status:"Ready",score:80,loc:"Davao",exp:"2 yrs",eng:"A2",employer:null},
+    {name:"Lorna Bautista",status:"Ready",score:82,loc:"Manila",exp:"4 yrs",eng:"B1",employer:null},
+    {name:"Patricia Santos",status:"Deployed",score:90,loc:"Manila",exp:"7 yrs",eng:"B2",employer:"Crete Beach Resort"},
+    {name:"Elena Ramos",status:"Ready",score:79,loc:"Cebu",exp:"2 yrs",eng:"A2",employer:null},
+    {name:"Diana Cruz",status:"Deployed",score:91,loc:"Manila",exp:"6 yrs",eng:"B2",employer:"Aegean Cleaning Co."},
+    {name:"Susan Magsaysay",status:"Ready",score:83,loc:"Davao",exp:"3 yrs",eng:"B1",employer:null},
+    {name:"Mila Flores",status:"Screening",score:75,loc:"Cebu",exp:"1 yr",eng:"A2",employer:null},
+    {name:"Nora Gonzales",status:"Screening",score:72,loc:"Manila",exp:"1 yr",eng:"A2",employer:null},
+    {name:"Joy Pascual",status:"Screening",score:74,loc:"Quezon City",exp:"2 yrs",eng:"B1",employer:null},
+    {name:"Ana Dimaculangan",status:"Screening",score:70,loc:"Davao",exp:"1 yr",eng:"A1",employer:null}
+  ]},
+  {role:"Line Cook",icon:"👨‍🍳",count:11,ready:5,deployed:2,color:"var(--amber)",candidates:[
+    {name:"Jose Cruz",status:"Visa Pending",score:88,loc:"Cebu",exp:"3 yrs",eng:"B1",employer:"Crete Beach Resort"},
+    {name:"Ricardo Tan",status:"Ready",score:85,loc:"Manila",exp:"5 yrs",eng:"B1",employer:null},
+    {name:"Marco Villanueva",status:"Ready",score:82,loc:"Cebu",exp:"4 yrs",eng:"B1",employer:null},
+    {name:"Eduardo Santos",status:"Deployed",score:89,loc:"Manila",exp:"6 yrs",eng:"B2",employer:"Athens Grand Hotel"},
+    {name:"Fernando Lopez",status:"Ready",score:80,loc:"Davao",exp:"3 yrs",eng:"A2",employer:null},
+    {name:"Paolo Garcia",status:"Ready",score:78,loc:"Cebu",exp:"2 yrs",eng:"A2",employer:null},
+    {name:"Antonio Reyes",status:"Ready",score:81,loc:"Manila",exp:"4 yrs",eng:"B1",employer:null},
+    {name:"Carlos Dela Cruz",status:"Deployed",score:87,loc:"Manila",exp:"5 yrs",eng:"B2",employer:"Crete Beach Resort"},
+    {name:"Ramon Torres",status:"Screening",score:74,loc:"Cebu",exp:"1 yr",eng:"A2",employer:null},
+    {name:"Luis Bautista",status:"Screening",score:72,loc:"Davao",exp:"1 yr",eng:"A1",employer:null},
+    {name:"Miguel Torres",status:"Screening",score:78,loc:"Cebu",exp:"2 yrs",eng:"A2",employer:null}
+  ]},
+  {role:"Care Worker",icon:"💙",count:9,ready:4,deployed:2,color:"var(--green)",candidates:[
+    {name:"Anna Lim",status:"Interview",score:95,loc:"Davao",exp:"7 yrs",eng:"C1",employer:"Thessaloniki Care"},
+    {name:"Patricia Ramos",status:"Deployed",score:94,loc:"Manila",exp:"8 yrs",eng:"C1",employer:"Hellenic Senior Living"},
+    {name:"Cristina Aquino",status:"Ready",score:88,loc:"Manila",exp:"5 yrs",eng:"B2",employer:null},
+    {name:"Rosemarie Santos",status:"Ready",score:86,loc:"Cebu",exp:"4 yrs",eng:"B1",employer:null},
+    {name:"Dolores Mendoza",status:"Ready",score:84,loc:"Davao",exp:"3 yrs",eng:"B1",employer:null},
+    {name:"Victoria Cruz",status:"Deployed",score:92,loc:"Manila",exp:"6 yrs",eng:"B2",employer:"Thessaloniki Care"},
+    {name:"Angelina Torres",status:"Ready",score:82,loc:"Manila",exp:"4 yrs",eng:"B1",employer:null},
+    {name:"Esperanza Lopez",status:"Screening",score:76,loc:"Cebu",exp:"2 yrs",eng:"A2",employer:null},
+    {name:"Lucinda Garcia",status:"Screening",score:73,loc:"Davao",exp:"1 yr",eng:"A2",employer:null}
+  ]},
+  {role:"Front Desk",icon:"🛎️",count:7,ready:3,deployed:1,color:"var(--purple)",candidates:[
+    {name:"Grace Dela Cruz",status:"Ready",score:86,loc:"Quezon City",exp:"4 yrs",eng:"B2",employer:null},
+    {name:"Jennifer Reyes",status:"Ready",score:84,loc:"Manila",exp:"3 yrs",eng:"B2",employer:null},
+    {name:"Michelle Santos",status:"Ready",score:82,loc:"Cebu",exp:"2 yrs",eng:"B1",employer:null},
+    {name:"Karen Villanueva",status:"Deployed",score:88,loc:"Manila",exp:"5 yrs",eng:"B2",employer:"Athens Grand Hotel"},
+    {name:"Stephanie Cruz",status:"Screening",score:76,loc:"Davao",exp:"1 yr",eng:"B1",employer:null},
+    {name:"Nicole Tan",status:"Screening",score:74,loc:"Cebu",exp:"1 yr",eng:"A2",employer:null},
+    {name:"Bianca Lopez",status:"Screening",score:72,loc:"Manila",exp:"1 yr",eng:"A2",employer:null}
+  ]},
+  {role:"Electrician",icon:"⚡",count:5,ready:3,deployed:0,color:"var(--red)",candidates:[
+    {name:"Roberto Santos",status:"DMW Docs",score:90,loc:"Manila",exp:"10 yrs",eng:"B1",employer:"Athens Grand Hotel"},
+    {name:"Danilo Cruz",status:"Ready",score:86,loc:"Cebu",exp:"8 yrs",eng:"B1",employer:null},
+    {name:"Ernesto Reyes",status:"Ready",score:84,loc:"Manila",exp:"6 yrs",eng:"A2",employer:null},
+    {name:"Ronaldo Bautista",status:"Ready",score:82,loc:"Davao",exp:"5 yrs",eng:"A2",employer:null},
+    {name:"Felipe Torres",status:"Screening",score:75,loc:"Manila",exp:"3 yrs",eng:"A2",employer:null}
+  ]},
+  {role:"Barista",icon:"☕",count:6,ready:2,deployed:0,color:"#7C3AED",candidates:[
+    {name:"Miguel Torres",status:"Screening",score:78,loc:"Cebu",exp:"2 yrs",eng:"A2",employer:null},
+    {name:"Rafael Santos",status:"Ready",score:80,loc:"Manila",exp:"3 yrs",eng:"B1",employer:null},
+    {name:"Isabela Cruz",status:"Ready",score:79,loc:"Cebu",exp:"2 yrs",eng:"B1",employer:null},
+    {name:"Diego Reyes",status:"Screening",score:74,loc:"Davao",exp:"1 yr",eng:"A2",employer:null},
+    {name:"Sofia Villanueva",status:"Screening",score:72,loc:"Manila",exp:"1 yr",eng:"A1",employer:null},
+    {name:"Andrea Lopez",status:"Screening",score:71,loc:"Cebu",exp:"1 yr",eng:"A1",employer:null}
+  ]},
+  {role:"Cleaner",icon:"🧽",count:8,ready:4,deployed:1,color:"var(--blue)",candidates:[
+    {name:"Carlos Garcia",status:"Ready",score:82,loc:"Davao",exp:"3 yrs",eng:"B1",employer:null},
+    {name:"Maricel Santos",status:"Ready",score:80,loc:"Manila",exp:"2 yrs",eng:"A2",employer:null},
+    {name:"Gloria Cruz",status:"Ready",score:78,loc:"Cebu",exp:"2 yrs",eng:"A2",employer:null},
+    {name:"Remedios Reyes",status:"Ready",score:76,loc:"Manila",exp:"1 yr",eng:"A2",employer:null},
+    {name:"Luisa Torres",status:"Deployed",score:84,loc:"Manila",exp:"4 yrs",eng:"B1",employer:"Aegean Cleaning Co."},
+    {name:"Beth Aquino",status:"Screening",score:72,loc:"Davao",exp:"1 yr",eng:"A1",employer:null},
+    {name:"Celia Mendoza",status:"Screening",score:70,loc:"Cebu",exp:"1 yr",eng:"A1",employer:null},
+    {name:"Delia Bautista",status:"Screening",score:68,loc:"Manila",exp:"<1 yr",eng:"A1",employer:null}
+  ]},
+  {role:"Nursing Aide",icon:"🏥",count:6,ready:2,deployed:2,color:"var(--green)",candidates:[
+    {name:"Patricia Ramos",status:"Deployed",score:94,loc:"Manila",exp:"8 yrs",eng:"C1",employer:"Hellenic Senior Living"},
+    {name:"Rebecca Cruz",status:"Deployed",score:91,loc:"Manila",exp:"6 yrs",eng:"B2",employer:"Thessaloniki Care"},
+    {name:"Corazon Santos",status:"Ready",score:86,loc:"Cebu",exp:"5 yrs",eng:"B1",employer:null},
+    {name:"Ligaya Torres",status:"Ready",score:84,loc:"Davao",exp:"4 yrs",eng:"B1",employer:null},
+    {name:"Estrella Reyes",status:"Screening",score:76,loc:"Manila",exp:"2 yrs",eng:"A2",employer:null},
+    {name:"Felicidad Lopez",status:"Screening",score:74,loc:"Cebu",exp:"2 yrs",eng:"A2",employer:null}
+  ]},
+  {role:"Waiter/Server",icon:"🍽️",count:10,ready:6,deployed:1,color:"var(--amber)",candidates:[
+    {name:"Alejandro Cruz",status:"Deployed",score:87,loc:"Manila",exp:"5 yrs",eng:"B2",employer:"Crete Beach Resort"},
+    {name:"Benjamin Santos",status:"Ready",score:84,loc:"Cebu",exp:"4 yrs",eng:"B1",employer:null},
+    {name:"Christian Reyes",status:"Ready",score:82,loc:"Manila",exp:"3 yrs",eng:"B1",employer:null},
+    {name:"Dominic Torres",status:"Ready",score:80,loc:"Davao",exp:"2 yrs",eng:"A2",employer:null},
+    {name:"Emmanuel Lopez",status:"Ready",score:79,loc:"Cebu",exp:"2 yrs",eng:"A2",employer:null},
+    {name:"Frederick Garcia",status:"Ready",score:78,loc:"Manila",exp:"2 yrs",eng:"B1",employer:null},
+    {name:"Gabriel Villanueva",status:"Ready",score:77,loc:"Davao",exp:"1 yr",eng:"A2",employer:null},
+    {name:"Henry Bautista",status:"Screening",score:74,loc:"Cebu",exp:"1 yr",eng:"A2",employer:null},
+    {name:"Ivan Aquino",status:"Screening",score:72,loc:"Manila",exp:"1 yr",eng:"A1",employer:null},
+    {name:"James Mendoza",status:"Screening",score:70,loc:"Davao",exp:"<1 yr",eng:"A1",employer:null}
+  ]},
+  {role:"Plumber",icon:"🔧",count:4,ready:2,deployed:0,color:"var(--g500)",candidates:[
+    {name:"Oscar Santos",status:"Ready",score:84,loc:"Manila",exp:"7 yrs",eng:"B1",employer:null},
+    {name:"Pedro Cruz",status:"Ready",score:80,loc:"Cebu",exp:"5 yrs",eng:"A2",employer:null},
+    {name:"Quirino Reyes",status:"Screening",score:74,loc:"Davao",exp:"2 yrs",eng:"A2",employer:null},
+    {name:"Renato Torres",status:"Screening",score:72,loc:"Manila",exp:"2 yrs",eng:"A1",employer:null}
+  ]},
+  {role:"Laundry Staff",icon:"👕",count:5,ready:3,deployed:0,color:"var(--blue-l)",candidates:[
+    {name:"Teresita Santos",status:"Ready",score:80,loc:"Manila",exp:"3 yrs",eng:"B1",employer:null},
+    {name:"Urduja Cruz",status:"Ready",score:78,loc:"Cebu",exp:"2 yrs",eng:"A2",employer:null},
+    {name:"Vivian Reyes",status:"Ready",score:76,loc:"Davao",exp:"2 yrs",eng:"A2",employer:null},
+    {name:"Wilma Torres",status:"Screening",score:72,loc:"Manila",exp:"1 yr",eng:"A1",employer:null},
+    {name:"Ximena Lopez",status:"Screening",score:70,loc:"Cebu",exp:"1 yr",eng:"A1",employer:null}
+  ]},
+  {role:"Farm Worker",icon:"🌾",count:3,ready:1,deployed:0,color:"var(--green)",candidates:[
+    {name:"Yolanda Santos",status:"Ready",score:76,loc:"Davao",exp:"3 yrs",eng:"A2",employer:null},
+    {name:"Zenaida Cruz",status:"Screening",score:72,loc:"Cebu",exp:"1 yr",eng:"A1",employer:null},
+    {name:"Amelia Reyes",status:"Screening",score:70,loc:"Manila",exp:"1 yr",eng:"A1",employer:null}
+  ]}
 ];
 const employerDemand=[
   {emp:"Athens Grand Hotel",sector:"Hospitality",needs:[{role:"Housekeeper",qty:2},{role:"Front Desk",qty:1},{role:"Electrician",qty:1},{role:"Laundry Staff",qty:1}],total:5,urgent:2},
@@ -668,17 +768,15 @@ const employerDemand=[
 ];
 
 function renderDashboardPanels(){
-  // Talent Pool
   const maxCount=Math.max(...talentPool.map(t=>t.count));
-  document.getElementById('talent-pool-cats').innerHTML=talentPool.map(t=>{
+  document.getElementById('talent-pool-cats').innerHTML=talentPool.map((t,idx)=>{
     const pct=Math.round(t.count/maxCount*100);
-    return `<div class="pool-row"><span class="pool-label">${t.icon} ${t.role}</span><div class="pool-bar-bg"><div class="pool-bar-fill" style="width:${pct}%;background:${t.color}"><span>${t.ready} ready</span></div></div><span class="pool-count">${t.count}</span></div>`;
+    return `<div class="pool-row" style="cursor:pointer" onclick="showPoolDetail(${idx})" title="Click to see ${t.count} candidates"><span class="pool-label">${t.icon} ${t.role}</span><div class="pool-bar-bg"><div class="pool-bar-fill" style="width:${pct}%;background:${t.color}"><span>${t.ready} ready</span></div></div><span class="pool-count">${t.count}</span></div>`;
   }).join('');
 
-  // Employer Demand
-  document.getElementById('employer-demand').innerHTML=employerDemand.map(e=>{
-    const chips=e.needs.map(n=>`<span class="demand-chip"><b>${n.qty}×</b> ${n.role}</span>`).join('');
-    return `<div class="demand-row"><div><div class="demand-emp">${e.emp}</div><div style="font-size:11px;color:var(--g400)">${e.sector}</div></div><div class="demand-roles">${chips}</div><div style="text-align:right"><div style="font-size:18px;font-weight:800;color:var(--g800);font-family:var(--heading)">${e.total}</div><div style="font-size:11px;color:${e.urgent>2?'var(--red)':'var(--amber)'}"><b>${e.urgent}</b> urgent</div></div></div>`;
+  document.getElementById('employer-demand').innerHTML=employerDemand.map((e,idx)=>{
+    const chips=e.needs.map(n=>`<span class="demand-chip" style="cursor:pointer" onclick="event.stopPropagation();showDemandRole('${n.role}','${e.emp}')"><b>${n.qty}×</b> ${n.role}</span>`).join('');
+    return `<div class="demand-row" style="cursor:pointer" onclick="showEmployerDemand(${idx})"><div><div class="demand-emp">${e.emp}</div><div style="font-size:11px;color:var(--g400)">${e.sector}</div></div><div class="demand-roles">${chips}</div><div style="text-align:right"><div style="font-size:18px;font-weight:800;color:var(--g800);font-family:var(--heading)">${e.total}</div><div style="font-size:11px;color:${e.urgent>2?'var(--red)':'var(--amber)'}"><b>${e.urgent}</b> urgent</div></div></div>`;
   }).join('');
 
   // Supply vs Demand
@@ -1039,6 +1137,88 @@ function renderWorkerDashboard(){
   pg.querySelector('.page-title').textContent='My Status';
   const statsRow=pg.querySelector('.stats-row');
   if(statsRow)statsRow.innerHTML=`<div class="stat-card"><div class="stat-top"><span class="stat-label">Application</span><span class="stat-icon" style="background:rgba(37,99,235,.1)">📋</span></div><div class="stat-val" style="font-size:18px">${myApp.id}</div></div><div class="stat-card"><div class="stat-top"><span class="stat-label">Employer</span><span class="stat-icon" style="background:rgba(16,185,129,.1)">🏢</span></div><div class="stat-val" style="font-size:16px">${myApp.emp}</div></div><div class="stat-card"><div class="stat-top"><span class="stat-label">Stage</span><span class="stat-icon" style="background:rgba(245,158,11,.1)">📍</span></div><div class="stat-val" style="font-size:18px">${myApp.stage}</div></div><div class="stat-card"><div class="stat-top"><span class="stat-label">Progress</span><span class="stat-icon" style="background:rgba(37,99,235,.1)">📊</span></div><div class="stat-val" style="color:${myApp.progress===100?'var(--green)':'var(--blue)'}">${myApp.progress}%</div></div>`;
+}
+
+// ═══ CLICKABLE DASHBOARD PANELS ═══
+function showPoolDetail(idx){
+  const t=talentPool[idx];
+  const ready=t.candidates.filter(c=>c.status==='Ready');
+  const deployed=t.candidates.filter(c=>c.status==='Deployed');
+  const inProcess=t.candidates.filter(c=>c.status!=='Ready'&&c.status!=='Deployed'&&c.status!=='Screening');
+  const screening=t.candidates.filter(c=>c.status==='Screening');
+  const demandForRole=[];
+  employerDemand.forEach(e=>{e.needs.forEach(n=>{if(n.role===t.role)demandForRole.push({emp:e.emp,qty:n.qty})})});
+
+  const candTable=t.candidates.map(c=>{
+    const stStyle=sc[c.status]||'background:#E2E8F0;color:#475569';
+    return `<tr><td style="padding:10px 12px;border-bottom:1px solid var(--g100)"><div style="display:flex;align-items:center;gap:10px"><div style="width:32px;height:32px;border-radius:50%;background:linear-gradient(135deg,var(--blue),var(--blue-l));display:flex;align-items:center;justify-content:center;font-size:11px;font-weight:700;color:#fff">${initials(c.name)}</div><div><div style="font-size:13px;font-weight:600;color:var(--g800)">${c.name}</div><div style="font-size:11px;color:var(--g400)">${c.loc} · ${c.exp}</div></div></div></td><td style="padding:10px 12px;border-bottom:1px solid var(--g100);text-align:center"><span style="font-weight:700;color:var(--g800)">${c.score}</span></td><td style="padding:10px 12px;border-bottom:1px solid var(--g100);text-align:center;font-size:12px;color:var(--g500)">${c.eng}</td><td style="padding:10px 12px;border-bottom:1px solid var(--g100)"><span class="badge" style="${stStyle}">${c.status}</span></td><td style="padding:10px 12px;border-bottom:1px solid var(--g100);font-size:12px;color:var(--g500)">${c.employer||'—'}</td></tr>`;
+  }).join('');
+
+  const demandHtml=demandForRole.length?`<div style="margin-bottom:20px"><h4 style="font-size:14px;font-weight:600;color:var(--g700);margin-bottom:8px">Employers requesting ${t.role}s</h4>${demandForRole.map(d=>`<div style="display:flex;justify-content:space-between;align-items:center;padding:10px 14px;background:var(--g50);border-radius:8px;margin-bottom:6px"><span style="font-size:14px;font-weight:500;color:var(--g800)">${d.emp}</span><span class="badge" style="background:#FEF3C7;color:#92400E">${d.qty} needed</span></div>`).join('')}</div>`:'';
+
+  openDetail(t.icon+' '+t.role+' — '+t.count+' Candidates',`
+    <div style="display:flex;gap:12px;margin-bottom:20px;flex-wrap:wrap">
+      <div style="padding:12px 18px;background:#D1FAE5;border-radius:10px;text-align:center"><div style="font-size:22px;font-weight:800;color:#065F46;font-family:var(--heading)">${ready.length}</div><div style="font-size:11px;color:#065F46">Ready</div></div>
+      <div style="padding:12px 18px;background:#EFF6FF;border-radius:10px;text-align:center"><div style="font-size:22px;font-weight:800;color:#1E40AF;font-family:var(--heading)">${inProcess.length}</div><div style="font-size:11px;color:#1E40AF">In Process</div></div>
+      <div style="padding:12px 18px;background:#E0E7FF;border-radius:10px;text-align:center"><div style="font-size:22px;font-weight:800;color:#3730A3;font-family:var(--heading)">${deployed.length}</div><div style="font-size:11px;color:#3730A3">Deployed</div></div>
+      <div style="padding:12px 18px;background:#F1F5F9;border-radius:10px;text-align:center"><div style="font-size:22px;font-weight:800;color:#475569;font-family:var(--heading)">${screening.length}</div><div style="font-size:11px;color:#475569">Screening</div></div>
+    </div>
+    ${demandHtml}
+    <div style="max-height:400px;overflow-y:auto;border:1px solid var(--g200);border-radius:12px">
+      <table style="width:100%;border-collapse:collapse;font-size:13px">
+        <thead><tr style="position:sticky;top:0;background:var(--w)"><th style="padding:10px 12px;text-align:left;font-size:11px;border-bottom:2px solid var(--g200)">Candidate</th><th style="padding:10px 12px;text-align:center;font-size:11px;border-bottom:2px solid var(--g200)">Score</th><th style="padding:10px 12px;text-align:center;font-size:11px;border-bottom:2px solid var(--g200)">English</th><th style="padding:10px 12px;text-align:left;font-size:11px;border-bottom:2px solid var(--g200)">Status</th><th style="padding:10px 12px;text-align:left;font-size:11px;border-bottom:2px solid var(--g200)">Employer</th></tr></thead>
+        <tbody>${candTable}</tbody>
+      </table>
+    </div>`);
+}
+
+function showEmployerDemand(idx){
+  const e=employerDemand[idx];
+  const emp=employers.find(x=>x.company===e.emp);
+  let matchHtml='';
+  e.needs.forEach(n=>{
+    const pool=talentPool.find(t=>t.role===n.role);
+    const available=pool?pool.candidates.filter(c=>c.status==='Ready'):[];
+    matchHtml+=`<div style="margin-bottom:16px"><div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:8px"><span style="font-size:14px;font-weight:600;color:var(--g800)">${n.role} (${n.qty} needed)</span><span class="badge" style="background:${available.length>=n.qty?'#D1FAE5;color:#065F46':'#FEE2E2;color:#991B1B'}">${available.length} available</span></div>`;
+    if(available.length>0){
+      matchHtml+=`<div style="border:1px solid var(--g200);border-radius:10px;overflow:hidden">`;
+      available.slice(0,5).forEach(c=>{
+        matchHtml+=`<div style="display:flex;align-items:center;gap:10px;padding:10px 12px;border-bottom:1px solid var(--g100)"><div style="width:28px;height:28px;border-radius:50%;background:linear-gradient(135deg,var(--blue),var(--blue-l));display:flex;align-items:center;justify-content:center;font-size:10px;font-weight:700;color:#fff">${initials(c.name)}</div><div style="flex:1"><span style="font-size:13px;font-weight:500;color:var(--g800)">${c.name}</span><span style="font-size:12px;color:var(--g400);margin-left:8px">${c.loc} · ${c.exp} · ${c.eng}</span></div><span style="font-size:13px;font-weight:700;color:var(--blue)">${c.score}/100</span></div>`;
+      });
+      if(available.length>5)matchHtml+=`<div style="padding:8px 12px;font-size:12px;color:var(--g400);text-align:center">+ ${available.length-5} more candidates</div>`;
+      matchHtml+=`</div>`;
+    } else matchHtml+=`<div style="padding:12px;background:#FEE2E2;border-radius:8px;font-size:13px;color:#991B1B">No ready candidates — consider expanding sourcing</div>`;
+    matchHtml+=`</div>`;
+  });
+
+  openDetail('🏢 '+e.emp+' — Demand & Matching',`
+    <div style="display:flex;gap:12px;margin-bottom:20px">
+      <div style="padding:14px 20px;background:var(--g50);border-radius:10px;flex:1;text-align:center"><div style="font-size:24px;font-weight:800;color:var(--g800);font-family:var(--heading)">${e.total}</div><div style="font-size:12px;color:var(--g500)">Workers needed</div></div>
+      <div style="padding:14px 20px;background:#FEF3C7;border-radius:10px;flex:1;text-align:center"><div style="font-size:24px;font-weight:800;color:#92400E;font-family:var(--heading)">${e.urgent}</div><div style="font-size:12px;color:#92400E">Urgent</div></div>
+      <div style="padding:14px 20px;background:var(--g50);border-radius:10px;flex:1;text-align:center"><div style="font-size:24px;font-weight:800;color:var(--g800);font-family:var(--heading)">${e.needs.length}</div><div style="font-size:12px;color:var(--g500)">Roles</div></div>
+    </div>
+    ${emp?`<div style="padding:14px;background:var(--g50);border-radius:10px;margin-bottom:20px;display:flex;gap:16px;flex-wrap:wrap;font-size:13px;color:var(--g500)"><span><b style="color:var(--g800)">Contact:</b> ${emp.contact}</span><span><b style="color:var(--g800)">Email:</b> ${emp.email}</span><span><b style="color:var(--g800)">Phone:</b> ${emp.phone}</span><span><b style="color:var(--g800)">Location:</b> ${emp.location}</span></div>`:''}
+    <h4 style="font-size:15px;font-weight:600;color:var(--g800);margin-bottom:16px">Role-by-Role Matching</h4>
+    ${matchHtml}`);
+}
+
+function showDemandRole(role,emp){
+  const pool=talentPool.find(t=>t.role===role);
+  if(!pool)return;
+  const available=pool.candidates.filter(c=>c.status==='Ready');
+  const demand=employerDemand.find(e=>e.emp===emp);
+  const need=demand?demand.needs.find(n=>n.role===role):null;
+
+  const candList=available.map(c=>`<div style="display:flex;align-items:center;gap:12px;padding:12px 14px;border-bottom:1px solid var(--g100)"><div style="width:36px;height:36px;border-radius:50%;background:linear-gradient(135deg,var(--blue),var(--blue-l));display:flex;align-items:center;justify-content:center;font-size:12px;font-weight:700;color:#fff">${initials(c.name)}</div><div style="flex:1"><div style="font-size:14px;font-weight:600;color:var(--g800)">${c.name}</div><div style="font-size:12px;color:var(--g400)">${c.loc} · ${c.exp} · English ${c.eng}</div></div><div style="text-align:right"><div style="font-size:16px;font-weight:700;color:var(--blue);font-family:var(--heading)">${c.score}</div><div style="font-size:11px;color:var(--g400)">score</div></div></div>`).join('');
+
+  openDetail(`${pool.icon} ${role} for ${emp}`,`
+    <div style="display:flex;gap:12px;margin-bottom:20px">
+      <div style="padding:14px;background:#EFF6FF;border-radius:10px;flex:1;text-align:center"><div style="font-size:20px;font-weight:800;color:#1E40AF;font-family:var(--heading)">${need?need.qty:'?'}</div><div style="font-size:11px;color:#1E40AF">Needed</div></div>
+      <div style="padding:14px;background:#D1FAE5;border-radius:10px;flex:1;text-align:center"><div style="font-size:20px;font-weight:800;color:#065F46;font-family:var(--heading)">${available.length}</div><div style="font-size:11px;color:#065F46">Ready</div></div>
+      <div style="padding:14px;background:${available.length>=(need?need.qty:1)?'#D1FAE5':'#FEE2E2'};border-radius:10px;flex:1;text-align:center"><div style="font-size:14px;font-weight:700;color:${available.length>=(need?need.qty:1)?'#065F46':'#991B1B'}">${available.length>=(need?need.qty:1)?'Can fulfil ✓':'Gap ✗'}</div></div>
+    </div>
+    <h4 style="font-size:14px;font-weight:600;color:var(--g700);margin-bottom:12px">Ready Candidates (${available.length})</h4>
+    <div style="border:1px solid var(--g200);border-radius:12px;overflow:hidden;max-height:350px;overflow-y:auto">${candList||'<div style="padding:20px;text-align:center;color:var(--g400)">No ready candidates</div>'}</div>`);
 }
 
 // ═══ SAVE FEEDBACK (visual confirmation) ═══
