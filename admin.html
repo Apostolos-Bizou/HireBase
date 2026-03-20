@@ -669,6 +669,9 @@ function doLogin(){
   const email=document.getElementById('l-email').value,pass=document.getElementById('l-pass').value;
   const u=users.find(u=>u.email===email&&u.password===pass);
   if(!u){document.getElementById('login-err').style.display='block';document.getElementById('login-err').textContent='Invalid credentials.';return;}
+  activateUser(u);
+}
+function activateUser(u){
   currentUser=u;document.getElementById('login-page').style.display='none';document.getElementById('app').classList.add('show');
   document.getElementById('sb-role-text').textContent=u.role+' panel';
   document.getElementById('sb-avatar').textContent=u.avatar;
@@ -676,7 +679,25 @@ function doLogin(){
   document.getElementById('sb-uemail').textContent=u.email;
   goPage('dashboard');
 }
-function doLogout(){currentUser=null;document.getElementById('app').classList.remove('show');document.getElementById('login-page').style.display='flex';document.getElementById('login-err').style.display='none';}
+function doLogout(){currentUser=null;document.getElementById('app').classList.remove('show');document.getElementById('login-page').style.display='flex';document.getElementById('login-err').style.display='none';try{localStorage.removeItem('hirebase-autologin')}catch(e){}}
+
+// ═══ AUTO-LOGIN FROM WEBSITE ═══
+function tryAutoLogin(){
+  try{
+    var saved=localStorage.getItem('hirebase-autologin');
+    if(!saved)return;
+    var creds=JSON.parse(saved);
+    localStorage.removeItem('hirebase-autologin');
+    if(!creds||!creds.email)return;
+    var u=users.find(function(u){return u.email===creds.email&&u.password===creds.password});
+    if(u){activateUser(u)}
+  }catch(e){console.warn('[HireBase] Auto-login failed:',e)}
+}
+// Try auto-login after data loads (with retry for async fetch)
+(function checkAutoLogin(){
+  if(users.length>0){tryAutoLogin()}
+  else{setTimeout(checkAutoLogin,200)}
+})();
 
 // ═══ MODALS ═══
 function showModal(id){document.getElementById(id).classList.add('show')}
