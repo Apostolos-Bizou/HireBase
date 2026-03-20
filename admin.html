@@ -398,6 +398,31 @@ tr:last-child td{border-bottom:none}
       </div>
     </div>
 
+    <!-- KPIs & ANALYTICS -->
+    <div class="page" id="pg-kpis">
+      <h2 class="page-title">KPIs & Analytics</h2>
+      <div style="display:flex;gap:8px;margin-bottom:24px;flex-wrap:wrap">
+        <button class="btn btn-p kpi-tab active" onclick="switchKpiTab('overview',this)">Overview</button>
+        <button class="btn btn-g kpi-tab" onclick="switchKpiTab('pipeline',this)">Pipeline</button>
+        <button class="btn btn-g kpi-tab" onclick="switchKpiTab('time',this)">Time Performance</button>
+        <button class="btn btn-g kpi-tab" onclick="switchKpiTab('financial',this)">Financial</button>
+        <button class="btn btn-g kpi-tab" onclick="switchKpiTab('quality',this)">Quality & Retention</button>
+        <button class="btn btn-g kpi-tab" onclick="switchKpiTab('platform',this)">Platform</button>
+        <button class="btn btn-g kpi-tab" onclick="switchKpiTab('growth',this)">Growth</button>
+      </div>
+      <div id="kpi-content"></div>
+    </div>
+
+    <!-- REPORTS -->
+    <div class="page" id="pg-reports">
+      <h2 class="page-title">Reports & Export</h2>
+      <div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(280px,1fr));gap:16px;margin-bottom:24px" id="reports-grid"></div>
+      <div style="background:var(--w);border:1px solid var(--g200);border-radius:16px;padding:24px">
+        <h3 style="font-family:var(--heading);font-size:16px;font-weight:600;color:var(--g800);margin-bottom:16px">Recent Exports</h3>
+        <div id="recent-exports"></div>
+      </div>
+    </div>
+
   </div>
 </div>
 
@@ -454,14 +479,14 @@ const badge=s=>`<span class="badge" style="${sc[s]||'background:#E2E8F0;color:#4
 const initials=n=>n.split(' ').map(w=>w[0]).join('').slice(0,2);
 
 // ═══ NAV ═══
-const navMap={admin:[{id:'dashboard',icon:'📊',label:'Dashboard'},{id:'employers',icon:'🏢',label:'Employers'},{id:'candidates',icon:'👥',label:'Candidates'},{id:'applications',icon:'📋',label:'Applications'},{id:'compliance',icon:'⚖️',label:'Compliance'},{id:'documents',icon:'📁',label:'Documents'},{id:'messaging',icon:'💬',label:'Messages'},{id:'users',icon:'🔐',label:'Users'},{id:'settings',icon:'⚙️',label:'Settings'}],employer:[{id:'dashboard',icon:'📊',label:'Dashboard'},{id:'applications',icon:'📋',label:'My Requests'},{id:'candidates',icon:'👥',label:'Candidates'},{id:'documents',icon:'📁',label:'Documents'},{id:'messaging',icon:'💬',label:'Messages'}],worker:[{id:'dashboard',icon:'📊',label:'My Status'},{id:'applications',icon:'📋',label:'My Applications'},{id:'documents',icon:'📁',label:'My Docs'},{id:'messaging',icon:'💬',label:'Messages'}]};
+const navMap={admin:[{id:'dashboard',icon:'📊',label:'Dashboard'},{id:'employers',icon:'🏢',label:'Employers'},{id:'candidates',icon:'👥',label:'Candidates'},{id:'applications',icon:'📋',label:'Applications'},{id:'compliance',icon:'⚖️',label:'Compliance'},{id:'documents',icon:'📁',label:'Documents'},{id:'kpis',icon:'📈',label:'KPIs & Analytics'},{id:'messaging',icon:'💬',label:'Messages'},{id:'reports',icon:'📊',label:'Reports'},{id:'users',icon:'🔐',label:'Users'},{id:'settings',icon:'⚙️',label:'Settings'}],employer:[{id:'dashboard',icon:'📊',label:'Dashboard'},{id:'applications',icon:'📋',label:'My Requests'},{id:'candidates',icon:'👥',label:'Candidates'},{id:'documents',icon:'📁',label:'Documents'},{id:'kpis',icon:'📈',label:'Analytics'},{id:'messaging',icon:'💬',label:'Messages'}],worker:[{id:'dashboard',icon:'📊',label:'My Status'},{id:'applications',icon:'📋',label:'My Applications'},{id:'documents',icon:'📁',label:'My Docs'},{id:'messaging',icon:'💬',label:'Messages'}]};
 let currentUser=null,currentPage='dashboard';
 
 function buildNav(){
   const items=navMap[currentUser.role]||navMap.admin;
   document.getElementById('sb-nav').innerHTML=items.map(i=>`<button class="sb-item${currentPage===i.id?' active':''}" onclick="goPage('${i.id}')"><span>${i.icon}</span><span>${i.label}</span></button>`).join('');
 }
-function goPage(id){currentPage=id;buildNav();document.querySelectorAll('.page').forEach(p=>p.classList.remove('active'));const pg=document.getElementById('pg-'+id);if(pg)pg.classList.add('active');if(id==='employers')renderEmployers();if(id==='candidates')renderCandidates();if(id==='applications')renderApplications();if(id==='users')renderUsers();if(id==='dashboard')renderDashboardPanels();if(id==='compliance')renderCompliance();if(id==='documents')renderDocuments();if(id==='messaging')renderMessaging();if(id==='settings')renderSettings();}
+function goPage(id){currentPage=id;buildNav();document.querySelectorAll('.page').forEach(p=>p.classList.remove('active'));const pg=document.getElementById('pg-'+id);if(pg)pg.classList.add('active');if(id==='employers')renderEmployers();if(id==='candidates')renderCandidates();if(id==='applications')renderApplications();if(id==='users')renderUsers();if(id==='dashboard')renderDashboardPanels();if(id==='compliance')renderCompliance();if(id==='documents')renderDocuments();if(id==='messaging')renderMessaging();if(id==='settings')renderSettings();if(id==='kpis')renderKPIs();if(id==='reports')renderReports();}
 
 // ═══ AUTH ═══
 function doLogin(){
@@ -781,6 +806,171 @@ function renderSettings(){
     {label:"Message notifications",desc:"Email on new platform messages",checked:false}
   ];
   document.getElementById('notif-settings').innerHTML=notifs.map((n,i)=>`<div style="display:flex;justify-content:space-between;align-items:center;padding:12px;background:var(--g50);border-radius:10px;margin-bottom:8px"><div><div style="font-size:14px;font-weight:500;color:var(--g800)">${n.label}</div><div style="font-size:12px;color:var(--g500)">${n.desc}</div></div><input type="checkbox" ${n.checked?'checked':''} style="width:18px;height:18px;accent-color:var(--blue)"></div>`).join('');
+}
+
+// ═══ KPIs & ANALYTICS (69 KPIs) ═══
+const kpiData={
+  pipeline:{title:"Recruitment Pipeline",code:"RP",color:"var(--blue)",kpis:[
+    {id:"RP-01",name:"Staffing Requests Received",target:">20/mo by Y2",current:"12/mo",status:"On Track",pct:60},
+    {id:"RP-02",name:"Requests Conversion Rate",target:">60%",current:"68%",status:"Above",pct:68},
+    {id:"RP-03",name:"Candidates Sourced per Request",target:"8-15",current:"11",status:"On Track",pct:73},
+    {id:"RP-04",name:"Shortlist Acceptance Rate",target:">50%",current:"55%",status:"Above",pct:55},
+    {id:"RP-05",name:"Interview-to-Offer Ratio",target:">40%",current:"45%",status:"Above",pct:45},
+    {id:"RP-06",name:"Offer Acceptance Rate",target:">85%",current:"88%",status:"Above",pct:88},
+    {id:"RP-07",name:"Pipeline Fill Rate",target:">75%",current:"72%",status:"Near",pct:72},
+    {id:"RP-08",name:"Average Pipeline Depth",target:">3:1",current:"3.5:1",status:"Above",pct:78},
+    {id:"RP-09",name:"Request Abandonment Rate",target:"<20%",current:"15%",status:"Above",pct:85},
+    {id:"RP-10",name:"Repeat Request Rate",target:">40% by Y2",current:"33%",status:"Building",pct:33}
+  ]},
+  time:{title:"Time Performance",code:"TP",color:"var(--amber)",kpis:[
+    {id:"TP-01",name:"Time-to-First-Shortlist",target:"<7 days",current:"5.2 days",status:"Above",pct:85},
+    {id:"TP-02",name:"Time-to-Interview",target:"<10 days",current:"8 days",status:"Above",pct:80},
+    {id:"TP-03",name:"Time-to-Offer",target:"<30 days",current:"24 days",status:"Above",pct:80},
+    {id:"TP-04",name:"Time-to-Deployment",target:"<90 days",current:"72 days",status:"Above",pct:80},
+    {id:"TP-05",name:"Total Time-to-Hire",target:"<120 days",current:"96 days",status:"Above",pct:80},
+    {id:"TP-06",name:"Document Processing (PH)",target:"<30 days",current:"22 days",status:"Above",pct:73},
+    {id:"TP-07",name:"Visa Processing (GR)",target:"<45 days",current:"38 days",status:"Above",pct:84},
+    {id:"TP-08",name:"Registration Time",target:"<14 days",current:"10 days",status:"Above",pct:71},
+    {id:"TP-09",name:"Response to Inquiries",target:"<4 hours",current:"2.5 hrs",status:"Above",pct:63},
+    {id:"TP-10",name:"Platform Uptime",target:">99.5%",current:"99.8%",status:"Above",pct:99}
+  ]},
+  compliance:{title:"Compliance & Documentation",code:"CD",color:"var(--green)",kpis:[
+    {id:"CD-01",name:"Document Completeness Rate",target:"100%",current:"100%",status:"Met",pct:100},
+    {id:"CD-02",name:"First-Submission Approval (DMW)",target:">80%",current:"85%",status:"Above",pct:85},
+    {id:"CD-03",name:"First-Submission Visa Approval",target:">85%",current:"90%",status:"Above",pct:90},
+    {id:"CD-04",name:"Contract Compliance Rate",target:">90%",current:"95%",status:"Above",pct:95},
+    {id:"CD-05",name:"OEC Issuance Success Rate",target:">95%",current:"98%",status:"Above",pct:98},
+    {id:"CD-06",name:"Medical Clearance Pass Rate",target:">90%",current:"92%",status:"Above",pct:92},
+    {id:"CD-07",name:"Regulatory Incidents",target:"0",current:"0",status:"Met",pct:100},
+    {id:"CD-08",name:"Audit Readiness Score",target:">95%",current:"97%",status:"Above",pct:97},
+    {id:"CD-09",name:"Doc Expiry Alert Compliance",target:"100%",current:"100%",status:"Met",pct:100},
+    {id:"CD-10",name:"PDOS Completion Rate",target:"100%",current:"100%",status:"Met",pct:100}
+  ]},
+  financial:{title:"Financial & Revenue",code:"FR",color:"var(--purple)",kpis:[
+    {id:"FR-01",name:"Revenue per Placement",target:">€4,000",current:"€4,350",status:"Above",pct:87},
+    {id:"FR-02",name:"Cost per Placement",target:"<€2,000",current:"€1,680",status:"Above",pct:84},
+    {id:"FR-03",name:"Gross Margin per Placement",target:">50%",current:"61%",status:"Above",pct:61},
+    {id:"FR-04",name:"Monthly Recurring Revenue",target:"+10% MoM",current:"+12%",status:"Above",pct:72},
+    {id:"FR-05",name:"Customer Lifetime Value",target:">€20,000",current:"€22,500",status:"Above",pct:75},
+    {id:"FR-06",name:"Customer Acquisition Cost",target:"<€2,000",current:"€1,450",status:"Above",pct:73},
+    {id:"FR-07",name:"CLV:CAC Ratio",target:">5:1",current:"15.5:1",status:"Above",pct:100},
+    {id:"FR-08",name:"Revenue Concentration Risk",target:"<40%",current:"35%",status:"Above",pct:88},
+    {id:"FR-09",name:"Invoice Collection Period",target:"<30 days",current:"22 days",status:"Above",pct:73},
+    {id:"FR-10",name:"Add-On Attachment Rate",target:">50%",current:"48%",status:"Near",pct:48}
+  ]},
+  quality:{title:"Quality & Retention",code:"CQ",color:"var(--red)",kpis:[
+    {id:"CQ-01",name:"Candidate Verification Score",target:">85/100",current:"89",status:"Above",pct:89},
+    {id:"CQ-02",name:"Employer Satisfaction (CSAT)",target:">4.2/5",current:"4.5",status:"Above",pct:90},
+    {id:"CQ-03",name:"Worker Satisfaction",target:">4.0/5",current:"4.3",status:"Above",pct:86},
+    {id:"CQ-04",name:"90-Day Retention Rate",target:">90%",current:"92%",status:"Above",pct:92},
+    {id:"CQ-05",name:"180-Day Retention Rate",target:">80%",current:"85%",status:"Above",pct:85},
+    {id:"CQ-06",name:"12-Month Retention Rate",target:">70%",current:"N/A",status:"Pending",pct:0},
+    {id:"CQ-07",name:"Replacement Trigger Rate",target:"<10%",current:"8%",status:"Above",pct:92},
+    {id:"CQ-08",name:"Worker Performance Rating",target:">4.0/5",current:"4.2",status:"Above",pct:84},
+    {id:"CQ-09",name:"Cultural Adaptation Score",target:">3.5/5",current:"3.8",status:"Above",pct:76},
+    {id:"CQ-10",name:"Contract Completion Rate",target:">75%",current:"N/A",status:"Pending",pct:0}
+  ]},
+  platform:{title:"Platform & Operations",code:"PO",color:"var(--blue-l)",kpis:[
+    {id:"PO-01",name:"Active Employer Accounts",target:">50 by Y2",current:"5",status:"Building",pct:10},
+    {id:"PO-02",name:"Employer Login Frequency",target:">4x/mo",current:"6x",status:"Above",pct:100},
+    {id:"PO-03",name:"Talent Pool Size (Active)",target:">500 by Y2",current:"86",status:"Building",pct:17},
+    {id:"PO-04",name:"Profile Completeness",target:">90%",current:"88%",status:"Near",pct:88},
+    {id:"PO-05",name:"Request-to-Match Speed",target:"<24 hrs",current:"18 hrs",status:"Above",pct:75},
+    {id:"PO-06",name:"Dashboard Feature Adoption",target:">60%",current:"55%",status:"Near",pct:55},
+    {id:"PO-07",name:"Support Ticket Resolution",target:"<24 hrs",current:"16 hrs",status:"Above",pct:67},
+    {id:"PO-08",name:"Net Promoter Score (NPS)",target:">40",current:"45",status:"Above",pct:75},
+    {id:"PO-09",name:"Data Accuracy Rate",target:">98%",current:"99.1%",status:"Above",pct:99}
+  ]},
+  growth:{title:"Market & Growth",code:"MG",color:"var(--green)",kpis:[
+    {id:"MG-01",name:"Market Share (PH-GR)",target:">5% by Y3",current:"~1%",status:"Building",pct:20},
+    {id:"MG-02",name:"Website Conversion Rate",target:">3%",current:"3.8%",status:"Above",pct:76},
+    {id:"MG-03",name:"Sector Diversification",target:">5 sectors",current:"6",status:"Above",pct:100},
+    {id:"MG-04",name:"Geographic Coverage (GR)",target:">5 regions",current:"3",status:"Building",pct:60},
+    {id:"MG-05",name:"Brand Awareness",target:">20% by Y2",current:"8%",status:"Building",pct:40},
+    {id:"MG-06",name:"Content Engagement",target:">2.5%",current:"3.1%",status:"Above",pct:82},
+    {id:"MG-07",name:"Referral Rate",target:">25%",current:"30%",status:"Above",pct:75},
+    {id:"MG-08",name:"Media Mentions",target:">3/quarter",current:"2",status:"Near",pct:67},
+    {id:"MG-09",name:"Partnership Pipeline",target:">5 active",current:"4",status:"Near",pct:80}
+  ]}
+};
+let currentKpiTab='overview';
+function switchKpiTab(tab,btn){
+  currentKpiTab=tab;
+  document.querySelectorAll('.kpi-tab').forEach(b=>{b.classList.remove('active','btn-p');b.classList.add('btn-g')});
+  btn.classList.add('active','btn-p');btn.classList.remove('btn-g');
+  renderKPIs();
+}
+function renderKPIs(){
+  const c=document.getElementById('kpi-content');
+  if(currentKpiTab==='overview'){
+    const cats=Object.values(kpiData);
+    const totalKpis=cats.reduce((s,cat)=>s+cat.kpis.length,0);
+    const above=cats.reduce((s,cat)=>s+cat.kpis.filter(k=>k.status==='Above'||k.status==='Met').length,0);
+    const near=cats.reduce((s,cat)=>s+cat.kpis.filter(k=>k.status==='Near').length,0);
+    const building=cats.reduce((s,cat)=>s+cat.kpis.filter(k=>k.status==='Building'||k.status==='Pending').length,0);
+    c.innerHTML=`<div class="stats-row" style="margin-bottom:24px"><div class="stat-card"><div class="stat-top"><span class="stat-label">Total KPIs</span><span class="stat-icon" style="background:rgba(37,99,235,.1)">📈</span></div><div class="stat-val">${totalKpis}</div><div style="font-size:12px;color:var(--g500);margin-top:4px">across 7 categories</div></div><div class="stat-card"><div class="stat-top"><span class="stat-label">Meeting/Exceeding Target</span><span class="stat-icon" style="background:rgba(16,185,129,.1)">✅</span></div><div class="stat-val" style="color:var(--green)">${above}</div><div class="stat-change" style="color:var(--green)">${Math.round(above/totalKpis*100)}% of all KPIs</div></div><div class="stat-card"><div class="stat-top"><span class="stat-label">Near Target</span><span class="stat-icon" style="background:rgba(245,158,11,.1)">⚠️</span></div><div class="stat-val" style="color:var(--amber)">${near}</div></div><div class="stat-card"><div class="stat-top"><span class="stat-label">Building / Pending</span><span class="stat-icon" style="background:rgba(124,58,237,.1)">🔄</span></div><div class="stat-val" style="color:var(--purple)">${building}</div></div></div>`+
+    cats.map(cat=>`<div style="background:var(--w);border:1px solid var(--g200);border-radius:16px;padding:20px;margin-bottom:16px"><div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:12px;cursor:pointer" onclick="this.nextElementSibling.style.display=this.nextElementSibling.style.display==='none'?'block':'none'"><div><span style="font-family:var(--heading);font-size:16px;font-weight:600;color:var(--g800)">${cat.title}</span><span style="font-size:13px;color:var(--g400);margin-left:8px">(${cat.kpis.length} KPIs)</span></div><div style="display:flex;gap:6px"><span class="badge" style="background:#D1FAE5;color:#065F46">${cat.kpis.filter(k=>k.status==='Above'||k.status==='Met').length} ✓</span><span class="badge" style="background:#FEF3C7;color:#92400E">${cat.kpis.filter(k=>k.status==='Near').length} ⚠</span></div></div><div style="display:none">${renderKpiTable(cat.kpis,cat.color)}</div></div>`).join('');
+  } else {
+    const cat=kpiData[currentKpiTab];
+    if(!cat){c.innerHTML='<p>Category not found.</p>';return;}
+    c.innerHTML=`<div style="background:var(--w);border:1px solid var(--g200);border-radius:16px;padding:24px"><h3 style="font-family:var(--heading);font-size:18px;font-weight:700;color:var(--g800);margin-bottom:4px">${cat.title}</h3><p style="font-size:13px;color:var(--g400);margin-bottom:20px">${cat.kpis.length} KPIs tracked · Code: ${cat.code}</p>${renderKpiTable(cat.kpis,cat.color)}</div>`;
+  }
+}
+function renderKpiTable(kpis,color){
+  const stColors={"Above":"background:#D1FAE5;color:#065F46","Met":"background:#D1FAE5;color:#065F46","Near":"background:#FEF3C7;color:#92400E","On Track":"background:#EFF6FF;color:#1E40AF","Building":"background:#E0E7FF;color:#3730A3","Pending":"background:#F1F5F9;color:#475569"};
+  return kpis.map(k=>`<div style="display:flex;align-items:center;gap:12px;padding:12px 0;border-bottom:1px solid var(--g100)"><span style="font-family:monospace;font-size:12px;color:var(--g400);min-width:48px">${k.id}</span><div style="flex:1;min-width:0"><div style="font-size:14px;font-weight:500;color:var(--g800)">${k.name}</div><div style="height:4px;background:var(--g100);border-radius:2px;margin-top:6px;overflow:hidden"><div style="height:100%;width:${k.pct}%;background:${color};border-radius:2px"></div></div></div><div style="text-align:right;min-width:80px"><div style="font-size:13px;font-weight:600;color:var(--g800)">${k.current}</div><div style="font-size:11px;color:var(--g400)">Target: ${k.target}</div></div><span class="badge" style="${stColors[k.status]||''};min-width:70px;text-align:center">${k.status}</span></div>`).join('');
+}
+
+// ═══ REPORTS ═══
+function renderReports(){
+  const reports=[
+    {title:"Monthly Placement Report",desc:"Placements, revenue, compliance status for the month",icon:"📋",type:"PDF",auto:true},
+    {title:"Employer Activity Report",desc:"Per-employer hiring activity, requests, and spend",icon:"🏢",type:"PDF",auto:false},
+    {title:"Candidate Pipeline Report",desc:"Current pipeline status across all stages",icon:"👥",type:"Excel",auto:false},
+    {title:"Compliance Audit Report",desc:"Document completeness, regulatory status, expiries",icon:"⚖️",type:"PDF",auto:true},
+    {title:"Financial Summary",desc:"Revenue breakdown, costs, margins, projections",icon:"💰",type:"Excel",auto:false},
+    {title:"KPI Scorecard",desc:"All 69 KPIs with current vs target performance",icon:"📈",type:"PDF",auto:true},
+    {title:"Worker Retention Report",desc:"90/180/365-day retention rates and trends",icon:"📊",type:"PDF",auto:false},
+    {title:"Supply vs Demand Analysis",desc:"Talent availability vs employer demand by category",icon:"⚡",type:"Excel",auto:false}
+  ];
+  document.getElementById('reports-grid').innerHTML=reports.map(r=>`<div style="background:var(--w);border:1px solid var(--g200);border-radius:16px;padding:24px;cursor:pointer;transition:all .2s" onmouseover="this.style.borderColor='rgba(37,99,235,.2)'" onmouseout="this.style.borderColor='var(--g200)'"><div style="display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:12px"><span style="font-size:28px">${r.icon}</span><span class="badge" style="background:${r.type==='PDF'?'#FEE2E2':'#D1FAE5'};color:${r.type==='PDF'?'#991B1B':'#065F46'}">${r.type}</span></div><div style="font-size:15px;font-weight:600;color:var(--g800);margin-bottom:4px">${r.title}</div><div style="font-size:13px;color:var(--g500);margin-bottom:16px;line-height:1.5">${r.desc}</div><div style="display:flex;gap:8px"><button class="btn btn-p" style="font-size:12px;padding:8px 16px" onclick="alert('Demo: Generating ${r.title}...')">Generate</button>${r.auto?'<span style="font-size:11px;color:var(--g400);display:flex;align-items:center">Auto-scheduled</span>':''}</div></div>`).join('');
+
+  document.getElementById('recent-exports').innerHTML=[
+    {name:"KPI Scorecard — March 2026",date:"Mar 18, 2026",type:"PDF",size:"245 KB"},
+    {name:"Monthly Placement Report — Feb 2026",date:"Mar 1, 2026",type:"PDF",size:"180 KB"},
+    {name:"Compliance Audit — Q1 2026",date:"Feb 28, 2026",type:"PDF",size:"320 KB"},
+    {name:"Candidate Pipeline — Feb 2026",date:"Feb 25, 2026",type:"Excel",size:"95 KB"},
+    {name:"Financial Summary — Jan 2026",date:"Feb 1, 2026",type:"Excel",size:"120 KB"}
+  ].map(e=>`<div style="display:flex;align-items:center;gap:12px;padding:12px 0;border-bottom:1px solid var(--g100)"><span style="font-size:18px">${e.type==='PDF'?'📄':'📊'}</span><div style="flex:1"><div style="font-size:14px;font-weight:500;color:var(--g800)">${e.name}</div><div style="font-size:12px;color:var(--g400)">${e.date} · ${e.size}</div></div><button class="btn btn-g" style="font-size:12px;padding:6px 14px" onclick="alert('Demo: Downloading ${e.name}')">📥 Download</button></div>`).join('');
+}
+
+// ═══ ROLE-AWARE DASHBOARD ═══
+const origRenderDashboard=renderDashboardPanels;
+renderDashboardPanels=function(){
+  if(!currentUser)return;
+  if(currentUser.role==='employer'){
+    renderEmployerDashboard();
+  } else if(currentUser.role==='worker'){
+    renderWorkerDashboard();
+  } else {
+    origRenderDashboard();
+  }
+};
+function renderEmployerDashboard(){
+  const pg=document.getElementById('pg-dashboard');
+  const emp=employers.find(e=>e.email===currentUser.email)||employers[0];
+  const myApps=applications.filter(a=>a.emp.includes(emp.company.split(' ')[0]));
+  const deployed=myApps.filter(a=>a.stage==='Deployed').length;
+  pg.querySelector('.page-title').textContent='Employer Dashboard';
+  const statsRow=pg.querySelector('.stats-row');
+  if(statsRow)statsRow.innerHTML=`<div class="stat-card"><div class="stat-top"><span class="stat-label">Active Requests</span><span class="stat-icon" style="background:rgba(37,99,235,.1)">📋</span></div><div class="stat-val">${myApps.length}</div></div><div class="stat-card"><div class="stat-top"><span class="stat-label">Workers Deployed</span><span class="stat-icon" style="background:rgba(16,185,129,.1)">✈️</span></div><div class="stat-val">${deployed}</div></div><div class="stat-card"><div class="stat-top"><span class="stat-label">Workers Needed</span><span class="stat-icon" style="background:rgba(245,158,11,.1)">👥</span></div><div class="stat-val">${emp.workers}</div></div><div class="stat-card"><div class="stat-top"><span class="stat-label">Compliance</span><span class="stat-icon" style="background:rgba(16,185,129,.1)">✅</span></div><div class="stat-val" style="color:var(--green)">100%</div></div>`;
+}
+function renderWorkerDashboard(){
+  const pg=document.getElementById('pg-dashboard');
+  const myApp=applications.find(a=>a.cand===currentUser.name)||applications[0];
+  pg.querySelector('.page-title').textContent='My Status';
+  const statsRow=pg.querySelector('.stats-row');
+  if(statsRow)statsRow.innerHTML=`<div class="stat-card"><div class="stat-top"><span class="stat-label">Application</span><span class="stat-icon" style="background:rgba(37,99,235,.1)">📋</span></div><div class="stat-val" style="font-size:18px">${myApp.id}</div></div><div class="stat-card"><div class="stat-top"><span class="stat-label">Employer</span><span class="stat-icon" style="background:rgba(16,185,129,.1)">🏢</span></div><div class="stat-val" style="font-size:16px">${myApp.emp}</div></div><div class="stat-card"><div class="stat-top"><span class="stat-label">Stage</span><span class="stat-icon" style="background:rgba(245,158,11,.1)">📍</span></div><div class="stat-val" style="font-size:18px">${myApp.stage}</div></div><div class="stat-card"><div class="stat-top"><span class="stat-label">Progress</span><span class="stat-icon" style="background:rgba(37,99,235,.1)">📊</span></div><div class="stat-val" style="color:${myApp.progress===100?'var(--green)':'var(--blue)'}">${myApp.progress}%</div></div>`;
 }
 
 // ═══ INIT ═══
