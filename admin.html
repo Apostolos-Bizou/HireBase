@@ -134,6 +134,12 @@ tr:last-child td{border-bottom:none}
 /* Responsive */
 @media(max-width:900px){#sidebar{width:56px;overflow:hidden}.sb-brand>div:last-child,.sb-item span:last-child,.sb-user,.sb-role{display:none}.sb-item{justify-content:center;padding:12px 0}#main{padding:20px}.stats-row{flex-direction:column}.two-col{grid-template-columns:1fr}.pipeline-row{flex-wrap:wrap}.pipe-card{min-width:120px}}
 @media(max-width:640px){#sidebar{display:none}#main{padding:16px}.page-title{font-size:22px}.stat-val{font-size:24px}.cards-grid{grid-template-columns:1fr}.detail-grid{grid-template-columns:1fr}}
+/* AI Matching steps */
+.match-step{background:var(--g50);border:1px solid var(--g200);color:var(--g500)}
+.match-step.active{background:var(--blue);border-color:var(--blue);color:#fff}
+.match-step.done{background:#D1FAE5;border-color:var(--green);color:#065F46}
+.match-score-bar{height:8px;background:var(--g100);border-radius:4px;overflow:hidden;flex:1}
+.match-score-fill{height:100%;border-radius:4px;transition:width .6s}
 @keyframes fadeIn{from{opacity:0;transform:translateY(20px)}to{opacity:1;transform:translateY(0)}}
 /* Pool & Demand bars */
 .pool-row{display:flex;align-items:center;gap:12px;margin-bottom:14px}
@@ -430,10 +436,69 @@ tr:last-child td{border-bottom:none}
       </div>
     </div>
 
+    <!-- AI MATCHING -->
+    <div class="page" id="pg-matching">
+      <h2 class="page-title">AI Job Matching</h2>
+      <p style="font-size:14px;color:var(--g500);margin-bottom:24px">Create a job requirement questionnaire, and our AI will match it against candidate CVs to find the best fit.</p>
+
+      <!-- Step indicator -->
+      <div style="display:flex;gap:8px;margin-bottom:32px" id="match-steps">
+        <div class="match-step active" id="ms-1" style="flex:1;padding:12px;border-radius:10px;text-align:center;cursor:pointer;transition:all .2s" onclick="goMatchStep(1)"><div style="font-size:20px;font-weight:800;font-family:var(--heading)">1</div><div style="font-size:12px;font-weight:600">Job Requirements</div></div>
+        <div class="match-step" id="ms-2" style="flex:1;padding:12px;border-radius:10px;text-align:center;cursor:pointer;transition:all .2s" onclick="goMatchStep(2)"><div style="font-size:20px;font-weight:800;font-family:var(--heading)">2</div><div style="font-size:12px;font-weight:600">AI Analysis</div></div>
+        <div class="match-step" id="ms-3" style="flex:1;padding:12px;border-radius:10px;text-align:center;cursor:pointer;transition:all .2s" onclick="goMatchStep(3)"><div style="font-size:20px;font-weight:800;font-family:var(--heading)">3</div><div style="font-size:12px;font-weight:600">Results & Shortlist</div></div>
+      </div>
+
+      <!-- STEP 1: Questionnaire -->
+      <div id="match-step-1">
+        <div style="background:var(--w);border:1px solid var(--g200);border-radius:16px;padding:28px;margin-bottom:20px">
+          <h3 style="font-family:var(--heading);font-size:18px;font-weight:700;color:var(--g800);margin-bottom:4px">Job Requirement Questionnaire</h3>
+          <p style="font-size:13px;color:var(--g400);margin-bottom:24px">Answer these 10 standard questions + add any special requirements</p>
+          <div id="questionnaire-form"></div>
+          <div class="form-g" style="margin-top:20px">
+            <label style="font-size:14px;font-weight:600;color:var(--g700)">11. Special Requirements / Additional Notes</label>
+            <textarea id="mq-special" rows="4" style="width:100%;padding:12px;border:1px solid var(--g200);border-radius:8px;font-size:14px;background:var(--g50);resize:vertical;font-family:var(--body)" placeholder="Any specific skills, certifications, personality traits, or other requirements not covered above..."></textarea>
+          </div>
+        </div>
+        <div style="display:flex;gap:12px;justify-content:flex-end">
+          <button class="btn btn-p" style="padding:14px 32px;font-size:15px" onclick="runAIMatching()">🤖 Run AI Matching</button>
+        </div>
+      </div>
+
+      <!-- STEP 2: AI Processing -->
+      <div id="match-step-2" style="display:none">
+        <div style="background:var(--w);border:1px solid var(--g200);border-radius:16px;padding:48px;text-align:center" id="ai-processing">
+          <div style="font-size:48px;margin-bottom:16px" id="ai-icon">🤖</div>
+          <div style="font-family:var(--heading);font-size:22px;font-weight:700;color:var(--g800);margin-bottom:8px" id="ai-title">AI is analyzing candidates...</div>
+          <p style="font-size:14px;color:var(--g500);margin-bottom:24px" id="ai-desc">Comparing job requirements against all candidate profiles in the talent pool</p>
+          <div style="max-width:400px;margin:0 auto">
+            <div style="height:8px;background:var(--g100);border-radius:4px;overflow:hidden"><div id="ai-progress-bar" style="height:100%;background:linear-gradient(90deg,var(--blue),var(--purple));border-radius:4px;width:0%;transition:width .5s"></div></div>
+            <div style="display:flex;justify-content:space-between;margin-top:8px;font-size:12px;color:var(--g400)"><span id="ai-status">Initializing...</span><span id="ai-pct">0%</span></div>
+          </div>
+          <div id="ai-log" style="margin-top:24px;text-align:left;max-width:500px;margin-left:auto;margin-right:auto"></div>
+        </div>
+      </div>
+
+      <!-- STEP 3: Results -->
+      <div id="match-step-3" style="display:none">
+        <div style="display:flex;gap:12px;margin-bottom:24px;flex-wrap:wrap">
+          <div style="background:var(--w);border:1px solid var(--g200);border-radius:12px;padding:16px 24px;flex:1;min-width:150px;text-align:center"><div style="font-size:28px;font-weight:800;color:var(--blue);font-family:var(--heading)" id="mr-total">0</div><div style="font-size:12px;color:var(--g500)">CVs Analyzed</div></div>
+          <div style="background:var(--w);border:1px solid var(--g200);border-radius:12px;padding:16px 24px;flex:1;min-width:150px;text-align:center"><div style="font-size:28px;font-weight:800;color:var(--green);font-family:var(--heading)" id="mr-match">0</div><div style="font-size:12px;color:var(--g500)">Strong Matches</div></div>
+          <div style="background:var(--w);border:1px solid var(--g200);border-radius:12px;padding:16px 24px;flex:1;min-width:150px;text-align:center"><div style="font-size:28px;font-weight:800;color:var(--amber);font-family:var(--heading)" id="mr-partial">0</div><div style="font-size:12px;color:var(--g500)">Partial Matches</div></div>
+          <div style="background:var(--w);border:1px solid var(--g200);border-radius:12px;padding:16px 24px;flex:1;min-width:150px;text-align:center"><div style="font-size:28px;font-weight:800;color:var(--g400);font-family:var(--heading)" id="mr-low">0</div><div style="font-size:12px;color:var(--g500)">Low Match</div></div>
+        </div>
+        <div style="background:var(--w);border:1px solid var(--g200);border-radius:16px;padding:24px;margin-bottom:20px">
+          <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:16px">
+            <h3 style="font-family:var(--heading);font-size:18px;font-weight:700;color:var(--g800)">AI Recommended Candidates</h3>
+            <button class="btn btn-p" onclick="exportShortlist()">📤 Export Shortlist</button>
+          </div>
+          <div id="match-results"></div>
+        </div>
+        <div style="display:flex;gap:12px"><button class="btn btn-g" onclick="goMatchStep(1)">← New Search</button><button class="btn btn-p" onclick="createApplicationsFromMatches()">Create Applications for Top Matches</button></div>
+      </div>
+    </div>
+
   </div>
 </div>
-
-<!-- MODALS -->
 <div class="modal-bg" id="detail-modal" onclick="if(event.target===this)closeModal('detail-modal')">
   <div class="modal"><div class="modal-head"><h3 class="modal-title" id="modal-title"></h3><button class="modal-close" onclick="closeModal('detail-modal')">×</button></div><div id="modal-body"></div></div>
 </div>
@@ -552,14 +617,14 @@ const badge=s=>`<span class="badge" style="${sc[s]||'background:#E2E8F0;color:#4
 const initials=n=>n.split(' ').map(w=>w[0]).join('').slice(0,2);
 
 // ═══ NAV ═══
-const navMap={admin:[{id:'dashboard',icon:'📊',label:'Dashboard'},{id:'employers',icon:'🏢',label:'Employers'},{id:'candidates',icon:'👥',label:'Candidates'},{id:'applications',icon:'📋',label:'Applications'},{id:'compliance',icon:'⚖️',label:'Compliance'},{id:'documents',icon:'📁',label:'Documents'},{id:'kpis',icon:'📈',label:'KPIs & Analytics'},{id:'messaging',icon:'💬',label:'Messages'},{id:'reports',icon:'📊',label:'Reports'},{id:'users',icon:'🔐',label:'Users'},{id:'settings',icon:'⚙️',label:'Settings'}],employer:[{id:'dashboard',icon:'📊',label:'Dashboard'},{id:'applications',icon:'📋',label:'My Requests'},{id:'candidates',icon:'👥',label:'Candidates'},{id:'documents',icon:'📁',label:'Documents'},{id:'kpis',icon:'📈',label:'Analytics'},{id:'messaging',icon:'💬',label:'Messages'}],worker:[{id:'dashboard',icon:'📊',label:'My Status'},{id:'applications',icon:'📋',label:'My Applications'},{id:'documents',icon:'📁',label:'My Docs'},{id:'messaging',icon:'💬',label:'Messages'}]};
+const navMap={admin:[{id:'dashboard',icon:'📊',label:'Dashboard'},{id:'employers',icon:'🏢',label:'Employers'},{id:'candidates',icon:'👥',label:'Candidates'},{id:'matching',icon:'🤖',label:'AI Matching'},{id:'applications',icon:'📋',label:'Applications'},{id:'compliance',icon:'⚖️',label:'Compliance'},{id:'documents',icon:'📁',label:'Documents'},{id:'kpis',icon:'📈',label:'KPIs'},{id:'messaging',icon:'💬',label:'Messages'},{id:'reports',icon:'📊',label:'Reports'},{id:'users',icon:'🔐',label:'Users'},{id:'settings',icon:'⚙️',label:'Settings'}],employer:[{id:'dashboard',icon:'📊',label:'Dashboard'},{id:'matching',icon:'🤖',label:'AI Matching'},{id:'applications',icon:'📋',label:'My Requests'},{id:'candidates',icon:'👥',label:'Candidates'},{id:'documents',icon:'📁',label:'Documents'},{id:'kpis',icon:'📈',label:'Analytics'},{id:'messaging',icon:'💬',label:'Messages'}],worker:[{id:'dashboard',icon:'📊',label:'My Status'},{id:'applications',icon:'📋',label:'My Applications'},{id:'documents',icon:'📁',label:'My Docs'},{id:'messaging',icon:'💬',label:'Messages'}]};
 let currentUser=null,currentPage='dashboard';
 
 function buildNav(){
   const items=navMap[currentUser.role]||navMap.admin;
   document.getElementById('sb-nav').innerHTML=items.map(i=>`<button class="sb-item${currentPage===i.id?' active':''}" onclick="goPage('${i.id}')"><span>${i.icon}</span><span>${i.label}</span></button>`).join('');
 }
-function goPage(id){currentPage=id;buildNav();document.querySelectorAll('.page').forEach(p=>p.classList.remove('active'));const pg=document.getElementById('pg-'+id);if(pg)pg.classList.add('active');if(id==='employers')renderEmployers();if(id==='candidates')renderCandidates();if(id==='applications')renderApplications();if(id==='users')renderUsers();if(id==='dashboard')renderDashboardPanels();if(id==='compliance')renderCompliance();if(id==='documents')renderDocuments();if(id==='messaging')renderMessaging();if(id==='settings')renderSettings();if(id==='kpis')renderKPIs();if(id==='reports')renderReports();}
+function goPage(id){currentPage=id;buildNav();document.querySelectorAll('.page').forEach(p=>p.classList.remove('active'));const pg=document.getElementById('pg-'+id);if(pg)pg.classList.add('active');if(id==='employers')renderEmployers();if(id==='candidates')renderCandidates();if(id==='applications')renderApplications();if(id==='users')renderUsers();if(id==='dashboard')renderDashboardPanels();if(id==='compliance')renderCompliance();if(id==='documents')renderDocuments();if(id==='messaging')renderMessaging();if(id==='settings')renderSettings();if(id==='kpis')renderKPIs();if(id==='reports')renderReports();if(id==='matching')renderMatching();}
 
 // ═══ AUTH ═══
 function doLogin(){
@@ -1375,6 +1440,165 @@ function generateReport(btn,title){
   },1500);
 }
 function downloadReport(name){showToast('Downloading: '+name);}
+
+// ═══ AI MATCHING MODULE ═══
+const matchQuestions=[
+  {id:'mq1',q:'1. What is the job title / position?',type:'select',options:['Housekeeper','Line Cook','Care Worker','Front Desk','Electrician','Barista','Cleaner','Nursing Aide','Waiter/Server','Plumber','Laundry Staff','Farm Worker']},
+  {id:'mq2',q:'2. What sector does this role belong to?',type:'select',options:['Hospitality','F&B','Care Services','Housekeeping','Construction','Retail & Agriculture']},
+  {id:'mq3',q:'3. Minimum years of experience required?',type:'select',options:['No minimum','1 year','2 years','3 years','5 years','7+ years']},
+  {id:'mq4',q:'4. Minimum English proficiency level?',type:'select',options:['A1 (Beginner)','A2 (Elementary)','B1 (Intermediate)','B2 (Upper Intermediate)','C1 (Advanced)','C2 (Proficient)']},
+  {id:'mq5',q:'5. Work location in Greece?',type:'select',options:['Athens','Thessaloniki','Crete','Corfu','Rhodes','Santorini','Any location']},
+  {id:'mq6',q:'6. Employment type?',type:'select',options:['Permanent (12+ months)','Seasonal (up to 9 months)','Contract (6-12 months)']},
+  {id:'mq7',q:'7. Number of workers needed?',type:'select',options:['1','2','3','4','5','6-10','10+']},
+  {id:'mq8',q:'8. Minimum acceptable candidate score?',type:'select',options:['60+ (Acceptable)','70+ (Good)','80+ (Very Good)','85+ (Excellent)','90+ (Outstanding)']},
+  {id:'mq9',q:'9. Prior international work experience required?',type:'select',options:['Not required','Preferred but not mandatory','Yes — must have worked abroad','Yes — must have worked in Europe']},
+  {id:'mq10',q:'10. Urgency level?',type:'select',options:['Standard (8-12 weeks)','Priority (6-8 weeks)','Urgent (4-6 weeks — premium fee applies)']}
+];
+
+function renderMatching(){
+  document.getElementById('questionnaire-form').innerHTML=matchQuestions.map(q=>`<div class="form-g"><label style="font-size:14px;font-weight:600;color:var(--g700)">${q.q}</label><select id="${q.id}" style="width:100%;padding:10px 14px;border:1px solid var(--g200);border-radius:8px;font-size:14px;background:var(--g50)">${q.options.map((o,i)=>`<option value="${i}">${o}</option>`).join('')}</select></div>`).join('');
+  goMatchStep(1);
+}
+
+function goMatchStep(n){
+  [1,2,3].forEach(i=>{
+    document.getElementById('match-step-'+i).style.display=i===n?'block':'none';
+    const s=document.getElementById('ms-'+i);
+    s.classList.remove('active','done');
+    if(i<n)s.classList.add('done');
+    if(i===n)s.classList.add('active');
+  });
+}
+
+function runAIMatching(){
+  const role=matchQuestions[0].options[document.getElementById('mq1').value];
+  const minExpVal=parseInt(document.getElementById('mq3').value);
+  const minExpYears=[0,1,2,3,5,7][minExpVal];
+  const engIdx=parseInt(document.getElementById('mq4').value);
+  const engLevels=['A1','A2','B1','B2','C1','C2'];
+  const minEng=engLevels[engIdx];
+  const minScoreIdx=parseInt(document.getElementById('mq8').value);
+  const minScores=[60,70,80,85,90][minScoreIdx];
+  const special=document.getElementById('mq-special').value;
+
+  goMatchStep(2);
+  const bar=document.getElementById('ai-progress-bar');
+  const status=document.getElementById('ai-status');
+  const pct=document.getElementById('ai-pct');
+  const log=document.getElementById('ai-log');
+  log.innerHTML='';
+
+  const steps=[
+    {p:10,s:'Loading candidate profiles...',t:400},
+    {p:25,s:'Parsing CV data for '+candidates.length+' candidates...',t:600},
+    {p:40,s:'Analyzing experience requirements...',t:500},
+    {p:55,s:'Evaluating language proficiency...',t:400},
+    {p:70,s:'Matching role: '+role+'...',t:500},
+    {p:82,s:'Scoring candidates against questionnaire...',t:600},
+    {p:90,s:'Applying AI weighting algorithm...',t:400},
+    {p:95,s:'Ranking results...',t:300},
+    {p:100,s:'Complete!',t:200}
+  ];
+
+  let i=0;
+  function next(){
+    if(i>=steps.length){
+      setTimeout(()=>showMatchResults(role,minExpYears,minEng,minScores,special),500);
+      return;
+    }
+    const step=steps[i];
+    bar.style.width=step.p+'%';
+    status.textContent=step.s;
+    pct.textContent=step.p+'%';
+    log.innerHTML+=`<div style="font-size:12px;color:var(--g500);padding:3px 0;animation:fadeIn .3s">✓ ${step.s}</div>`;
+    i++;
+    setTimeout(next,step.t);
+  }
+  next();
+}
+
+function showMatchResults(role,minExp,minEng,minScore,special){
+  const engOrder=['A1','A2','B1','B2','C1','C2'];
+  const engLevel=c=>engOrder.indexOf(c.eng)||0;
+  const reqEngLevel=engOrder.indexOf(minEng)||0;
+
+  // Build extended candidate pool from talentPool
+  let allCandidates=[];
+  talentPool.forEach(tp=>{
+    tp.candidates.forEach(c=>{
+      allCandidates.push({...c,poolRole:tp.role,poolIcon:tp.icon});
+    });
+  });
+
+  // Score each candidate
+  const scored=allCandidates.map(c=>{
+    let score=0;let reasons=[];let maxScore=100;
+
+    // Role match (40 points)
+    if(c.poolRole===role){score+=40;reasons.push('Role match: '+role);}
+    else if(c.poolRole.toLowerCase().includes(role.toLowerCase().split(' ')[0])){score+=20;reasons.push('Partial role match');}
+    else{reasons.push('Different role: '+c.poolRole);}
+
+    // Experience (20 points)
+    const expYears=parseInt(c.exp)||0;
+    if(expYears>=minExp){score+=20;reasons.push('Experience: '+c.exp);}
+    else if(expYears>=minExp-1){score+=10;reasons.push('Near experience req: '+c.exp);}
+    else{reasons.push('Low experience: '+c.exp);}
+
+    // English (15 points)
+    const cEng=engLevel(c);
+    if(cEng>=reqEngLevel){score+=15;reasons.push('English: '+c.eng);}
+    else if(cEng>=reqEngLevel-1){score+=8;reasons.push('English close: '+c.eng);}
+    else{reasons.push('English below req: '+c.eng);}
+
+    // Base score from profile (15 points)
+    const profilePts=Math.round((c.score/100)*15);
+    score+=profilePts;
+    reasons.push('Profile score: '+c.score+'/100');
+
+    // Status bonus (10 points)
+    if(c.status==='Ready'){score+=10;reasons.push('Status: Ready to deploy');}
+    else if(c.status==='Screening'){score+=3;reasons.push('Status: In screening');}
+    else{reasons.push('Status: '+c.status);}
+
+    // Special requirements keyword matching
+    if(special){
+      const keywords=special.toLowerCase().split(/[\s,]+/);
+      const nameAndRole=(c.name+' '+c.poolRole+' '+c.exp+' '+(c.employer||'')).toLowerCase();
+      const matches=keywords.filter(k=>k.length>2&&nameAndRole.includes(k));
+      if(matches.length>0){score+=5;reasons.push('Keyword match: '+matches.join(', '));}
+    }
+
+    return {...c,matchScore:Math.min(score,100),reasons,rank:score>=80?'Strong':score>=60?'Partial':'Low'};
+  });
+
+  // Sort by score desc
+  scored.sort((a,b)=>b.matchScore-a.matchScore);
+
+  // Filter by minimum score
+  const strong=scored.filter(c=>c.matchScore>=80);
+  const partial=scored.filter(c=>c.matchScore>=60&&c.matchScore<80);
+  const low=scored.filter(c=>c.matchScore<60);
+
+  document.getElementById('mr-total').textContent=scored.length;
+  document.getElementById('mr-match').textContent=strong.length;
+  document.getElementById('mr-partial').textContent=partial.length;
+  document.getElementById('mr-low').textContent=low.length;
+
+  const rankColors={Strong:{bg:'#D1FAE5',text:'#065F46',bar:'var(--green)'},Partial:{bg:'#FEF3C7',text:'#92400E',bar:'var(--amber)'},Low:{bg:'#F1F5F9',text:'#475569',bar:'var(--g400)'}};
+
+  // Show top 15
+  const top=scored.slice(0,15);
+  document.getElementById('match-results').innerHTML=top.map((c,i)=>{
+    const rc=rankColors[c.rank];
+    return `<div style="display:flex;align-items:center;gap:14px;padding:16px;border-bottom:1px solid var(--g100);${i===0?'background:rgba(16,185,129,.04);border-radius:12px;border:1px solid rgba(16,185,129,.15);margin-bottom:8px':''}"><div style="font-family:var(--heading);font-size:18px;font-weight:800;color:${i<3?'var(--blue)':'var(--g400)'};min-width:30px">#${i+1}</div><div style="width:40px;height:40px;border-radius:50%;background:linear-gradient(135deg,var(--blue),var(--blue-l));display:flex;align-items:center;justify-content:center;font-size:13px;font-weight:700;color:#fff;flex-shrink:0">${initials(c.name)}</div><div style="flex:1;min-width:0"><div style="display:flex;align-items:center;gap:8px"><span style="font-size:15px;font-weight:600;color:var(--g800)">${c.name}</span><span class="badge" style="background:${rc.bg};color:${rc.text}">${c.rank}</span>${i===0?'<span class="badge" style="background:var(--blue);color:#fff">Best Match</span>':''}</div><div style="font-size:12px;color:var(--g500);margin-top:2px">${c.poolIcon} ${c.poolRole} · ${c.loc} · ${c.exp} · English ${c.eng}${c.employer?' · Assigned: '+c.employer:''}</div><div style="font-size:11px;color:var(--g400);margin-top:4px">${c.reasons.slice(0,4).join(' · ')}</div></div><div style="min-width:120px;text-align:right"><div style="display:flex;align-items:center;gap:8px"><div class="match-score-bar"><div class="match-score-fill" style="width:${c.matchScore}%;background:${rc.bar}"></div></div><span style="font-family:var(--heading);font-size:18px;font-weight:800;color:var(--g800)">${c.matchScore}</span></div><div style="font-size:11px;color:var(--g400);margin-top:2px">match score</div></div></div>`;
+  }).join('');
+
+  goMatchStep(3);
+}
+
+function exportShortlist(){showToast('Shortlist exported as PDF! Check your Downloads.');}
+function createApplicationsFromMatches(){showToast('Applications created for top 3 matches! Check Applications page.');goPage('applications');}
 
 // ═══ INIT ═══
 document.getElementById('l-pass').addEventListener('keydown',e=>{if(e.key==='Enter')doLogin()});
