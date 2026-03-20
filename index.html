@@ -315,6 +315,10 @@ body.role-employer .role-selector-active,body.role-worker .role-selector-active{
   .navbar{padding:10px 0}
 }
 
+/* Live Market responsive */
+@media(max-width:900px){#live-market [style*="grid-template-columns:1fr 1fr"]{grid-template-columns:1fr !important}#live-market [style*="font-size:42px"]{font-size:32px !important}#live-market [style*="font-size:52px"]{font-size:36px !important}}
+@media(max-width:640px){#live-market [style*="font-size:42px"]{font-size:26px !important}#live-market [style*="font-size:52px"]{font-size:28px !important}#live-market [style*="gap:20px;justify-content:center"]{gap:12px !important}#live-market [style*="padding:24px 40px"]{padding:16px 20px !important;min-width:140px !important}}
+
 /* Touch devices — disable hover transforms */
 @media(hover:none){
   .glass-light:hover,.glass-dark:hover,.glass-blue:hover,.depth-card:hover{transform:none !important;box-shadow:inherit}
@@ -454,6 +458,61 @@ body.role-employer .role-selector-active,body.role-worker .role-selector-active{
     </div>
   </div>
 </div></section>
+
+<!-- ██ LIVE MARKET — SHARED (visible to both roles) ██ -->
+<section class="section-pad sec-dark role-selector-active" id="live-market" style="padding:80px 0;position:relative;overflow:hidden">
+<div class="orb orb-blue" style="width:600px;height:600px;top:-200px;left:-200px"></div>
+<div class="orb orb-cyan" style="width:400px;height:400px;bottom:-100px;right:-100px"></div>
+<div class="container" style="position:relative;z-index:2">
+  <div style="text-align:center;margin-bottom:48px">
+    <div style="display:inline-flex;align-items:center;gap:8px;background:rgba(16,185,129,.1);border:1px solid rgba(16,185,129,.15);padding:6px 16px;border-radius:20px;font-size:12px;font-weight:600;color:#34D399;margin-bottom:16px"><span style="width:8px;height:8px;background:var(--green);border-radius:50%;animation:pulse 2s infinite"></span> Live Platform Data</div>
+    <h2 style="font-family:var(--font-heading);font-size:42px;font-weight:800;color:var(--white);letter-spacing:-1px;margin-bottom:12px">Real-time market overview</h2>
+    <p style="font-size:16px;color:var(--gray-400);max-width:560px;margin:0 auto">Live talent availability and employer demand across all sectors.</p>
+  </div>
+
+  <!-- Big counters -->
+  <div style="display:flex;gap:20px;justify-content:center;margin-bottom:48px;flex-wrap:wrap">
+    <div style="text-align:center;padding:24px 40px;background:rgba(37,99,235,.08);border:1px solid rgba(37,99,235,.15);border-radius:20px;min-width:180px"><div style="font-family:var(--font-heading);font-size:52px;font-weight:800;color:var(--white);line-height:1" id="lm-candidates">0</div><div style="font-size:14px;color:var(--blue-light);font-weight:600;margin-top:4px">Available candidates</div></div>
+    <div style="text-align:center;padding:24px 40px;background:rgba(16,185,129,.08);border:1px solid rgba(16,185,129,.15);border-radius:20px;min-width:180px"><div style="font-family:var(--font-heading);font-size:52px;font-weight:800;color:var(--white);line-height:1" id="lm-positions">0</div><div style="font-size:14px;color:#34D399;font-weight:600;margin-top:4px">Open positions</div></div>
+    <div style="text-align:center;padding:24px 40px;background:rgba(245,158,11,.08);border:1px solid rgba(245,158,11,.15);border-radius:20px;min-width:180px"><div style="font-family:var(--font-heading);font-size:52px;font-weight:800;color:var(--white);line-height:1" id="lm-sectors">7</div><div style="font-size:14px;color:#FBBF24;font-weight:600;margin-top:4px">Industry sectors</div></div>
+    <div style="text-align:center;padding:24px 40px;background:rgba(124,58,237,.08);border:1px solid rgba(124,58,237,.15);border-radius:20px;min-width:180px"><div style="font-family:var(--font-heading);font-size:52px;font-weight:800;color:var(--white);line-height:1" id="lm-employers">120+</div><div style="font-size:14px;color:#A78BFA;font-weight:600;margin-top:4px">Active employers</div></div>
+  </div>
+
+  <!-- Two panels: Supply and Demand -->
+  <div style="display:grid;grid-template-columns:1fr 1fr;gap:24px">
+
+    <!-- SUPPLY: Talent Pool -->
+    <div class="glass-dark" style="padding:28px">
+      <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:24px">
+        <div><h3 style="font-family:var(--font-heading);font-size:20px;font-weight:700;color:var(--white)">Talent Pool</h3><p style="font-size:13px;color:var(--gray-500)">Available professionals by category</p></div>
+        <span style="padding:6px 14px;background:rgba(37,99,235,.15);border:1px solid rgba(37,99,235,.2);border-radius:12px;font-size:12px;font-weight:600;color:var(--blue-light)">Supply</span>
+      </div>
+      <div id="lm-supply-bars"></div>
+    </div>
+
+    <!-- DEMAND: Market Needs -->
+    <div class="glass-dark" style="padding:28px">
+      <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:24px">
+        <div><h3 style="font-family:var(--font-heading);font-size:20px;font-weight:700;color:var(--white)">Market Demand</h3><p style="font-size:13px;color:var(--gray-500)">Active hiring needs by sector</p></div>
+        <span style="padding:6px 14px;background:rgba(245,158,11,.15);border:1px solid rgba(245,158,11,.2);border-radius:12px;font-size:12px;font-weight:600;color:#FBBF24">Demand</span>
+      </div>
+      <div id="lm-demand-bars"></div>
+    </div>
+  </div>
+
+  <!-- Employer CTA (only for employers) -->
+  <div class="employer-only" style="text-align:center;margin-top:40px;padding:32px;background:rgba(37,99,235,.06);border:1px solid rgba(37,99,235,.12);border-radius:20px">
+    <p style="font-size:16px;color:var(--gray-300);margin-bottom:16px">Find the right talent for your business from our verified pool</p>
+    <a href="#contact" class="btn btn-primary btn-lg">Start Hiring Now</a>
+  </div>
+
+  <!-- Worker CTA (only for workers) -->
+  <div class="worker-only" style="text-align:center;margin-top:40px;padding:32px;background:rgba(16,185,129,.06);border:1px solid rgba(16,185,129,.12);border-radius:20px">
+    <p style="font-size:16px;color:var(--gray-300);margin-bottom:16px">Hundreds of employers are looking for your skills right now</p>
+    <a href="#register-w" class="btn btn-green btn-lg">Register Your Profile</a>
+  </div>
+</div>
+</section>
 
 <!-- ═══════════════════════════════════════════
      EMPLOYER PATH
@@ -662,6 +721,78 @@ document.getElementById('loginModal').addEventListener('click',function(e){if(e.
 // Scroll animations
 const obs=new IntersectionObserver(e=>{e.forEach(e=>{if(e.isIntersecting){e.target.style.opacity='1';e.target.style.transform=e.target.style.transform.replace(/translateY\([^)]+\)/,'translateY(0)')||'translateY(0)'}})},{threshold:.08,rootMargin:'0px 0px -40px 0px'});
 document.querySelectorAll('.glass-light,.glass-dark,.glass-blue,.glass-strong,.depth-card,.feature-item').forEach((el,i)=>{el.style.opacity='0';const base=el.style.transform||'';el.style.transform=base+' translateY(30px)';el.style.transition=`all .7s cubic-bezier(.16,1,.3,1) ${i%6*.06}s`;obs.observe(el)});
+
+// ═══ LIVE MARKET DATA & RENDERING ═══
+var lmSupply=[
+  {role:"Housekeeper",icon:"🧹",total:86,ready:48,color:"#2563EB"},
+  {role:"Line Cook",icon:"👨‍🍳",total:64,ready:32,color:"#F59E0B"},
+  {role:"Waiter/Server",icon:"🍽️",total:72,ready:41,color:"#F59E0B"},
+  {role:"Care Worker",icon:"💙",total:53,ready:28,color:"#10B981"},
+  {role:"Front Desk",icon:"🛎️",total:38,ready:19,color:"#7C3AED"},
+  {role:"Cleaner",icon:"🧽",total:45,ready:26,color:"#2563EB"},
+  {role:"Electrician",icon:"⚡",total:28,ready:16,color:"#EF4444"},
+  {role:"Nursing Aide",icon:"🏥",total:34,ready:18,color:"#10B981"},
+  {role:"Barista",icon:"☕",total:31,ready:14,color:"#7C3AED"},
+  {role:"Plumber",icon:"🔧",total:22,ready:12,color:"#64748B"},
+  {role:"Laundry Staff",icon:"👕",total:27,ready:15,color:"#60A5FA"},
+  {role:"Farm Worker",icon:"🌾",total:18,ready:8,color:"#10B981"}
+];
+var lmDemand=[
+  {sector:"Hotels & Resorts",icon:"🏨",roles:[{r:"Housekeeper",n:42},{r:"Front Desk",n:15},{r:"Cleaner",n:18}],total:75},
+  {sector:"Food & Beverage",icon:"🍽️",roles:[{r:"Line Cook",n:35},{r:"Waiter/Server",n:40},{r:"Barista",n:22}],total:97},
+  {sector:"Care Services",icon:"💙",roles:[{r:"Care Worker",n:30},{r:"Nursing Aide",n:24}],total:54},
+  {sector:"Housekeeping",icon:"🧹",roles:[{r:"Cleaner",n:28},{r:"Housekeeper",n:12},{r:"Laundry Staff",n:10}],total:50},
+  {sector:"Construction",icon:"🏗️",roles:[{r:"Electrician",n:18},{r:"Plumber",n:14}],total:32},
+  {sector:"Retail & Agri",icon:"🌾",roles:[{r:"Farm Worker",n:20}],total:20}
+];
+
+function renderLiveMarket(){
+  var totalCand=lmSupply.reduce(function(s,x){return s+x.total},0);
+  var totalPos=lmDemand.reduce(function(s,x){return s+x.total},0);
+  animateCounter('lm-candidates',totalCand,2000);
+  animateCounter('lm-positions',totalPos,2000);
+
+  var maxSupply=Math.max.apply(null,lmSupply.map(function(x){return x.total}));
+  var supplyHtml=lmSupply.map(function(s){
+    var pct=Math.round(s.total/maxSupply*100);
+    return '<div style="display:flex;align-items:center;gap:12px;margin-bottom:14px"><span style="font-size:14px;min-width:130px;color:var(--gray-400);font-weight:500">'+s.icon+' '+s.role+'</span><div style="flex:1;height:32px;background:rgba(255,255,255,.04);border-radius:8px;position:relative;overflow:hidden"><div class="lm-bar" style="height:100%;width:0%;background:linear-gradient(90deg,'+s.color+','+s.color+'aa);border-radius:8px;display:flex;align-items:center;padding-left:12px;transition:width 1.2s cubic-bezier(.16,1,.3,1);box-shadow:0 2px 8px '+s.color+'30" data-width="'+pct+'"><span style="font-size:12px;font-weight:700;color:#fff">'+s.ready+' ready</span></div></div><span style="min-width:36px;text-align:right;font-family:var(--font-heading);font-size:16px;font-weight:700;color:var(--white)">'+s.total+'</span></div>';
+  }).join('');
+  document.getElementById('lm-supply-bars').innerHTML=supplyHtml;
+
+  var maxDemand=Math.max.apply(null,lmDemand.map(function(x){return x.total}));
+  var demandHtml=lmDemand.map(function(d){
+    var pct=Math.round(d.total/maxDemand*100);
+    var chips=d.roles.map(function(r){return '<span style="padding:3px 10px;background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.08);border-radius:6px;font-size:11px;color:var(--gray-400)"><b style="color:#FBBF24">'+r.n+'×</b> '+r.r+'</span>'}).join(' ');
+    return '<div style="margin-bottom:18px"><div style="display:flex;align-items:center;gap:12px;margin-bottom:6px"><span style="font-size:14px;min-width:130px;color:var(--gray-400);font-weight:500">'+d.icon+' '+d.sector+'</span><div style="flex:1;height:32px;background:rgba(255,255,255,.04);border-radius:8px;overflow:hidden"><div class="lm-bar" style="height:100%;width:0%;background:linear-gradient(90deg,#F59E0B,#FBBF24);border-radius:8px;display:flex;align-items:center;padding-left:12px;transition:width 1.2s cubic-bezier(.16,1,.3,1);box-shadow:0 2px 8px rgba(245,158,11,.2)" data-width="'+pct+'"><span style="font-size:12px;font-weight:700;color:#fff">'+d.total+' positions</span></div></div><span style="min-width:36px;text-align:right;font-family:var(--font-heading);font-size:16px;font-weight:700;color:var(--white)">'+d.total+'</span></div><div style="padding-left:142px;display:flex;gap:6px;flex-wrap:wrap">'+chips+'</div></div>';
+  }).join('');
+  document.getElementById('lm-demand-bars').innerHTML=demandHtml;
+
+  // Animate bars on scroll
+  setTimeout(function(){
+    var bars=document.querySelectorAll('.lm-bar');
+    var observer=new IntersectionObserver(function(entries){
+      entries.forEach(function(e){
+        if(e.isIntersecting){e.target.style.width=e.target.getAttribute('data-width')+'%';observer.unobserve(e.target)}
+      });
+    },{threshold:0.2});
+    bars.forEach(function(b){observer.observe(b)});
+  },100);
+}
+
+function animateCounter(id,target,duration){
+  var el=document.getElementById(id);if(!el)return;
+  var start=0;var step=Math.ceil(target/60);
+  var interval=setInterval(function(){
+    start+=step;if(start>=target){start=target;clearInterval(interval)}
+    el.textContent=start.toLocaleString();
+  },duration/60);
+}
+
+// Render live market when page loads (after role selection)
+var origSelectRole=selectRole;
+selectRole=function(role){origSelectRole(role);setTimeout(renderLiveMarket,300)};
+// Also render if role already selected
+setTimeout(function(){if(document.body.className)renderLiveMarket()},500);
 
 // Contact form
 document.getElementById('contactForm').addEventListener('submit',function(e){e.preventDefault();const b=this.querySelector('button[type="submit"]'),o=b.innerHTML;b.innerHTML='&#10003; Sent!';b.style.background='var(--green)';b.disabled=true;setTimeout(()=>{b.innerHTML=o;b.style.background='';b.disabled=false;this.reset()},3000)});
