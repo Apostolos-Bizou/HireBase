@@ -1036,8 +1036,91 @@ function renderWorkerDashboard(){
   const pg=document.getElementById('pg-dashboard');
   const myApp=applications.find(a=>a.cand===currentUser.name)||applications[0];
   pg.querySelector('.page-title').textContent='My Status';
+
+  // Stats row
   const statsRow=pg.querySelector('.stats-row');
   if(statsRow)statsRow.innerHTML=`<div class="stat-card"><div class="stat-top"><span class="stat-label">Application</span><span class="stat-icon" style="background:rgba(37,99,235,.1)">📋</span></div><div class="stat-val" style="font-size:18px">${myApp.id}</div></div><div class="stat-card"><div class="stat-top"><span class="stat-label">Employer</span><span class="stat-icon" style="background:rgba(16,185,129,.1)">🏢</span></div><div class="stat-val" style="font-size:16px">${myApp.emp}</div></div><div class="stat-card"><div class="stat-top"><span class="stat-label">Stage</span><span class="stat-icon" style="background:rgba(245,158,11,.1)">📍</span></div><div class="stat-val" style="font-size:18px">${myApp.stage}</div></div><div class="stat-card"><div class="stat-top"><span class="stat-label">Progress</span><span class="stat-icon" style="background:rgba(37,99,235,.1)">📊</span></div><div class="stat-val" style="color:${myApp.progress===100?'var(--green)':'var(--blue)'}">${myApp.progress}%</div></div>`;
+
+  // Fill Employer Demand panel — show which companies are hiring and what roles
+  const demandEl=document.getElementById('employer-demand');
+  if(demandEl && employerDemand.length){
+    demandEl.innerHTML=employerDemand.map(function(e){
+      const chips=e.needs.map(function(n){return '<span style="display:inline-block;padding:4px 12px;background:rgba(37,99,235,.06);border:1px solid rgba(37,99,235,.12);border-radius:8px;font-size:12px;color:var(--blue);margin:2px 4px 2px 0"><b>'+n.qty+'×</b> '+n.role+'</span>'}).join('');
+      return '<div style="padding:16px;background:var(--g50);border-radius:12px;margin-bottom:10px;cursor:pointer" onclick="showWorkerJobDetail(\''+e.emp.replace(/'/g,"\\'")+'\')">'
+        +'<div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:8px"><span style="font-size:15px;font-weight:600;color:var(--g800)">'+e.emp+'</span><span class="badge" style="background:#FEF3C7;color:#92400E">'+e.total+' positions</span></div>'
+        +'<div style="font-size:12px;color:var(--g500);margin-bottom:8px">'+e.sector+(e.urgent>0?' · <span style="color:var(--red);font-weight:600">'+e.urgent+' urgent</span>':'')+'</div>'
+        +'<div style="display:flex;flex-wrap:wrap">'+chips+'</div></div>';
+    }).join('');
+  }
+
+  // Change Talent Pool panel heading and fill with available roles for the worker
+  const poolParent=document.getElementById('talent-pool-cats');
+  if(poolParent){
+    // Update parent heading
+    const poolHeading=poolParent.parentElement.querySelector('h3');
+    if(poolHeading)poolHeading.textContent='Available Roles';
+    const poolDesc=poolParent.parentElement.querySelector('p');
+    if(poolDesc)poolDesc.textContent='Open positions by role — apply now';
+
+    const maxCount=Math.max.apply(null,talentPool.map(function(t){return t.count}));
+    poolParent.innerHTML=talentPool.map(function(t,idx){
+      // Count demand for this role
+      let totalDemand=0;
+      employerDemand.forEach(function(e){e.needs.forEach(function(n){if(n.role===t.role)totalDemand+=n.qty})});
+      if(totalDemand===0)return '';
+      const pct=Math.round(totalDemand/30*100);
+      return '<div style="display:flex;align-items:center;gap:10px;margin-bottom:12px;cursor:pointer;padding:8px 10px;border-radius:10px;background:var(--g50)" onclick="showWorkerRoleDetail(\''+t.role+'\')">'
+        +'<span style="font-size:16px">'+t.icon+'</span>'
+        +'<div style="flex:1;min-width:0"><div style="font-size:14px;font-weight:600;color:var(--g800)">'+t.role+'</div>'
+        +'<div style="height:4px;background:var(--g200);border-radius:2px;margin-top:4px;overflow:hidden"><div style="height:100%;width:'+Math.min(pct,100)+'%;background:var(--green);border-radius:2px"></div></div></div>'
+        +'<span style="font-family:var(--heading);font-size:16px;font-weight:700;color:var(--green)">'+totalDemand+'</span></div>';
+    }).filter(Boolean).join('');
+  }
+
+  // Change Employer Demand panel heading
+  const demandHeading=demandEl?demandEl.parentElement.querySelector('h3'):null;
+  if(demandHeading)demandHeading.textContent='Who\'s Hiring';
+  const demandDesc=demandEl?demandEl.parentElement.querySelector('p'):null;
+  if(demandDesc)demandDesc.textContent='Companies actively looking for workers like you';
+
+  // Fill Supply vs Demand with a "My Application Timeline"
+  const sdEl=document.getElementById('supply-demand');
+  if(sdEl){
+    const sdParent=sdEl.parentElement;
+    const sdH=sdParent.querySelector('h3');
+    if(sdH)sdH.textContent='My Application Timeline';
+    const sdP=sdParent.querySelector('p');
+    if(sdP)sdP.textContent='Track your progress from application to deployment';
+    sdEl.innerHTML=myApp.tl.map(function(t,i){
+      const color=t.st==='done'?'var(--green)':t.st==='active'?'var(--blue)':'var(--g300)';
+      const icon=t.st==='done'?'✓':t.st==='active'?'●':(i+1);
+      return '<div style="display:flex;align-items:center;gap:14px;padding:12px 0;border-bottom:1px solid var(--g100)">'
+        +'<div style="width:32px;height:32px;border-radius:50%;background:'+color+';display:flex;align-items:center;justify-content:center;font-size:13px;font-weight:700;color:#fff;flex-shrink:0">'+icon+'</div>'
+        +'<div style="flex:1"><div style="font-size:14px;font-weight:600;color:var(--g800)">'+t.s+'</div></div>'
+        +'<span style="font-size:12px;color:var(--g400)">'+t.d+'</span></div>';
+    }).join('');
+  }
+}
+
+// Worker detail modals
+function showWorkerJobDetail(empName){
+  const e=employerDemand.find(function(x){return x.emp===empName});
+  if(!e)return;
+  const rolesHtml=e.needs.map(function(n){
+    const pool=talentPool.find(function(t){return t.role===n.role});
+    return '<div style="padding:14px;background:var(--g50);border-radius:10px;margin-bottom:8px"><div style="display:flex;justify-content:space-between;align-items:center"><span style="font-size:15px;font-weight:600;color:var(--g800)">'+n.role+'</span><span class="badge" style="background:#D1FAE5;color:#065F46">'+n.qty+' positions open</span></div>'
+      +(pool?'<div style="font-size:12px;color:var(--g500);margin-top:6px">'+pool.ready+' candidates ready in pool</div>':'')
+      +'</div>';
+  }).join('');
+  openDetail('🏢 '+e.emp,'<div style="margin-bottom:16px"><span class="badge" style="background:rgba(37,99,235,.1);color:var(--blue)">'+e.sector+'</span><span class="badge" style="background:#FEF3C7;color:#92400E;margin-left:6px">'+e.total+' total positions</span>'+(e.urgent?'<span class="badge" style="background:#FEE2E2;color:#991B1B;margin-left:6px">'+e.urgent+' urgent</span>':'')+'</div><h4 style="font-size:14px;font-weight:600;color:var(--g700);margin-bottom:10px">Open Roles</h4>'+rolesHtml+'<button class="btn btn-p" style="width:100%;justify-content:center;margin-top:16px" onclick="closeModal(\'detail-modal\');goPage(\'applications\')">Apply Now</button>');
+}
+function showWorkerRoleDetail(role){
+  const matches=[];
+  employerDemand.forEach(function(e){e.needs.forEach(function(n){if(n.role===role)matches.push({emp:e.emp,sector:e.sector,qty:n.qty})})});
+  const html=matches.map(function(m){
+    return '<div style="display:flex;justify-content:space-between;align-items:center;padding:14px;background:var(--g50);border-radius:10px;margin-bottom:8px"><div><div style="font-size:15px;font-weight:600;color:var(--g800)">'+m.emp+'</div><div style="font-size:12px;color:var(--g500)">'+m.sector+'</div></div><span class="badge" style="background:#D1FAE5;color:#065F46">'+m.qty+' positions</span></div>';
+  }).join('');
+  openDetail('Available '+role+' positions',html||'<p style="color:var(--g400)">No current openings for this role.</p>');
 }
 
 // ═══ CLICKABLE DASHBOARD PANELS ═══
