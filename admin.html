@@ -164,7 +164,7 @@ tr:last-child td{border-bottom:none}
     <div class="form-g"><label>Email</label><input id="l-email" type="email" value="admin@hirebase.eu"></div>
     <div class="form-g"><label>Password</label><input id="l-pass" type="password" value="admin123"></div>
     <button class="btn btn-p" style="width:100%;padding:14px;font-size:15px;margin-top:8px;justify-content:center" onclick="doLogin()">Sign In</button>
-    <div class="demo-creds"><strong style="color:var(--g700)">Demo credentials:</strong><br>Admin: admin@hirebase.eu / admin123<br>Employer: nikos@athenshotel.gr / emp123<br>Worker: maria@worker.ph / wrk123</div>
+    <div class="demo-creds"><strong style="color:var(--g700)">Demo credentials:</strong><br>Admin: <a href="/cdn-cgi/l/email-protection" class="__cf_email__" data-cfemail="1071747d797e5078796275727163753e7565">[email&#160;protected]</a> / admin123<br>Employer: <a href="/cdn-cgi/l/email-protection" class="__cf_email__" data-cfemail="d5bbbcbebaa695b4a1bdb0bba6bdbaa1b0b9fbb2a7">[email&#160;protected]</a> / emp123<br>Worker: <a href="/cdn-cgi/l/email-protection" class="__cf_email__" data-cfemail="402d2132292100372f322b25326e3028">[email&#160;protected]</a> / wrk123</div>
   </div>
 </div>
 
@@ -178,7 +178,7 @@ tr:last-child td{border-bottom:none}
     </div>
     <nav id="sb-nav"></nav>
     <div class="sb-user">
-      <div class="sb-user-card"><div class="sb-avatar" id="sb-avatar">SA</div><div><div class="sb-uname" id="sb-uname">Admin</div><div class="sb-uemail" id="sb-uemail">admin@hirebase.eu</div></div></div>
+      <div class="sb-user-card"><div class="sb-avatar" id="sb-avatar">SA</div><div><div class="sb-uname" id="sb-uname">Admin</div><div class="sb-uemail" id="sb-uemail"><a href="/cdn-cgi/l/email-protection" class="__cf_email__" data-cfemail="244540494d4a644c4d5641464557410a4151">[email&#160;protected]</a></div></div></div>
       <button id="logout-btn" onclick="doLogout()">Sign Out</button>
     </div>
   </div>
@@ -274,6 +274,130 @@ tr:last-child td{border-bottom:none}
       <div class="tbl-wrap"><table><thead><tr><th>User</th><th>Email</th><th>Role</th><th>Password</th><th>Actions</th></tr></thead><tbody id="users-tbody"></tbody></table></div>
     </div>
 
+    <!-- COMPLIANCE & LEGAL -->
+    <div class="page" id="pg-compliance">
+      <h2 class="page-title">Compliance & Legal Framework</h2>
+      <p style="font-size:14px;color:var(--g500);margin-bottom:24px">Complete regulatory requirements for Philippines → Greece hiring corridor.</p>
+
+      <!-- Tabs -->
+      <div style="display:flex;gap:8px;margin-bottom:24px;flex-wrap:wrap">
+        <button class="btn btn-p comp-tab active" onclick="switchCompTab('ph',this)">🇵🇭 Philippines (DMW)</button>
+        <button class="btn btn-g comp-tab" onclick="switchCompTab('gr',this)">🇬🇷 Greece (Immigration)</button>
+        <button class="btn btn-g comp-tab" onclick="switchCompTab('checklist',this)">📋 Document Checklist</button>
+        <button class="btn btn-g comp-tab" onclick="switchCompTab('timeline',this)">⏱️ Process Timeline</button>
+      </div>
+
+      <div id="comp-ph" class="comp-panel">
+        <div style="background:var(--w);border:1px solid var(--g200);border-radius:16px;padding:24px;margin-bottom:20px">
+          <h3 style="font-family:var(--heading);font-size:18px;font-weight:700;color:var(--g800);margin-bottom:4px">🇵🇭 Department of Migrant Workers (DMW)</h3>
+          <p style="font-size:13px;color:var(--g400);margin-bottom:20px">Republic Act No. 11641 (2021) — Primary regulatory body for overseas Filipino employment</p>
+          <div id="ph-steps"></div>
+        </div>
+        <div style="background:var(--w);border:1px solid var(--g200);border-radius:16px;padding:24px">
+          <h3 style="font-family:var(--heading);font-size:16px;font-weight:600;color:var(--g800);margin-bottom:16px">Key Regulations</h3>
+          <div id="ph-regs"></div>
+        </div>
+      </div>
+
+      <div id="comp-gr" class="comp-panel" style="display:none">
+        <div style="background:var(--w);border:1px solid var(--g200);border-radius:16px;padding:24px;margin-bottom:20px">
+          <h3 style="font-family:var(--heading);font-size:18px;font-weight:700;color:var(--g800);margin-bottom:4px">🇬🇷 Greek Immigration & Employment Law</h3>
+          <p style="font-size:13px;color:var(--g400);margin-bottom:20px">Law 5038/2023 (Migration Code) + Law 5275/2026 amendments</p>
+          <div id="gr-steps"></div>
+        </div>
+        <div style="background:var(--w);border:1px solid var(--g200);border-radius:16px;padding:24px">
+          <h3 style="font-family:var(--heading);font-size:16px;font-weight:600;color:var(--g800);margin-bottom:16px">Key Provisions</h3>
+          <div id="gr-regs"></div>
+        </div>
+      </div>
+
+      <div id="comp-checklist" class="comp-panel" style="display:none">
+        <div style="background:var(--w);border:1px solid var(--g200);border-radius:16px;padding:24px">
+          <h3 style="font-family:var(--heading);font-size:18px;font-weight:700;color:var(--g800);margin-bottom:16px">📋 Complete Document Checklist (Per Worker)</h3>
+          <div id="doc-checklist-table"></div>
+        </div>
+      </div>
+
+      <div id="comp-timeline" class="comp-panel" style="display:none">
+        <div style="background:var(--w);border:1px solid var(--g200);border-radius:16px;padding:24px">
+          <h3 style="font-family:var(--heading);font-size:18px;font-weight:700;color:var(--g800);margin-bottom:16px">⏱️ Typical Process Timeline</h3>
+          <div id="process-timeline"></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- DOCUMENTS -->
+    <div class="page" id="pg-documents">
+      <div class="page-header"><h2 class="page-title">Document Management</h2><button class="btn btn-p" onclick="alert('Demo: Upload document wizard')">+ Upload Document</button></div>
+      <div style="display:flex;gap:12px;margin-bottom:20px;flex-wrap:wrap">
+        <button class="btn btn-p doc-filter active" onclick="filterDocs('all',this)">All Documents</button>
+        <button class="btn btn-g doc-filter" onclick="filterDocs('complete',this)">Complete</button>
+        <button class="btn btn-g doc-filter" onclick="filterDocs('pending',this)">Pending</button>
+        <button class="btn btn-g doc-filter" onclick="filterDocs('expired',this)">Expiring Soon</button>
+      </div>
+      <div id="docs-table-wrap" class="tbl-wrap"></div>
+    </div>
+
+    <!-- MESSAGING -->
+    <div class="page" id="pg-messaging">
+      <h2 class="page-title">Messages</h2>
+      <div style="display:grid;grid-template-columns:300px 1fr;gap:0;background:var(--w);border:1px solid var(--g200);border-radius:16px;overflow:hidden;height:calc(100vh - 140px)">
+        <div style="border-right:1px solid var(--g200);overflow-y:auto">
+          <div style="padding:16px;border-bottom:1px solid var(--g200)"><input class="search-bar" style="margin:0;max-width:100%" placeholder="Search conversations..." oninput="filterMsgs(this.value)"></div>
+          <div id="msg-list"></div>
+        </div>
+        <div style="display:flex;flex-direction:column">
+          <div id="msg-header" style="padding:16px 20px;border-bottom:1px solid var(--g200);display:flex;align-items:center;gap:12px">
+            <div class="sb-avatar" id="msg-avatar" style="width:36px;height:36px;font-size:13px">NP</div>
+            <div><div style="font-size:15px;font-weight:600;color:var(--g800)" id="msg-name">Nikos Papadopoulos</div><div style="font-size:12px;color:var(--g400)" id="msg-role">Athens Grand Hotel · Employer</div></div>
+          </div>
+          <div id="msg-body" style="flex:1;overflow-y:auto;padding:20px;display:flex;flex-direction:column;gap:12px"></div>
+          <div style="padding:16px;border-top:1px solid var(--g200);display:flex;gap:10px">
+            <input id="msg-input" style="flex:1;padding:10px 14px;border:1px solid var(--g200);border-radius:8px;font-size:14px;outline:none" placeholder="Type a message..." onkeydown="if(event.key==='Enter')sendMsg()">
+            <button class="btn btn-p" onclick="sendMsg()">Send</button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- SETTINGS -->
+    <div class="page" id="pg-settings">
+      <h2 class="page-title">Platform Settings</h2>
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:20px">
+        <div style="background:var(--w);border:1px solid var(--g200);border-radius:16px;padding:24px">
+          <h3 style="font-family:var(--heading);font-size:16px;font-weight:600;color:var(--g800);margin-bottom:20px">General</h3>
+          <div class="form-g"><label>Platform Name</label><input value="HireBase"></div>
+          <div class="form-g"><label>Support Email</label><input value="support@hirebase.eu"></div>
+          <div class="form-g"><label>Phone</label><input value="+30 2310 000 000"></div>
+          <div class="form-g"><label>Default Language</label><select><option>English</option><option>Greek</option><option>Filipino</option></select></div>
+          <button class="btn btn-p" onclick="alert('Demo: Settings saved')">Save Changes</button>
+        </div>
+        <div style="background:var(--w);border:1px solid var(--g200);border-radius:16px;padding:24px">
+          <h3 style="font-family:var(--heading);font-size:16px;font-weight:600;color:var(--g800);margin-bottom:20px">Notifications</h3>
+          <div id="notif-settings"></div>
+          <button class="btn btn-p" style="margin-top:16px" onclick="alert('Demo: Notification settings saved')">Save Notifications</button>
+        </div>
+        <div style="background:var(--w);border:1px solid var(--g200);border-radius:16px;padding:24px">
+          <h3 style="font-family:var(--heading);font-size:16px;font-weight:600;color:var(--g800);margin-bottom:20px">Pricing Configuration</h3>
+          <div class="form-g"><label>Standard Placement Fee (%)</label><input type="number" value="18" min="10" max="25"></div>
+          <div class="form-g"><label>Platform Subscription (€/mo)</label><input type="number" value="500" min="200" max="1000"></div>
+          <div class="form-g"><label>Enterprise Flat Fee (€)</label><input type="number" value="4500" min="3000" max="8000"></div>
+          <div class="form-g"><label>Compliance Package (€/worker)</label><input type="number" value="1000" min="500" max="2000"></div>
+          <button class="btn btn-p" onclick="alert('Demo: Pricing saved')">Save Pricing</button>
+        </div>
+        <div style="background:var(--w);border:1px solid var(--g200);border-radius:16px;padding:24px">
+          <h3 style="font-family:var(--heading);font-size:16px;font-weight:600;color:var(--g800);margin-bottom:20px">Data & Security</h3>
+          <div style="display:flex;flex-direction:column;gap:12px">
+            <div style="display:flex;justify-content:space-between;align-items:center;padding:14px;background:var(--g50);border-radius:10px"><div><div style="font-size:14px;font-weight:600;color:var(--g800)">Two-Factor Authentication</div><div style="font-size:12px;color:var(--g500)">Require 2FA for admin accounts</div></div><label style="position:relative;width:44px;height:24px"><input type="checkbox" checked style="opacity:0;width:0;height:0"><span style="position:absolute;inset:0;background:var(--green);border-radius:12px;cursor:pointer"></span></label></div>
+            <div style="display:flex;justify-content:space-between;align-items:center;padding:14px;background:var(--g50);border-radius:10px"><div><div style="font-size:14px;font-weight:600;color:var(--g800)">Session Timeout</div><div style="font-size:12px;color:var(--g500)">Auto logout after inactivity</div></div><select style="padding:6px 12px;border:1px solid var(--g200);border-radius:6px;font-size:13px"><option>30 minutes</option><option selected>1 hour</option><option>2 hours</option></select></div>
+            <div style="display:flex;justify-content:space-between;align-items:center;padding:14px;background:var(--g50);border-radius:10px"><div><div style="font-size:14px;font-weight:600;color:var(--g800)">GDPR Compliance</div><div style="font-size:12px;color:var(--g500)">Data retention policies active</div></div><span class="badge" style="background:#D1FAE5;color:#065F46">Active ✓</span></div>
+            <button class="btn btn-g" onclick="alert('Demo: Export all platform data')">Export All Data</button>
+            <button class="btn btn-d" style="font-size:14px;padding:10px 20px" onclick="alert('Demo: This would purge old records')">Purge Old Records</button>
+          </div>
+        </div>
+      </div>
+    </div>
+
   </div>
 </div>
 
@@ -330,14 +454,14 @@ const badge=s=>`<span class="badge" style="${sc[s]||'background:#E2E8F0;color:#4
 const initials=n=>n.split(' ').map(w=>w[0]).join('').slice(0,2);
 
 // ═══ NAV ═══
-const navMap={admin:[{id:'dashboard',icon:'📊',label:'Dashboard'},{id:'employers',icon:'🏢',label:'Employers'},{id:'candidates',icon:'👥',label:'Candidates'},{id:'applications',icon:'📋',label:'Applications'},{id:'users',icon:'🔐',label:'Users & Access'}],employer:[{id:'dashboard',icon:'📊',label:'Dashboard'},{id:'applications',icon:'📋',label:'My Requests'},{id:'candidates',icon:'👥',label:'Candidates'}],worker:[{id:'dashboard',icon:'📊',label:'My Status'},{id:'applications',icon:'📋',label:'My Applications'}]};
+const navMap={admin:[{id:'dashboard',icon:'📊',label:'Dashboard'},{id:'employers',icon:'🏢',label:'Employers'},{id:'candidates',icon:'👥',label:'Candidates'},{id:'applications',icon:'📋',label:'Applications'},{id:'compliance',icon:'⚖️',label:'Compliance'},{id:'documents',icon:'📁',label:'Documents'},{id:'messaging',icon:'💬',label:'Messages'},{id:'users',icon:'🔐',label:'Users'},{id:'settings',icon:'⚙️',label:'Settings'}],employer:[{id:'dashboard',icon:'📊',label:'Dashboard'},{id:'applications',icon:'📋',label:'My Requests'},{id:'candidates',icon:'👥',label:'Candidates'},{id:'documents',icon:'📁',label:'Documents'},{id:'messaging',icon:'💬',label:'Messages'}],worker:[{id:'dashboard',icon:'📊',label:'My Status'},{id:'applications',icon:'📋',label:'My Applications'},{id:'documents',icon:'📁',label:'My Docs'},{id:'messaging',icon:'💬',label:'Messages'}]};
 let currentUser=null,currentPage='dashboard';
 
 function buildNav(){
   const items=navMap[currentUser.role]||navMap.admin;
   document.getElementById('sb-nav').innerHTML=items.map(i=>`<button class="sb-item${currentPage===i.id?' active':''}" onclick="goPage('${i.id}')"><span>${i.icon}</span><span>${i.label}</span></button>`).join('');
 }
-function goPage(id){currentPage=id;buildNav();document.querySelectorAll('.page').forEach(p=>p.classList.remove('active'));const pg=document.getElementById('pg-'+id);if(pg)pg.classList.add('active');if(id==='employers')renderEmployers();if(id==='candidates')renderCandidates();if(id==='applications')renderApplications();if(id==='users')renderUsers();if(id==='dashboard')renderDashboardPanels();}
+function goPage(id){currentPage=id;buildNav();document.querySelectorAll('.page').forEach(p=>p.classList.remove('active'));const pg=document.getElementById('pg-'+id);if(pg)pg.classList.add('active');if(id==='employers')renderEmployers();if(id==='candidates')renderCandidates();if(id==='applications')renderApplications();if(id==='users')renderUsers();if(id==='dashboard')renderDashboardPanels();if(id==='compliance')renderCompliance();if(id==='documents')renderDocuments();if(id==='messaging')renderMessaging();if(id==='settings')renderSettings();}
 
 // ═══ AUTH ═══
 function doLogin(){
@@ -481,7 +605,182 @@ function renderDashboardPanels(){
     else statusBadge=`<span class="badge" style="background:#FEE2E2;color:#991B1B">Gap ✗</span>`;
     return `<div class="sd-row"><span class="sd-cat">${role}</span><div class="sd-bars"><div class="sd-supply" style="width:${supplyPct}%"><span>${available}</span></div><div class="sd-demand-bar" style="width:${demandPct}%"><span>${demand}</span></div></div><div class="sd-status">${statusBadge}</div></div>`;
   });
-  document.getElementById('supply-demand').innerHTML=`<div style="display:flex;gap:16px;margin-bottom:14px;font-size:12px"><span style="display:flex;align-items:center;gap:6px"><span style="width:12px;height:12px;border-radius:3px;background:var(--blue)"></span>Supply (ready)</span><span style="display:flex;align-items:center;gap:6px"><span style="width:12px;height:12px;border-radius:3px;background:var(--amber)"></span>Demand (needed)</span></div>`+sdRows.join('');
+  document.getElementById('supply-demand').innerHTML='<div style="display:flex;gap:16px;margin-bottom:14px;font-size:12px"><span style="display:flex;align-items:center;gap:6px"><span style="width:12px;height:12px;border-radius:3px;background:var(--blue)"></span>Supply (ready)</span><span style="display:flex;align-items:center;gap:6px"><span style="width:12px;height:12px;border-radius:3px;background:var(--amber)"></span>Demand (needed)</span></div>'+sdRows.join('');
+}
+
+// ═══ COMPLIANCE & LEGAL ═══
+const phSteps=[
+  {title:"Recruitment Agency Partnership",desc:"Foreign employers must partner with DMW-licensed PH agency. Min PHP 5M capital, 75% Filipino ownership.",status:"Required",time:"Ongoing"},
+  {title:"Recruitment Agreement (RA/SPA)",desc:"Formal agreement between foreign employer and PH licensed agency.",status:"Per hire",time:"1-2 weeks"},
+  {title:"Employer Accreditation (DMW)",desc:"Application through Migrant Workers Office (MWO) for employer verification.",status:"Per hire",time:"2-4 weeks"},
+  {title:"Job Order Verification",desc:"DMW verifies and approves the specific job order details.",status:"Per hire",time:"2-4 weeks"},
+  {title:"Employment Contract Verification",desc:"Contract must comply with BOTH Philippine labor standards AND Greek labor law.",status:"Per worker",time:"1 week"},
+  {title:"OEC (Overseas Employment Certificate)",desc:"Mandatory exit document for all OFWs before departure.",status:"Per worker",time:"1-2 weeks"},
+  {title:"OWWA Membership",desc:"Overseas Workers Welfare Administration registration — mandatory.",status:"Per worker",time:"1 week"},
+  {title:"PDOS (Pre-Departure Orientation)",desc:"Mandatory seminar covering destination country info, rights, and responsibilities.",status:"Per worker",time:"1 day"},
+  {title:"Medical Clearance",desc:"DOH-accredited OFW clinic examination and clearance.",status:"Per worker",time:"1-2 weeks"}
+];
+const phRegs=[
+  {title:"RA 11641 (2021)",desc:"Established the Department of Migrant Workers as primary regulatory body."},
+  {title:"No Worker Fees",desc:"Philippine law prohibits charging placement fees to workers. All fees paid by employer."},
+  {title:"Licensed Agencies Only",desc:"Foreign employers cannot directly recruit. Must go through DMW-licensed agency."},
+  {title:"Minimum Capital",desc:"Licensed agencies must have PHP 5,000,000 (~€80,000) paid-up capital."},
+  {title:"Filipino Ownership",desc:"Minimum 75% Filipino ownership and Filipino key officers required for agencies."}
+];
+const grSteps=[
+  {title:"Employer Application",desc:"Submitted through electronic platform of Ministry of Immigration to Decentralized Administration.",status:"Per hire",time:"4-8 weeks"},
+  {title:"Financial Threshold",desc:"Companies must demonstrate €60,000 gross revenue per foreign employee (corporate entities).",status:"Verification",time:"During application"},
+  {title:"Employment Contract",desc:"Minimum 1 year for dependent employment. Must meet Greek minimum wage requirements.",status:"Per worker",time:"1 week"},
+  {title:"National Type D Visa",desc:"Applied at Greek Consulate in Manila after employer application approval.",status:"Per worker",time:"2-4 weeks"},
+  {title:"Residence Permit",desc:"Applied upon arrival in Greece for employment residence permit.",status:"Per worker",time:"2-6 weeks"},
+  {title:"EFKA Registration",desc:"Social security registration with Greek social insurance fund.",status:"Per worker",time:"1-2 weeks"},
+  {title:"AFM Tax Registration",desc:"Greek tax number registration (employer assists).",status:"Per worker",time:"1-2 weeks"}
+];
+const grRegs=[
+  {title:"Law 5038/2023",desc:"New Migration Code effective March 2024. Modernized framework for third-country nationals."},
+  {title:"Law 5275/2026",desc:"February 2026 amendments: single/unified residence permit, equal rights, Tech Visa."},
+  {title:"2025 Quota",desc:"Greece approved 89,290 legal work permits for third-country nationals."},
+  {title:"Seasonal Work",desc:"Articles 63-64 allow up to 9 months within 12-month period, extendable to 5 years."},
+  {title:"Employer Change",desc:"Workers can change employers after 6 months minimum under new law."},
+  {title:"Gap Problem",desc:"Of 89,000 approved permits, only ~20,000 workers actually arrived due to bureaucratic delays."}
+];
+const docChecklist=[
+  {doc:"Recruitment Agreement / SPA",origin:"Philippines",resp:"HireBase + PH Agency",time:"1-2 wk",phase:"Pre-hire"},
+  {doc:"Job Order Verification",origin:"Philippines (DMW)",resp:"PH Agency",time:"2-4 wk",phase:"Pre-hire"},
+  {doc:"Employment Contract (dual-compliant)",origin:"Greece/Philippines",resp:"HireBase drafts",time:"1 wk",phase:"Pre-hire"},
+  {doc:"Employer Accreditation (DMW)",origin:"Philippines",resp:"PH Agency + HireBase",time:"2-4 wk",phase:"Pre-hire"},
+  {doc:"OEC",origin:"Philippines (DMW)",resp:"Worker + PH Agency",time:"1-2 wk",phase:"Pre-departure"},
+  {doc:"OWWA Membership",origin:"Philippines",resp:"Worker + PH Agency",time:"1 wk",phase:"Pre-departure"},
+  {doc:"PDOS Certificate",origin:"Philippines",resp:"Worker",time:"1 day",phase:"Pre-departure"},
+  {doc:"Medical Clearance (DOH)",origin:"Philippines",resp:"Worker (HireBase coords)",time:"1-2 wk",phase:"Pre-departure"},
+  {doc:"Greek Employer Application",origin:"Greece",resp:"Employer + legal counsel",time:"4-8 wk",phase:"Greek-side"},
+  {doc:"National Type D Visa",origin:"Greek Consulate Manila",resp:"Worker + employer docs",time:"2-4 wk",phase:"Greek-side"},
+  {doc:"Greek Residence Permit",origin:"Greece (upon arrival)",resp:"Employer + worker",time:"2-6 wk",phase:"Post-arrival"},
+  {doc:"EFKA Social Security",origin:"Greece",resp:"Employer",time:"1-2 wk",phase:"Post-arrival"},
+  {doc:"Tax Registration (AFM)",origin:"Greece",resp:"Worker (employer assists)",time:"1-2 wk",phase:"Post-arrival"}
+];
+const processTimeline=[
+  {phase:"Employer Request & Matching",weeks:"1-2",color:"var(--blue)",items:["Receive employer request","Source candidates from pool","Deliver shortlist"]},
+  {phase:"Interviews & Selection",weeks:"1-2",color:"var(--blue-l)",items:["Schedule video interviews","Employer evaluates candidates","Offer issued & accepted"]},
+  {phase:"PH Documentation (DMW)",weeks:"3-5",color:"var(--amber)",items:["Recruitment Agreement","Job Order verification","Employer accreditation","OEC, OWWA, PDOS, Medical"]},
+  {phase:"Greek Immigration",weeks:"4-8",color:"var(--purple)",items:["Employer application","Type D visa processing","Await approval"]},
+  {phase:"Pre-Departure & Travel",weeks:"1-2",color:"var(--green)",items:["PDOS seminar","Flight arrangements","Worker departs"]},
+  {phase:"Arrival & Registration",weeks:"1-2",color:"var(--green)",items:["Residence permit application","EFKA + AFM registration","Worker starts employment"]}
+];
+
+function switchCompTab(tab,btn){
+  document.querySelectorAll('.comp-panel').forEach(p=>p.style.display='none');
+  document.querySelectorAll('.comp-tab').forEach(b=>{b.classList.remove('active');b.classList.remove('btn-p');b.classList.add('btn-g')});
+  btn.classList.add('active');btn.classList.remove('btn-g');btn.classList.add('btn-p');
+  document.getElementById('comp-'+tab).style.display='block';
+}
+
+function renderCompliance(){
+  document.getElementById('ph-steps').innerHTML=phSteps.map((s,i)=>`<div style="display:flex;gap:14px;margin-bottom:16px;padding-bottom:16px;border-bottom:1px solid var(--g100)"><div style="width:28px;height:28px;border-radius:50%;background:var(--blue);color:#fff;display:flex;align-items:center;justify-content:center;font-size:12px;font-weight:700;flex-shrink:0">${i+1}</div><div style="flex:1"><div style="font-size:14px;font-weight:600;color:var(--g800)">${s.title}</div><div style="font-size:13px;color:var(--g500);margin-top:2px">${s.desc}</div></div><div style="text-align:right"><span class="badge" style="background:#EFF6FF;color:#1E40AF">${s.status}</span><div style="font-size:11px;color:var(--g400);margin-top:4px">${s.time}</div></div></div>`).join('');
+  document.getElementById('ph-regs').innerHTML=phRegs.map(r=>`<div style="padding:14px;background:var(--g50);border-radius:10px;margin-bottom:10px"><div style="font-size:14px;font-weight:600;color:var(--g800)">${r.title}</div><div style="font-size:13px;color:var(--g500);margin-top:2px">${r.desc}</div></div>`).join('');
+  document.getElementById('gr-steps').innerHTML=grSteps.map((s,i)=>`<div style="display:flex;gap:14px;margin-bottom:16px;padding-bottom:16px;border-bottom:1px solid var(--g100)"><div style="width:28px;height:28px;border-radius:50%;background:var(--purple);color:#fff;display:flex;align-items:center;justify-content:center;font-size:12px;font-weight:700;flex-shrink:0">${i+1}</div><div style="flex:1"><div style="font-size:14px;font-weight:600;color:var(--g800)">${s.title}</div><div style="font-size:13px;color:var(--g500);margin-top:2px">${s.desc}</div></div><div style="text-align:right"><span class="badge" style="background:#E0E7FF;color:#3730A3">${s.status}</span><div style="font-size:11px;color:var(--g400);margin-top:4px">${s.time}</div></div></div>`).join('');
+  document.getElementById('gr-regs').innerHTML=grRegs.map(r=>`<div style="padding:14px;background:var(--g50);border-radius:10px;margin-bottom:10px"><div style="font-size:14px;font-weight:600;color:var(--g800)">${r.title}</div><div style="font-size:13px;color:var(--g500);margin-top:2px">${r.desc}</div></div>`).join('');
+  const phaseColors={"Pre-hire":"background:#EFF6FF;color:#1E40AF","Pre-departure":"background:#FEF3C7;color:#92400E","Greek-side":"background:#E0E7FF;color:#3730A3","Post-arrival":"background:#D1FAE5;color:#065F46"};
+  document.getElementById('doc-checklist-table').innerHTML='<table style="width:100%;border-collapse:collapse;font-size:13px"><thead><tr><th style="text-align:left;padding:10px;border-bottom:2px solid var(--g200);font-size:12px">Document</th><th style="text-align:left;padding:10px;border-bottom:2px solid var(--g200);font-size:12px">Origin</th><th style="text-align:left;padding:10px;border-bottom:2px solid var(--g200);font-size:12px">Responsibility</th><th style="text-align:left;padding:10px;border-bottom:2px solid var(--g200);font-size:12px">Timeline</th><th style="text-align:left;padding:10px;border-bottom:2px solid var(--g200);font-size:12px">Phase</th></tr></thead><tbody>'+docChecklist.map(d=>`<tr><td style="padding:10px;border-bottom:1px solid var(--g100);font-weight:500;color:var(--g800)">${d.doc}</td><td style="padding:10px;border-bottom:1px solid var(--g100);color:var(--g500)">${d.origin}</td><td style="padding:10px;border-bottom:1px solid var(--g100);color:var(--g500)">${d.resp}</td><td style="padding:10px;border-bottom:1px solid var(--g100);color:var(--g600);font-weight:600">${d.time}</td><td style="padding:10px;border-bottom:1px solid var(--g100)"><span class="badge" style="${phaseColors[d.phase]||''}">${d.phase}</span></td></tr>`).join('')+'</tbody></table>';
+  document.getElementById('process-timeline').innerHTML=processTimeline.map(p=>`<div style="display:flex;gap:16px;margin-bottom:24px"><div style="min-width:100px;text-align:right"><div style="font-size:15px;font-weight:700;color:var(--g800);font-family:var(--heading)">${p.weeks} wk</div></div><div style="width:4px;background:${p.color};border-radius:2px;flex-shrink:0"></div><div style="flex:1;padding:16px;background:var(--g50);border-radius:12px;border-left:3px solid ${p.color}"><div style="font-size:15px;font-weight:600;color:var(--g800);margin-bottom:8px">${p.phase}</div>${p.items.map(it=>`<div style="font-size:13px;color:var(--g500);display:flex;align-items:center;gap:8px;margin-bottom:4px"><span style="width:6px;height:6px;border-radius:50%;background:${p.color};flex-shrink:0"></span>${it}</div>`).join('')}</div></div>`).join('')+'<div style="padding:16px;background:rgba(37,99,235,.04);border:1px solid rgba(37,99,235,.1);border-radius:12px;text-align:center"><span style="font-family:var(--heading);font-size:18px;font-weight:700;color:var(--blue)">Total: 8-12 weeks</span><span style="font-size:14px;color:var(--g500);margin-left:8px">(with proactive compliance management)</span></div>';
+}
+
+// ═══ DOCUMENTS ═══
+const docRecords=[
+  {worker:"Maria Reyes",app:"HB-2026-0042",docs:[{name:"Recruitment Agreement",status:"Complete",date:"2025-12-10",exp:null},{name:"Job Order",status:"Complete",date:"2025-12-20",exp:null},{name:"Employment Contract",status:"Complete",date:"2025-12-22",exp:null},{name:"OEC",status:"Complete",date:"2026-01-08",exp:"2027-01-08"},{name:"OWWA",status:"Complete",date:"2026-01-09",exp:"2027-01-09"},{name:"PDOS",status:"Complete",date:"2026-02-20",exp:null},{name:"Medical",status:"Complete",date:"2026-01-12",exp:"2027-01-12"},{name:"Type D Visa",status:"Complete",date:"2026-02-05",exp:"2027-02-05"},{name:"Residence Permit",status:"Complete",date:"2026-03-10",exp:"2027-03-10"},{name:"EFKA",status:"Complete",date:"2026-03-08",exp:null},{name:"AFM",status:"Complete",date:"2026-03-09",exp:null}]},
+  {worker:"Jose Cruz",app:"HB-2026-0067",docs:[{name:"Recruitment Agreement",status:"Complete",date:"2026-01-15",exp:null},{name:"Job Order",status:"Complete",date:"2026-01-28",exp:null},{name:"Employment Contract",status:"Complete",date:"2026-01-30",exp:null},{name:"OEC",status:"Complete",date:"2026-02-18",exp:"2027-02-18"},{name:"OWWA",status:"Complete",date:"2026-02-18",exp:"2027-02-18"},{name:"PDOS",status:"Pending",date:null,exp:null},{name:"Medical",status:"Complete",date:"2026-02-22",exp:"2027-02-22"},{name:"Type D Visa",status:"Pending",date:null,exp:null},{name:"Residence Permit",status:"Pending",date:null,exp:null},{name:"EFKA",status:"Pending",date:null,exp:null},{name:"AFM",status:"Pending",date:null,exp:null}]},
+  {worker:"Anna Lim",app:"HB-2026-0089",docs:[{name:"Recruitment Agreement",status:"Complete",date:"2026-02-25",exp:null},{name:"Job Order",status:"Pending",date:null,exp:null},{name:"Employment Contract",status:"Pending",date:null,exp:null},{name:"OEC",status:"Pending",date:null,exp:null},{name:"OWWA",status:"Pending",date:null,exp:null},{name:"PDOS",status:"Pending",date:null,exp:null},{name:"Medical",status:"Pending",date:null,exp:null},{name:"Type D Visa",status:"Pending",date:null,exp:null},{name:"Residence Permit",status:"Pending",date:null,exp:null},{name:"EFKA",status:"Pending",date:null,exp:null},{name:"AFM",status:"Pending",date:null,exp:null}]}
+];
+let docFilter='all';
+function filterDocs(f,btn){
+  docFilter=f;document.querySelectorAll('.doc-filter').forEach(b=>{b.classList.remove('active','btn-p');b.classList.add('btn-g')});btn.classList.add('active','btn-p');btn.classList.remove('btn-g');renderDocuments();
+}
+function renderDocuments(){
+  let html='<table style="width:100%;border-collapse:collapse;font-size:13px"><thead><tr><th style="padding:12px 14px;text-align:left;font-size:12px;border-bottom:2px solid var(--g200)">Worker</th><th style="padding:12px 14px;text-align:left;font-size:12px;border-bottom:2px solid var(--g200)">App ID</th><th style="padding:12px 14px;text-align:left;font-size:12px;border-bottom:2px solid var(--g200)">Document</th><th style="padding:12px 14px;text-align:left;font-size:12px;border-bottom:2px solid var(--g200)">Status</th><th style="padding:12px 14px;text-align:left;font-size:12px;border-bottom:2px solid var(--g200)">Date</th><th style="padding:12px 14px;text-align:left;font-size:12px;border-bottom:2px solid var(--g200)">Expires</th><th style="padding:12px 14px;border-bottom:2px solid var(--g200)"></th></tr></thead><tbody>';
+  docRecords.forEach(wr=>{
+    const docs=wr.docs.filter(d=>{
+      if(docFilter==='complete')return d.status==='Complete';
+      if(docFilter==='pending')return d.status==='Pending';
+      if(docFilter==='expired')return d.exp&&new Date(d.exp)<new Date('2027-06-01');
+      return true;
+    });
+    docs.forEach((d,i)=>{
+      const stStyle=d.status==='Complete'?'background:#D1FAE5;color:#065F46':'background:#FEF3C7;color:#92400E';
+      html+=`<tr><td style="padding:10px 14px;border-bottom:1px solid var(--g100);font-weight:${i===0?'600':'400'};color:var(--g800)">${i===0?wr.worker:''}</td><td style="padding:10px 14px;border-bottom:1px solid var(--g100);font-family:monospace;font-size:12px;color:var(--g400)">${i===0?wr.app:''}</td><td style="padding:10px 14px;border-bottom:1px solid var(--g100);color:var(--g700)">${d.name}</td><td style="padding:10px 14px;border-bottom:1px solid var(--g100)"><span class="badge" style="${stStyle}">${d.status}</span></td><td style="padding:10px 14px;border-bottom:1px solid var(--g100);color:var(--g500)">${d.date||'—'}</td><td style="padding:10px 14px;border-bottom:1px solid var(--g100);color:var(--g500)">${d.exp||'—'}</td><td style="padding:10px 14px;border-bottom:1px solid var(--g100)"><button class="btn btn-g" style="font-size:11px;padding:4px 10px" onclick="alert('Demo: ${d.status==='Complete'?'Download':'Upload'} ${d.name}')">${d.status==='Complete'?'📥':'📤'}</button></td></tr>`;
+    });
+  });
+  html+='</tbody></table>';
+  document.getElementById('docs-table-wrap').innerHTML=html;
+}
+
+// ═══ MESSAGING ═══
+const conversations=[
+  {id:1,name:"Nikos Papadopoulos",role:"Athens Grand Hotel · Employer",avatar:"NP",unread:2,msgs:[
+    {from:"nikos",text:"Hello, I need 2 more housekeepers for the summer season. Can you help?",time:"Mar 18, 10:30"},
+    {from:"admin",text:"Hi Nikos! Absolutely. We have 8 ready housekeepers in our pool. I'll send you a shortlist by tomorrow.",time:"Mar 18, 11:15"},
+    {from:"nikos",text:"That would be great. We need them by May at the latest.",time:"Mar 18, 11:20"},
+    {from:"nikos",text:"Also, can you include candidates with hotel experience specifically?",time:"Mar 18, 11:22"}
+  ]},
+  {id:2,name:"Maria Reyes",role:"Housekeeper · Deployed",avatar:"MR",unread:0,msgs:[
+    {from:"maria",text:"Hi, I arrived in Athens safely. The hotel staff was very welcoming!",time:"Mar 1, 18:00"},
+    {from:"admin",text:"Welcome to Greece, Maria! So glad to hear that. How is the accommodation?",time:"Mar 1, 18:30"},
+    {from:"maria",text:"Very good, thank you. The room is nice and close to work.",time:"Mar 1, 19:00"},
+    {from:"admin",text:"Perfect. Remember, we're here if you need anything. Your 90-day check-in is scheduled for May 30.",time:"Mar 2, 09:00"}
+  ]},
+  {id:3,name:"Elena Petridou",role:"Thessaloniki Care · Employer",avatar:"EP",unread:1,msgs:[
+    {from:"elena",text:"When can we expect Anna Lim's interview to be completed?",time:"Mar 15, 14:00"},
+    {from:"admin",text:"The video interview is scheduled for March 18. You'll receive the recording and evaluation within 24 hours after.",time:"Mar 15, 14:45"},
+    {from:"elena",text:"Perfect. We really need her to start by June.",time:"Mar 17, 09:00"}
+  ]},
+  {id:4,name:"Jose Cruz",role:"Line Cook · Visa Pending",avatar:"JC",unread:0,msgs:[
+    {from:"jose",text:"Any update on my visa application?",time:"Mar 12, 10:00"},
+    {from:"admin",text:"Hi Jose, your Type D visa was submitted to the Greek Consulate on March 5. Typical processing is 2-4 weeks. We'll update you as soon as we hear back.",time:"Mar 12, 10:30"},
+    {from:"jose",text:"Thank you. I'm very excited about this opportunity!",time:"Mar 12, 11:00"}
+  ]}
+];
+let activeConv=0;
+function renderMessaging(){
+  renderMsgList('');
+  renderMsgBody(0);
+}
+function renderMsgList(filter){
+  const f=filter.toLowerCase();
+  document.getElementById('msg-list').innerHTML=conversations.filter(c=>c.name.toLowerCase().includes(f)).map((c,i)=>`<div onclick="renderMsgBody(${i})" style="padding:14px 16px;border-bottom:1px solid var(--g100);cursor:pointer;background:${activeConv===i?'var(--g50)':'transparent'};display:flex;align-items:center;gap:12px"><div class="sb-avatar" style="width:38px;height:38px;font-size:13px;flex-shrink:0">${c.avatar}</div><div style="flex:1;min-width:0"><div style="display:flex;justify-content:space-between"><span style="font-size:14px;font-weight:600;color:var(--g800);white-space:nowrap;overflow:hidden;text-overflow:ellipsis">${c.name}</span>${c.unread?`<span style="background:var(--blue);color:#fff;font-size:11px;font-weight:700;width:20px;height:20px;border-radius:50%;display:flex;align-items:center;justify-content:center;flex-shrink:0">${c.unread}</span>`:''}</div><div style="font-size:12px;color:var(--g400);white-space:nowrap;overflow:hidden;text-overflow:ellipsis">${c.msgs[c.msgs.length-1].text.slice(0,40)}...</div></div></div>`).join('');
+}
+function filterMsgs(v){renderMsgList(v)}
+function renderMsgBody(idx){
+  activeConv=idx;
+  const c=conversations[idx];
+  c.unread=0;
+  document.getElementById('msg-avatar').textContent=c.avatar;
+  document.getElementById('msg-name').textContent=c.name;
+  document.getElementById('msg-role').textContent=c.role;
+  document.getElementById('msg-body').innerHTML=c.msgs.map(m=>`<div style="display:flex;${m.from==='admin'?'justify-content:flex-end':''}"><div style="max-width:70%;padding:12px 16px;border-radius:16px;${m.from==='admin'?'background:var(--blue);color:#fff;border-bottom-right-radius:4px':'background:var(--g100);color:var(--g800);border-bottom-left-radius:4px'}"><div style="font-size:14px;line-height:1.5">${m.text}</div><div style="font-size:11px;${m.from==='admin'?'color:rgba(255,255,255,.6)':'color:var(--g400)'};margin-top:4px">${m.time}</div></div></div>`).join('');
+  renderMsgList('');
+  const body=document.getElementById('msg-body');
+  body.scrollTop=body.scrollHeight;
+}
+function sendMsg(){
+  const input=document.getElementById('msg-input');
+  const text=input.value.trim();
+  if(!text)return;
+  conversations[activeConv].msgs.push({from:'admin',text,time:'Just now'});
+  input.value='';
+  renderMsgBody(activeConv);
+}
+
+// ═══ SETTINGS ═══
+function renderSettings(){
+  const notifs=[
+    {label:"New employer registration",desc:"Email when a new employer signs up",checked:true},
+    {label:"Application stage changes",desc:"Notify on pipeline progress",checked:true},
+    {label:"Document uploads",desc:"Alert when workers upload documents",checked:true},
+    {label:"Visa status updates",desc:"Notify on visa processing changes",checked:true},
+    {label:"Worker deployment alerts",desc:"Email when worker arrives in Greece",checked:true},
+    {label:"Weekly summary report",desc:"Automated weekly KPI email",checked:false},
+    {label:"Message notifications",desc:"Email on new platform messages",checked:false}
+  ];
+  document.getElementById('notif-settings').innerHTML=notifs.map((n,i)=>`<div style="display:flex;justify-content:space-between;align-items:center;padding:12px;background:var(--g50);border-radius:10px;margin-bottom:8px"><div><div style="font-size:14px;font-weight:500;color:var(--g800)">${n.label}</div><div style="font-size:12px;color:var(--g500)">${n.desc}</div></div><input type="checkbox" ${n.checked?'checked':''} style="width:18px;height:18px;accent-color:var(--blue)"></div>`).join('');
 }
 
 // ═══ INIT ═══
