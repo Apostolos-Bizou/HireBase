@@ -667,46 +667,46 @@ document.querySelectorAll('.glass-light,.glass-dark,.glass-blue,.glass-strong,.d
 document.getElementById('contactForm').addEventListener('submit',function(e){e.preventDefault();const b=this.querySelector('button[type="submit"]'),o=b.innerHTML;b.innerHTML='&#10003; Sent!';b.style.background='var(--green)';b.disabled=true;setTimeout(()=>{b.innerHTML=o;b.style.background='';b.disabled=false;this.reset()},3000)});
 
 // ═══ PWA INSTALL PROMPT ═══
-let deferredPrompt=null;
-const installBanner=document.getElementById('installBanner');
-const installDismissed=sessionStorage.getItem('hb-install-dismissed');
+var deferredPrompt = null;
+var installBanner = document.getElementById('installBanner');
 
-window.addEventListener('beforeinstallprompt',function(e){
+window.addEventListener('beforeinstallprompt', function(e) {
   e.preventDefault();
-  deferredPrompt=e;
-  if(!installDismissed)showInstallBanner();
+  deferredPrompt = e;
+  console.log('[HireBase] Install prompt ready');
+  if(installBanner) installBanner.classList.add('show');
 });
 
-function showInstallBanner(){if(installBanner)installBanner.classList.add('show')}
+window.addEventListener('appinstalled', function() {
+  console.log('[HireBase] App installed!');
+  if(installBanner) installBanner.classList.remove('show');
+  deferredPrompt = null;
+});
 
-function installApp(){
-  if(deferredPrompt){
+function installApp() {
+  if (deferredPrompt) {
     deferredPrompt.prompt();
-    deferredPrompt.userChoice.then(function(r){
-      if(r.outcome==='accepted')hideInstallBanner();
-      deferredPrompt=null;
+    deferredPrompt.userChoice.then(function(result) {
+      console.log('[HireBase] Install choice:', result.outcome);
+      if(installBanner) installBanner.classList.remove('show');
+      deferredPrompt = null;
     });
-  } else {
-    // Fallback for iOS / browsers that don't support beforeinstallprompt
-    hideInstallBanner();
   }
 }
 
-function hideInstallBanner(){
-  if(installBanner)installBanner.classList.remove('show');
-  try{sessionStorage.setItem('hb-install-dismissed','1')}catch(e){}
+function hideInstallBanner() {
+  if(installBanner) installBanner.classList.remove('show');
 }
-
-// Show banner after 3 seconds for first-time visitors (even without beforeinstallprompt for demo)
-setTimeout(function(){
-  if(!installDismissed && !window.matchMedia('(display-mode:standalone)').matches){
-    showInstallBanner();
-  }
-},3000);
 
 // Register service worker
-if('serviceWorker' in navigator){
-  navigator.serviceWorker.register('sw.js').catch(function(){});
+if ('serviceWorker' in navigator) {
+  window.addEventListener('load', function() {
+    navigator.serviceWorker.register('./sw.js').then(function(reg) {
+      console.log('[HireBase] SW registered:', reg.scope);
+    }).catch(function(err) {
+      console.log('[HireBase] SW failed:', err);
+    });
+  });
 }
 </script>
 
