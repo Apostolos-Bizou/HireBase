@@ -1,9 +1,11 @@
-const CACHE_NAME = 'hirebase-v1';
+const CACHE_NAME = 'hirebase-v2';
 const urlsToCache = [
   './',
   './index.html',
   './admin.html',
-  './manifest.json'
+  './manifest.json',
+  './icon-192.png',
+  './icon-512.png'
 ];
 
 self.addEventListener('install', event => {
