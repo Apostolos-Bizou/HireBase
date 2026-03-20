@@ -608,65 +608,181 @@ tr:last-child td{border-bottom:none}
     <!-- ═══ WORKER: MY PROFILE ═══ -->
     <div class="page" id="pg-worker-profile">
       <h2 class="page-title">My Profile</h2>
-      <p style="font-size:14px;color:var(--g500);margin-bottom:24px">Complete your profile to get matched with employers. The more complete, the higher your match score.</p>
-      <div style="display:grid;grid-template-columns:2fr 1fr;gap:24px">
+      <p style="font-size:14px;color:var(--g500);margin-bottom:24px">Build your complete professional profile. The more detailed your profile, the higher your match score and the better your chances with employers.</p>
+      <div style="display:grid;grid-template-columns:5fr 2fr;gap:24px">
         <div>
-          <!-- Profile Form -->
+
+          <!-- ══ PHOTO + BASIC IDENTITY ══ -->
           <div style="background:var(--w);border:1px solid var(--g200);border-radius:16px;padding:28px;margin-bottom:20px">
-            <h3 style="font-family:var(--heading);font-size:16px;font-weight:700;color:var(--g800);margin-bottom:20px">Personal Information</h3>
-            <div style="display:grid;grid-template-columns:1fr 1fr;gap:14px">
-              <div class="form-g"><label>Full Name</label><input id="wp-name" placeholder="Your full name"></div>
-              <div class="form-g"><label>Email</label><input id="wp-email" type="email" placeholder="you@email.com"></div>
-              <div class="form-g"><label>Phone</label><input id="wp-phone" type="tel" placeholder="+63 XXX XXX XXXX"></div>
-              <div class="form-g"><label>Location (Philippines)</label><input id="wp-loc" placeholder="Manila, Cebu, Davao..."></div>
-              <div class="form-g"><label>Date of Birth</label><input id="wp-dob" type="date"></div>
+            <h3 style="font-family:var(--heading);font-size:16px;font-weight:700;color:var(--g800);margin-bottom:20px">📸 Photo & Identity</h3>
+            <div style="display:flex;gap:24px;align-items:flex-start">
+              <div style="flex-shrink:0;text-align:center">
+                <div id="wp-photo-preview" style="width:120px;height:120px;border-radius:50%;background:linear-gradient(135deg,var(--blue),var(--blue-l));display:flex;align-items:center;justify-content:center;font-size:36px;font-weight:700;color:#fff;overflow:hidden;cursor:pointer;border:3px solid var(--g200)" onclick="document.getElementById('wp-photo-input').click()">
+                  <span id="wp-photo-initials">—</span>
+                </div>
+                <input type="file" id="wp-photo-input" accept="image/*" style="display:none" onchange="handleWpPhoto(this.files[0])">
+                <div style="font-size:11px;color:var(--g400);margin-top:8px">Click to upload photo</div>
+              </div>
+              <div style="flex:1">
+                <div style="display:grid;grid-template-columns:1fr 1fr;gap:14px">
+                  <div class="form-g"><label>First Name</label><input id="wp-fname" placeholder="Juan"></div>
+                  <div class="form-g"><label>Last Name</label><input id="wp-lname" placeholder="Dela Cruz"></div>
+                  <div class="form-g"><label>Email</label><input id="wp-email" type="email" placeholder="juan@email.com"></div>
+                  <div class="form-g"><label>Phone</label><input id="wp-phone" type="tel" placeholder="+63 917 123 4567"></div>
+                  <div class="form-g"><label>Date of Birth</label><input id="wp-dob" type="date"></div>
+                  <div class="form-g"><label>Gender</label><select id="wp-gender"><option value="">Select...</option><option>Male</option><option>Female</option><option>Prefer not to say</option></select></div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- ══ PERSONAL DETAILS ══ -->
+          <div style="background:var(--w);border:1px solid var(--g200);border-radius:16px;padding:28px;margin-bottom:20px">
+            <h3 style="font-family:var(--heading);font-size:16px;font-weight:700;color:var(--g800);margin-bottom:20px">📋 Personal Details</h3>
+            <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:14px">
               <div class="form-g"><label>Nationality</label><input id="wp-nationality" value="Filipino" placeholder="Filipino"></div>
+              <div class="form-g"><label>Civil Status</label><select id="wp-civil"><option>Single</option><option>Married</option><option>Widowed</option><option>Separated</option></select></div>
+              <div class="form-g"><label>Number of Dependents</label><input id="wp-dependents" type="number" min="0" placeholder="0"></div>
+              <div class="form-g"><label>Current City</label><input id="wp-city" placeholder="Manila, Cebu, Davao..."></div>
+              <div class="form-g"><label>Province / Region</label><input id="wp-province" placeholder="NCR, Cebu, Davao del Sur..."></div>
+              <div class="form-g"><label>Full Address</label><input id="wp-address" placeholder="Complete address"></div>
+              <div class="form-g"><label>Passport Number</label><input id="wp-passport" placeholder="P1234567A"></div>
+              <div class="form-g"><label>Passport Expiry</label><input id="wp-passport-exp" type="date"></div>
+              <div class="form-g"><label>Religion</label><input id="wp-religion" placeholder="Optional"></div>
             </div>
           </div>
+
+          <!-- ══ AVAILABILITY & RELOCATION ══ -->
           <div style="background:var(--w);border:1px solid var(--g200);border-radius:16px;padding:28px;margin-bottom:20px">
-            <h3 style="font-family:var(--heading);font-size:16px;font-weight:700;color:var(--g800);margin-bottom:20px">Professional Details</h3>
-            <div style="display:grid;grid-template-columns:1fr 1fr;gap:14px">
-              <div class="form-g"><label>Preferred Role</label><select id="wp-role"><option>Housekeeper</option><option>Line Cook</option><option>Waiter/Server</option><option>Care Worker</option><option>Front Desk</option><option>Cleaner</option><option>Electrician</option><option>Nursing Aide</option><option>Barista</option><option>Plumber</option><option>Laundry Staff</option><option>Farm Worker</option></select></div>
-              <div class="form-g"><label>Preferred Sector</label><select id="wp-sector"><option>Hospitality</option><option>F&B</option><option>Care Services</option><option>Housekeeping</option><option>Construction</option><option>Retail</option></select></div>
-              <div class="form-g"><label>Years of Experience</label><select id="wp-exp"><option>Less than 1 year</option><option>1–2 years</option><option>3–5 years</option><option>5–10 years</option><option>10+ years</option></select></div>
-              <div class="form-g"><label>English Level</label><select id="wp-eng"><option>A1 — Beginner</option><option>A2 — Elementary</option><option>B1 — Intermediate</option><option>B2 — Upper Intermediate</option><option>C1 — Advanced</option><option>C2 — Fluent</option></select></div>
+            <h3 style="font-family:var(--heading);font-size:16px;font-weight:700;color:var(--g800);margin-bottom:20px">✈️ Availability & Relocation</h3>
+            <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:14px">
+              <div class="form-g"><label>Availability</label><select id="wp-avail"><option>Immediately</option><option>Within 2 weeks</option><option>Within 1 month</option><option>Within 2 months</option><option>Within 3 months</option><option>Flexible</option></select></div>
+              <div class="form-g"><label>Preferred Employment</label><select id="wp-emp-type"><option>Full-time permanent</option><option>Seasonal (tourism)</option><option>Contract (fixed-term)</option><option>Any</option></select></div>
+              <div class="form-g"><label>Willing to Relocate</label><select id="wp-relocate"><option>Yes — anywhere in Greece</option><option>Yes — specific regions only</option><option>Islands only</option><option>Mainland only</option></select></div>
+              <div class="form-g"><label>Preferred Region (Greece)</label><select id="wp-pref-region"><option>Any region</option><option>Attica (Athens)</option><option>Central Macedonia (Thessaloniki)</option><option>Crete</option><option>South Aegean (Islands)</option><option>Ionian Islands</option><option>Peloponnese</option><option>Thessaly</option></select></div>
+              <div class="form-g"><label>Minimum Salary (€/month)</label><input id="wp-salary" type="number" placeholder="800"></div>
+              <div class="form-g"><label>Previous Overseas Work</label><select id="wp-overseas"><option>No — first time abroad</option><option>Yes — in Greece</option><option>Yes — in Europe (other)</option><option>Yes — in Middle East</option><option>Yes — in Asia</option><option>Yes — multiple countries</option></select></div>
             </div>
-            <div class="form-g" style="margin-top:14px"><label>Skills & Qualifications</label><textarea id="wp-skills" rows="3" style="width:100%;padding:10px;border:1px solid var(--g200);border-radius:8px;font-size:13px;background:var(--g50);resize:vertical;font-family:var(--body)" placeholder="e.g. TESDA certified, housekeeping experience at 5-star hotels, basic Greek language..."></textarea></div>
           </div>
-          <!-- CV Upload -->
-          <div style="background:var(--w);border:1px solid var(--g200);border-radius:16px;padding:28px">
-            <h3 style="font-family:var(--heading);font-size:16px;font-weight:700;color:var(--g800);margin-bottom:6px">Upload CV / Resume</h3>
-            <p style="font-size:13px;color:var(--g400);margin-bottom:16px">PDF or Word format, max 5MB</p>
+
+          <!-- ══ PROFESSIONAL EXPERIENCE ══ -->
+          <div style="background:var(--w);border:1px solid var(--g200);border-radius:16px;padding:28px;margin-bottom:20px">
+            <h3 style="font-family:var(--heading);font-size:16px;font-weight:700;color:var(--g800);margin-bottom:6px">💼 Professional Experience</h3>
+            <p style="font-size:13px;color:var(--g400);margin-bottom:16px">Add your work history — most recent first. This is critical for employer evaluation.</p>
+            <div id="wp-exp-list"></div>
+            <button class="btn btn-g" style="margin-top:12px" onclick="addWpExpSlot()">+ Add Work Experience</button>
+          </div>
+
+          <!-- ══ PREFERRED ROLES & SKILLS ══ -->
+          <div style="background:var(--w);border:1px solid var(--g200);border-radius:16px;padding:28px;margin-bottom:20px">
+            <h3 style="font-family:var(--heading);font-size:16px;font-weight:700;color:var(--g800);margin-bottom:20px">🎯 Preferred Roles & Skills</h3>
+            <div style="display:grid;grid-template-columns:1fr 1fr;gap:14px">
+              <div class="form-g"><label>Primary Role</label><select id="wp-role1"><option>Housekeeper</option><option>Line Cook</option><option>Waiter/Server</option><option>Care Worker</option><option>Front Desk</option><option>Cleaner</option><option>Electrician</option><option>Nursing Aide</option><option>Barista</option><option>Plumber</option><option>Laundry Staff</option><option>Farm Worker</option></select></div>
+              <div class="form-g"><label>Secondary Role</label><select id="wp-role2"><option value="">None</option><option>Housekeeper</option><option>Line Cook</option><option>Waiter/Server</option><option>Care Worker</option><option>Front Desk</option><option>Cleaner</option><option>Electrician</option><option>Nursing Aide</option><option>Barista</option><option>Plumber</option><option>Laundry Staff</option><option>Farm Worker</option></select></div>
+              <div class="form-g"><label>Preferred Sector</label><select id="wp-sector"><option>Hospitality</option><option>F&B</option><option>Care Services</option><option>Housekeeping</option><option>Construction</option><option>Retail & Agriculture</option></select></div>
+              <div class="form-g"><label>Years of Total Experience</label><select id="wp-exp-years"><option>Less than 1 year</option><option>1–2 years</option><option>3–5 years</option><option>5–10 years</option><option>10+ years</option></select></div>
+            </div>
+            <div class="form-g" style="margin-top:14px"><label>Key Skills & Specializations</label><textarea id="wp-skills" rows="3" style="width:100%;padding:10px;border:1px solid var(--g200);border-radius:8px;font-size:13px;background:var(--g50);resize:vertical;font-family:var(--body)" placeholder="e.g. 5-star hotel housekeeping, international cuisine cooking, elderly patient care, electrical wiring, TESDA certified..."></textarea></div>
+          </div>
+
+          <!-- ══ EDUCATION & CERTIFICATIONS ══ -->
+          <div style="background:var(--w);border:1px solid var(--g200);border-radius:16px;padding:28px;margin-bottom:20px">
+            <h3 style="font-family:var(--heading);font-size:16px;font-weight:700;color:var(--g800);margin-bottom:6px">🎓 Education & Certifications</h3>
+            <p style="font-size:13px;color:var(--g400);margin-bottom:16px">Formal education, TESDA qualifications, and professional certifications.</p>
+            <div style="display:grid;grid-template-columns:1fr 1fr;gap:14px">
+              <div class="form-g"><label>Highest Education</label><select id="wp-edu"><option>Elementary</option><option>High School</option><option>Vocational / TESDA</option><option>College (2-year)</option><option>College (4-year / Bachelor)</option><option>Master's Degree</option></select></div>
+              <div class="form-g"><label>School / University</label><input id="wp-school" placeholder="Name of institution"></div>
+              <div class="form-g"><label>Course / Program</label><input id="wp-course" placeholder="e.g. HRM, Nursing, Electrical Tech"></div>
+              <div class="form-g"><label>Year Graduated</label><input id="wp-grad-year" type="number" min="1970" max="2026" placeholder="2020"></div>
+            </div>
+            <div class="form-g" style="margin-top:14px"><label>TESDA & Professional Certifications</label><textarea id="wp-certs" rows="3" style="width:100%;padding:10px;border:1px solid var(--g200);border-radius:8px;font-size:13px;background:var(--g50);resize:vertical;font-family:var(--body)" placeholder="e.g. NC II Housekeeping, NC II Cookery, Caregiver Certificate, First Aid, Food Safety..."></textarea></div>
+          </div>
+
+          <!-- ══ LANGUAGES ══ -->
+          <div style="background:var(--w);border:1px solid var(--g200);border-radius:16px;padding:28px;margin-bottom:20px">
+            <h3 style="font-family:var(--heading);font-size:16px;font-weight:700;color:var(--g800);margin-bottom:20px">🌍 Languages</h3>
+            <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:14px">
+              <div class="form-g"><label>Filipino / Tagalog</label><select id="wp-lang-fil"><option>Native</option><option>Fluent</option></select></div>
+              <div class="form-g"><label>English Level</label><select id="wp-eng"><option>A1 — Beginner</option><option>A2 — Elementary</option><option>B1 — Intermediate</option><option>B2 — Upper Intermediate</option><option>C1 — Advanced</option><option>C2 — Fluent / Native</option></select></div>
+              <div class="form-g"><label>Greek Level</label><select id="wp-lang-gr"><option>None</option><option>A1 — Basic words</option><option>A2 — Basic phrases</option><option>B1 — Conversational</option><option>B2+ — Fluent</option></select></div>
+            </div>
+            <div class="form-g" style="margin-top:14px"><label>Other Languages</label><input id="wp-lang-other" placeholder="e.g. Arabic (B1), Japanese (A2), Spanish (B1)..."></div>
+          </div>
+
+          <!-- ══ CV & DOCUMENTS UPLOAD ══ -->
+          <div style="background:var(--w);border:1px solid var(--g200);border-radius:16px;padding:28px;margin-bottom:20px">
+            <h3 style="font-family:var(--heading);font-size:16px;font-weight:700;color:var(--g800);margin-bottom:6px">📄 CV / Resume Upload</h3>
+            <p style="font-size:13px;color:var(--g400);margin-bottom:16px">Upload your CV in PDF or Word format. This will be shared with matching employers.</p>
             <div id="wp-cv-zone" style="border:2px dashed var(--g300);border-radius:12px;padding:40px;text-align:center;cursor:pointer;transition:all .2s" onclick="document.getElementById('wp-cv-input').click()" ondragover="event.preventDefault();this.style.borderColor='var(--blue)';this.style.background='rgba(37,99,235,.03)'" ondragleave="this.style.borderColor='var(--g300)';this.style.background=''" ondrop="event.preventDefault();this.style.borderColor='var(--g300)';this.style.background='';handleCVUpload(event.dataTransfer.files[0])">
               <div style="font-size:36px;margin-bottom:12px">📄</div>
               <div style="font-size:14px;font-weight:600;color:var(--g700)">Drag & drop your CV here</div>
-              <div style="font-size:12px;color:var(--g400);margin-top:4px">or click to browse</div>
+              <div style="font-size:12px;color:var(--g400);margin-top:4px">PDF, DOC, DOCX — max 5MB</div>
               <input type="file" id="wp-cv-input" accept=".pdf,.doc,.docx" style="display:none" onchange="handleCVUpload(this.files[0])">
             </div>
             <div id="wp-cv-status" style="margin-top:12px;display:none"></div>
           </div>
-          <div style="margin-top:20px;display:flex;gap:12px;justify-content:flex-end">
+
+          <!-- ══ SOCIAL & LINKS ══ -->
+          <div style="background:var(--w);border:1px solid var(--g200);border-radius:16px;padding:28px;margin-bottom:20px">
+            <h3 style="font-family:var(--heading);font-size:16px;font-weight:700;color:var(--g800);margin-bottom:6px">🔗 Social Media & Links</h3>
+            <p style="font-size:13px;color:var(--g400);margin-bottom:16px">Optional — add links that support your application (portfolio, references, social profiles).</p>
+            <div style="display:grid;grid-template-columns:1fr 1fr;gap:14px">
+              <div class="form-g"><label>Facebook</label><input id="wp-fb" type="url" placeholder="https://facebook.com/yourprofile"></div>
+              <div class="form-g"><label>LinkedIn</label><input id="wp-linkedin" type="url" placeholder="https://linkedin.com/in/yourprofile"></div>
+              <div class="form-g"><label>Instagram</label><input id="wp-ig" type="url" placeholder="https://instagram.com/yourprofile"></div>
+              <div class="form-g"><label>TikTok</label><input id="wp-tiktok" type="url" placeholder="https://tiktok.com/@yourprofile"></div>
+              <div class="form-g"><label>YouTube / Portfolio</label><input id="wp-portfolio" type="url" placeholder="Video portfolio or work samples"></div>
+              <div class="form-g"><label>Other Link</label><input id="wp-other-link" type="url" placeholder="Any other relevant link"></div>
+            </div>
+          </div>
+
+          <!-- ══ ADDITIONAL NOTES ══ -->
+          <div style="background:var(--w);border:1px solid var(--g200);border-radius:16px;padding:28px;margin-bottom:20px">
+            <h3 style="font-family:var(--heading);font-size:16px;font-weight:700;color:var(--g800);margin-bottom:6px">📝 Additional Information</h3>
+            <p style="font-size:13px;color:var(--g400);margin-bottom:16px">Anything else you want employers to know — special abilities, medical conditions, preferences, personal statement.</p>
+            <textarea id="wp-notes" rows="4" style="width:100%;padding:12px;border:1px solid var(--g200);border-radius:8px;font-size:13px;background:var(--g50);resize:vertical;font-family:var(--body)" placeholder="Write a brief personal statement or add any additional information relevant to your application..."></textarea>
+          </div>
+
+          <div style="display:flex;gap:12px;justify-content:flex-end">
             <button class="btn btn-p" onclick="saveWorkerProfile()">💾 Save Profile</button>
           </div>
         </div>
-        <!-- Profile Card Preview -->
+
+        <!-- ══ PROFILE PREVIEW CARD ══ -->
         <div>
-          <div style="background:var(--w);border:1px solid var(--g200);border-radius:16px;padding:28px;position:sticky;top:20px">
-            <div style="text-align:center;margin-bottom:20px">
-              <div id="wp-avatar" style="width:72px;height:72px;border-radius:50%;background:linear-gradient(135deg,var(--blue),var(--blue-l));display:flex;align-items:center;justify-content:center;font-size:24px;font-weight:700;color:#fff;margin:0 auto 12px">—</div>
-              <div id="wp-preview-name" style="font-family:var(--heading);font-size:18px;font-weight:700;color:var(--g800)">Your Name</div>
-              <div id="wp-preview-role" style="font-size:13px;color:var(--g500);margin-top:2px">Preferred Role</div>
-            </div>
-            <div style="font-size:12px;font-weight:600;text-transform:uppercase;color:var(--blue);letter-spacing:1px;margin-bottom:10px">Profile Completeness</div>
-            <div style="height:8px;background:var(--g100);border-radius:4px;overflow:hidden;margin-bottom:6px"><div id="wp-completeness" style="height:100%;background:var(--green);border-radius:4px;width:0%;transition:width .5s"></div></div>
-            <div id="wp-completeness-pct" style="font-size:13px;font-weight:600;color:var(--g500);text-align:right">0%</div>
-            <div style="border-top:1px solid var(--g200);margin:16px 0;padding-top:16px">
-              <div style="font-size:12px;font-weight:600;text-transform:uppercase;color:var(--g400);letter-spacing:1px;margin-bottom:10px">Verification Score</div>
-              <div id="wp-score" style="font-family:var(--heading);font-size:28px;font-weight:800;color:var(--blue)">—</div>
-            </div>
-            <div style="border-top:1px solid var(--g200);margin:16px 0;padding-top:16px">
-              <div style="font-size:12px;font-weight:600;text-transform:uppercase;color:var(--g400);letter-spacing:1px;margin-bottom:10px">Documents</div>
-              <div id="wp-doc-badges" style="display:flex;flex-wrap:wrap;gap:6px"></div>
+          <div style="background:var(--w);border:1px solid var(--g200);border-radius:16px;overflow:hidden;position:sticky;top:20px">
+            <div id="wp-card-banner" style="height:80px;background:linear-gradient(135deg,var(--blue),var(--navy))"></div>
+            <div style="padding:0 24px 24px;margin-top:-36px">
+              <div id="wp-card-avatar" style="width:72px;height:72px;border-radius:50%;background:linear-gradient(135deg,var(--blue),var(--blue-l));display:flex;align-items:center;justify-content:center;font-size:24px;font-weight:700;color:#fff;border:3px solid var(--w);overflow:hidden">—</div>
+              <div id="wp-card-name" style="font-family:var(--heading);font-size:18px;font-weight:700;color:var(--g800);margin-top:10px">Your Name</div>
+              <div id="wp-card-role" style="font-size:13px;color:var(--blue);font-weight:600">Primary Role</div>
+              <div id="wp-card-loc" style="font-size:12px;color:var(--g400);margin-top:4px">📍 Location</div>
+
+              <div style="border-top:1px solid var(--g200);margin:16px 0;padding-top:14px">
+                <div style="font-size:11px;font-weight:600;text-transform:uppercase;color:var(--blue);letter-spacing:1px;margin-bottom:8px">Profile Completeness</div>
+                <div style="height:8px;background:var(--g100);border-radius:4px;overflow:hidden;margin-bottom:4px"><div id="wp-completeness" style="height:100%;background:var(--green);border-radius:4px;width:0%;transition:width .5s"></div></div>
+                <div id="wp-completeness-pct" style="font-size:12px;font-weight:600;color:var(--g500);text-align:right">0%</div>
+              </div>
+
+              <div style="border-top:1px solid var(--g200);margin:14px 0;padding-top:14px">
+                <div style="font-size:11px;font-weight:600;text-transform:uppercase;color:var(--g400);letter-spacing:1px;margin-bottom:8px">Match Score</div>
+                <div id="wp-score" style="font-family:var(--heading);font-size:28px;font-weight:800;color:var(--blue)">—</div>
+              </div>
+
+              <div style="border-top:1px solid var(--g200);margin:14px 0;padding-top:14px">
+                <div style="font-size:11px;font-weight:600;text-transform:uppercase;color:var(--g400);letter-spacing:1px;margin-bottom:8px">Quick Info</div>
+                <div id="wp-card-info" style="font-size:12px;color:var(--g500);line-height:1.8"></div>
+              </div>
+
+              <div style="border-top:1px solid var(--g200);margin:14px 0;padding-top:14px">
+                <div style="font-size:11px;font-weight:600;text-transform:uppercase;color:var(--g400);letter-spacing:1px;margin-bottom:8px">Documents</div>
+                <div id="wp-doc-badges" style="display:flex;flex-wrap:wrap;gap:6px"></div>
+              </div>
+
+              <div style="border-top:1px solid var(--g200);margin:14px 0;padding-top:14px">
+                <div style="font-size:11px;font-weight:600;text-transform:uppercase;color:var(--g400);letter-spacing:1px;margin-bottom:8px">Social Links</div>
+                <div id="wp-card-links" style="display:flex;gap:8px;flex-wrap:wrap"></div>
+              </div>
             </div>
           </div>
         </div>
@@ -1836,48 +1952,138 @@ function saveEmployerProfile(){
 }
 
 // ═══════════════════════════════════════════
-// WORKER MODULE: MY PROFILE
+// WORKER MODULE: MY PROFILE (comprehensive)
 // ═══════════════════════════════════════════
+var wpExperiences=[];
+var wpPhotoSrc=null;
+
 function renderWorkerProfile(){
-  // Pre-fill from currentUser if available
-  const n=document.getElementById('wp-name');
-  const e=document.getElementById('wp-email');
-  if(n&&!n.value&&currentUser)n.value=currentUser.name||'';
-  if(e&&!e.value&&currentUser)e.value=currentUser.email||'';
-  // Live preview updates
-  ['wp-name','wp-email','wp-phone','wp-loc','wp-role','wp-sector','wp-exp','wp-eng','wp-skills','wp-dob','wp-nationality'].forEach(function(id){
-    const el=document.getElementById(id);
-    if(el)el.addEventListener('input',updateProfilePreview);
+  // Pre-fill from currentUser
+  const fn=document.getElementById('wp-fname');
+  const em=document.getElementById('wp-email');
+  if(fn&&!fn.value&&currentUser){
+    const parts=(currentUser.name||'').split(' ');
+    fn.value=parts[0]||'';
+    const ln=document.getElementById('wp-lname');
+    if(ln&&!ln.value)ln.value=parts.slice(1).join(' ')||'';
+  }
+  if(em&&!em.value&&currentUser)em.value=currentUser.email||'';
+  renderWpExpList();
+  updateWpPreview();
+  // Live preview on all inputs
+  document.querySelectorAll('#pg-worker-profile input, #pg-worker-profile select, #pg-worker-profile textarea').forEach(function(el){
+    el.removeEventListener('input',updateWpPreview);
+    el.addEventListener('input',updateWpPreview);
   });
-  updateProfilePreview();
 }
-function updateProfilePreview(){
-  const name=document.getElementById('wp-name').value||'Your Name';
-  const role=document.getElementById('wp-role');
-  const roleVal=role?role.value:'';
-  document.getElementById('wp-avatar').textContent=name.split(' ').map(w=>w[0]).join('').slice(0,2).toUpperCase()||'—';
-  document.getElementById('wp-preview-name').textContent=name;
-  document.getElementById('wp-preview-role').textContent=roleVal;
+
+function updateWpPreview(){
+  const fname=(document.getElementById('wp-fname')||{}).value||'';
+  const lname=(document.getElementById('wp-lname')||{}).value||'';
+  const fullName=(fname+' '+lname).trim()||'Your Name';
+  const initials_str=fullName.split(' ').map(w=>w[0]).join('').slice(0,2).toUpperCase()||'—';
+  const role1=(document.getElementById('wp-role1')||{}).value||'';
+  const city=(document.getElementById('wp-city')||{}).value||'';
+
+  // Avatar / initials
+  const photoInit=document.getElementById('wp-photo-initials');
+  if(photoInit&&!wpPhotoSrc)photoInit.textContent=initials_str;
+  const cardAvatar=document.getElementById('wp-card-avatar');
+  if(cardAvatar){cardAvatar.innerHTML=wpPhotoSrc?'<img src="'+wpPhotoSrc+'" style="width:100%;height:100%;object-fit:cover">':initials_str}
+
+  // Card fields
+  const cn=document.getElementById('wp-card-name');if(cn)cn.textContent=fullName;
+  const cr=document.getElementById('wp-card-role');if(cr)cr.textContent=role1;
+  const cl=document.getElementById('wp-card-loc');if(cl)cl.innerHTML='📍 '+(city||'Location')+', Philippines';
+
   // Completeness
-  const fields=['wp-name','wp-email','wp-phone','wp-loc','wp-dob','wp-role','wp-sector','wp-exp','wp-eng'];
+  const checks=['wp-fname','wp-lname','wp-email','wp-phone','wp-dob','wp-city','wp-nationality','wp-role1','wp-sector','wp-exp-years','wp-eng','wp-skills','wp-edu','wp-avail'];
   let filled=0;
-  fields.forEach(function(id){const el=document.getElementById(id);if(el&&el.value&&el.value.trim())filled++});
+  checks.forEach(function(id){const el=document.getElementById(id);if(el&&el.value&&el.value.trim())filled++});
   const hasCv=document.getElementById('wp-cv-status')&&document.getElementById('wp-cv-status').style.display!=='none';
-  const hasSkills=document.getElementById('wp-skills')&&document.getElementById('wp-skills').value.trim();
-  const total=fields.length+2;
-  const complete=filled+(hasCv?1:0)+(hasSkills?1:0);
+  const hasPhoto=!!wpPhotoSrc;
+  const hasExp=wpExperiences.length>0;
+  const hasCerts=(document.getElementById('wp-certs')||{}).value;
+  const total=checks.length+4;
+  const complete=filled+(hasCv?1:0)+(hasPhoto?1:0)+(hasExp?1:0)+(hasCerts?1:0);
   const pct=Math.round(complete/total*100);
-  document.getElementById('wp-completeness').style.width=pct+'%';
-  document.getElementById('wp-completeness-pct').textContent=pct+'%';
-  // Score estimate
+  const bar=document.getElementById('wp-completeness');if(bar)bar.style.width=pct+'%';
+  const pctEl=document.getElementById('wp-completeness-pct');if(pctEl)pctEl.textContent=pct+'%';
+
+  // Score
   const score=Math.min(100,Math.round(pct*0.85+15));
-  document.getElementById('wp-score').textContent=pct>20?score+'/100':'—';
+  const scoreEl=document.getElementById('wp-score');if(scoreEl)scoreEl.textContent=pct>15?score+'/100':'—';
+
+  // Quick info
+  const info=document.getElementById('wp-card-info');
+  if(info){
+    const eng=(document.getElementById('wp-eng')||{}).value||'';
+    const exp=(document.getElementById('wp-exp-years')||{}).value||'';
+    const avail=(document.getElementById('wp-avail')||{}).value||'';
+    const sector=(document.getElementById('wp-sector')||{}).value||'';
+    info.innerHTML=[
+      eng?'🗣️ English: '+eng.split(' — ')[0]:'',
+      exp?'⏱️ Experience: '+exp:'',
+      sector?'🏷️ Sector: '+sector:'',
+      avail?'📅 Available: '+avail:'',
+    ].filter(Boolean).join('<br>');
+  }
+
   // Doc badges
   const badges=document.getElementById('wp-doc-badges');
   if(badges){
-    const docs=[{k:'OEC',done:false},{k:'OWWA',done:false},{k:'PDOS',done:false},{k:'Medical',done:false},{k:'Visa',done:false}];
-    badges.innerHTML=docs.map(d=>'<span class="badge" style="'+(d.done?'background:#D1FAE5;color:#065F46':'background:var(--g100);color:var(--g400)')+'">'+d.k+'</span>').join('');
+    badges.innerHTML=[{k:'OEC'},{k:'OWWA'},{k:'PDOS'},{k:'Medical'},{k:'Visa'},{k:'Passport',done:!!(document.getElementById('wp-passport')||{}).value}]
+      .map(d=>'<span class="badge" style="'+(d.done?'background:#D1FAE5;color:#065F46':'background:var(--g100);color:var(--g400)')+'">'+d.k+'</span>').join('');
   }
+
+  // Social links
+  const links=document.getElementById('wp-card-links');
+  if(links){
+    const socials=[
+      {id:'wp-fb',icon:'📘',label:'FB'},{id:'wp-linkedin',icon:'💼',label:'LI'},
+      {id:'wp-ig',icon:'📷',label:'IG'},{id:'wp-tiktok',icon:'🎵',label:'TT'},
+      {id:'wp-portfolio',icon:'🎬',label:'Portfolio'}
+    ];
+    links.innerHTML=socials.map(function(s){
+      const val=(document.getElementById(s.id)||{}).value;
+      return val?'<a href="'+val+'" target="_blank" style="display:inline-flex;align-items:center;gap:4px;padding:4px 10px;background:var(--g50);border:1px solid var(--g200);border-radius:6px;font-size:11px;color:var(--blue);text-decoration:none">'+s.icon+' '+s.label+'</a>':'';
+    }).filter(Boolean).join('')||'<span style="font-size:12px;color:var(--g400)">No links added</span>';
+  }
+}
+
+function handleWpPhoto(file){
+  if(!file)return;
+  const reader=new FileReader();
+  reader.onload=function(e){
+    wpPhotoSrc=e.target.result;
+    const preview=document.getElementById('wp-photo-preview');
+    if(preview)preview.innerHTML='<img src="'+wpPhotoSrc+'" style="width:100%;height:100%;object-fit:cover">';
+    const banner=document.getElementById('wp-card-banner');
+    if(banner)banner.style.background='linear-gradient(135deg,rgba(26,54,93,.8),rgba(37,99,235,.6)),url('+wpPhotoSrc+') center/cover';
+    updateWpPreview();
+    showToast('Photo uploaded!');
+  };
+  reader.readAsDataURL(file);
+}
+
+// Work experience slots
+function addWpExpSlot(){
+  wpExperiences.push({title:'',company:'',location:'',from:'',to:'',desc:''});
+  renderWpExpList();
+  updateWpPreview();
+}
+function renderWpExpList(){
+  const c=document.getElementById('wp-exp-list');if(!c)return;
+  if(!wpExperiences.length){c.innerHTML='<div style="color:var(--g400);font-size:13px;padding:20px;background:var(--g50);border-radius:10px;text-align:center">No work experience added yet. Click below to add your employment history.</div>';return}
+  c.innerHTML=wpExperiences.map(function(x,i){
+    return '<div style="background:var(--g50);border-radius:12px;padding:18px;margin-bottom:12px;position:relative"><button onclick="wpExperiences.splice('+i+',1);renderWpExpList();updateWpPreview()" style="position:absolute;top:10px;right:10px;background:none;border:none;color:var(--g400);cursor:pointer;font-size:16px" title="Remove">×</button>'
+      +'<div style="display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:10px">'
+      +'<div class="form-g" style="margin:0"><label style="font-size:12px">Job Title / Role</label><input value="'+x.title+'" onchange="wpExperiences['+i+'].title=this.value" placeholder="e.g. Housekeeper, Line Cook" style="font-size:13px;padding:8px"></div>'
+      +'<div class="form-g" style="margin:0"><label style="font-size:12px">Company / Employer</label><input value="'+x.company+'" onchange="wpExperiences['+i+'].company=this.value" placeholder="e.g. Hilton Manila" style="font-size:13px;padding:8px"></div>'
+      +'<div class="form-g" style="margin:0"><label style="font-size:12px">Location</label><input value="'+x.location+'" onchange="wpExperiences['+i+'].location=this.value" placeholder="e.g. Manila, Philippines" style="font-size:13px;padding:8px"></div>'
+      +'<div style="display:grid;grid-template-columns:1fr 1fr;gap:8px"><div class="form-g" style="margin:0"><label style="font-size:12px">From</label><input type="month" value="'+x.from+'" onchange="wpExperiences['+i+'].from=this.value" style="font-size:12px;padding:8px"></div><div class="form-g" style="margin:0"><label style="font-size:12px">To</label><input type="month" value="'+x.to+'" onchange="wpExperiences['+i+'].to=this.value" placeholder="Present" style="font-size:12px;padding:8px"></div></div>'
+      +'</div><div class="form-g" style="margin:0"><label style="font-size:12px">Key Responsibilities</label><textarea rows="2" style="width:100%;padding:8px;border:1px solid var(--g200);border-radius:6px;font-size:12px;background:var(--w);resize:vertical;font-family:var(--body)" onchange="wpExperiences['+i+'].desc=this.value" placeholder="Brief description of your duties and achievements...">'+x.desc+'</textarea></div></div>';
+  }).join('');
 }
 function handleCVUpload(file){
   if(!file)return;
