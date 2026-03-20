@@ -579,37 +579,75 @@ tr:last-child td{border-bottom:none}
 </div>
 
 <script>
-// ═══ DATA ═══
-let users=[
-  {id:1,email:"admin@hirebase.eu",password:"admin123",name:"System Admin",role:"admin",avatar:"SA"},
-  {id:2,email:"nikos@athenshotel.gr",password:"emp123",name:"Nikos Papadopoulos",role:"employer",company:"Athens Grand Hotel",avatar:"NP"},
-  {id:3,email:"elena@careservices.gr",password:"emp123",name:"Elena Petridou",role:"employer",company:"Thessaloniki Care Services",avatar:"EP"},
-  {id:4,email:"maria@worker.ph",password:"wrk123",name:"Maria Reyes",role:"worker",avatar:"MR"}
-];
-const employers=[
-  {id:1,company:"Athens Grand Hotel",contact:"Nikos Papadopoulos",email:"nikos@athenshotel.gr",phone:"+30 210 123 4567",sector:"Hospitality",location:"Athens",workers:5,status:"Active",joined:"2025-12-01",requests:3},
-  {id:2,company:"Thessaloniki Care Services",contact:"Elena Petridou",email:"elena@careservices.gr",phone:"+30 2310 987 654",sector:"Care Services",location:"Thessaloniki",workers:3,status:"Active",joined:"2026-01-15",requests:2},
-  {id:3,company:"Crete Beach Resort",contact:"Dimitris Manolis",email:"dimitris@creteresort.gr",phone:"+30 2810 555 123",sector:"Hospitality",location:"Crete",workers:8,status:"Active",joined:"2026-02-01",requests:4},
-  {id:4,company:"Aegean Cleaning Co.",contact:"Sofia Alexiou",email:"sofia@aegeanclean.gr",phone:"+30 211 444 5678",sector:"Housekeeping",location:"Athens",workers:4,status:"Pending",joined:"2026-03-10",requests:1},
-  {id:5,company:"Hellenic Senior Living",contact:"George Kostas",email:"george@hellenicsenior.gr",phone:"+30 2310 111 222",sector:"Care Services",location:"Thessaloniki",workers:6,status:"Active",joined:"2025-11-20",requests:3}
-];
-const candidates=[
-  {id:1,name:"Maria Reyes",email:"maria@worker.ph",phone:"+63 917 123 4567",sector:"Hospitality",role:"Hotel Housekeeper",exp:"6 years",loc:"Manila",score:92,status:"Deployed",eng:"B2",docs:{oec:1,owwa:1,pdos:1,med:1,visa:1}},
-  {id:2,name:"Jose Cruz",email:"jose@worker.ph",phone:"+63 918 234 5678",sector:"F&B",role:"Line Cook",exp:"3 years",loc:"Cebu",score:88,status:"Visa Pending",eng:"B1",docs:{oec:1,owwa:1,pdos:1,med:1,visa:0}},
-  {id:3,name:"Anna Lim",email:"anna@worker.ph",phone:"+63 919 345 6789",sector:"Care",role:"Care Worker",exp:"7 years",loc:"Davao",score:95,status:"Interview",eng:"C1",docs:{oec:0,owwa:0,pdos:0,med:0,visa:0}},
-  {id:4,name:"Roberto Santos",email:"roberto@worker.ph",phone:"+63 920 456 7890",sector:"Construction",role:"Electrician",exp:"10 years",loc:"Manila",score:90,status:"Ready",eng:"B1",docs:{oec:1,owwa:1,pdos:0,med:1,visa:0}},
-  {id:5,name:"Grace Dela Cruz",email:"grace@worker.ph",phone:"+63 921 567 8901",sector:"Hospitality",role:"Front Desk",exp:"4 years",loc:"Quezon City",score:86,status:"Ready",eng:"B2",docs:{oec:0,owwa:0,pdos:0,med:0,visa:0}},
-  {id:6,name:"Miguel Torres",email:"miguel@worker.ph",phone:"+63 922 678 9012",sector:"F&B",role:"Barista",exp:"2 years",loc:"Cebu",score:78,status:"Screening",eng:"A2",docs:{oec:0,owwa:0,pdos:0,med:0,visa:0}},
-  {id:7,name:"Patricia Ramos",email:"patricia@worker.ph",phone:"+63 923 789 0123",sector:"Care",role:"Nursing Aide",exp:"8 years",loc:"Manila",score:94,status:"Deployed",eng:"C1",docs:{oec:1,owwa:1,pdos:1,med:1,visa:1}},
-  {id:8,name:"Carlos Garcia",email:"carlos@worker.ph",phone:"+63 924 890 1234",sector:"Housekeeping",role:"Cleaner",exp:"3 years",loc:"Davao",score:82,status:"Ready",eng:"B1",docs:{oec:0,owwa:0,pdos:0,med:1,visa:0}}
-];
-const applications=[
-  {id:"HB-2026-0042",cand:"Maria Reyes",emp:"Athens Grand Hotel",role:"Housekeeper",stage:"Deployed",progress:100,start:"2025-12-02",deploy:"2026-03-01",tl:[{s:"Request",d:"Dec 2, 2025",st:"done"},{s:"Matched",d:"Dec 8, 2025",st:"done"},{s:"Interview",d:"Dec 15, 2025",st:"done"},{s:"DMW Docs",d:"Jan 5, 2026",st:"done"},{s:"Medical",d:"Jan 12, 2026",st:"done"},{s:"Visa",d:"Feb 5, 2026",st:"done"},{s:"PDOS",d:"Feb 20, 2026",st:"done"},{s:"Deployed",d:"Mar 1, 2026",st:"done"}]},
-  {id:"HB-2026-0067",cand:"Jose Cruz",emp:"Crete Beach Resort",role:"Line Cook",stage:"Visa Pending",progress:62,start:"2026-01-10",deploy:null,tl:[{s:"Request",d:"Jan 10, 2026",st:"done"},{s:"Matched",d:"Jan 17, 2026",st:"done"},{s:"Interview",d:"Jan 25, 2026",st:"done"},{s:"DMW Docs",d:"Feb 15, 2026",st:"done"},{s:"Medical",d:"Feb 22, 2026",st:"done"},{s:"Visa",d:"Mar 5, 2026",st:"active"},{s:"PDOS",d:"Pending",st:"pending"},{s:"Deployed",d:"Est. Apr 15",st:"pending"}]},
-  {id:"HB-2026-0089",cand:"Anna Lim",emp:"Thessaloniki Care",role:"Care Worker",stage:"Interview",progress:35,start:"2026-02-20",deploy:null,tl:[{s:"Request",d:"Feb 20, 2026",st:"done"},{s:"Matched",d:"Feb 27, 2026",st:"done"},{s:"Interview",d:"Mar 18, 2026",st:"active"},{s:"DMW Docs",d:"Pending",st:"pending"},{s:"Medical",d:"Pending",st:"pending"},{s:"Visa",d:"Pending",st:"pending"},{s:"PDOS",d:"Pending",st:"pending"},{s:"Deployed",d:"Est. Jun 2026",st:"pending"}]},
-  {id:"HB-2026-0095",cand:"Roberto Santos",emp:"Athens Grand Hotel",role:"Electrician",stage:"DMW Docs",progress:50,start:"2026-02-01",deploy:null,tl:[{s:"Request",d:"Feb 1, 2026",st:"done"},{s:"Matched",d:"Feb 7, 2026",st:"done"},{s:"Interview",d:"Feb 14, 2026",st:"done"},{s:"DMW Docs",d:"Mar 10, 2026",st:"active"},{s:"Medical",d:"Pending",st:"pending"},{s:"Visa",d:"Pending",st:"pending"},{s:"PDOS",d:"Pending",st:"pending"},{s:"Deployed",d:"Est. May 2026",st:"pending"}]},
-  {id:"HB-2026-0101",cand:"Patricia Ramos",emp:"Hellenic Senior Living",role:"Nursing Aide",stage:"Deployed",progress:100,start:"2025-11-25",deploy:"2026-02-15",tl:[{s:"Request",d:"Nov 25, 2025",st:"done"},{s:"Matched",d:"Dec 1, 2025",st:"done"},{s:"Interview",d:"Dec 8, 2025",st:"done"},{s:"DMW Docs",d:"Dec 20, 2025",st:"done"},{s:"Medical",d:"Jan 5, 2026",st:"done"},{s:"Visa",d:"Jan 25, 2026",st:"done"},{s:"PDOS",d:"Feb 10, 2026",st:"done"},{s:"Deployed",d:"Feb 15, 2026",st:"done"}]}
-];
+// ═══ DATA — LOADED FROM data.json (session copy for admin edits) ═══
+let users=[];
+let employers=[];
+let candidates=[];
+let applications=[];
+let talentPool=[];
+let employerDemand=[];
+let conversations=[];
+let kpiData={};
+let settingsData={};
+let hbDataLoaded=false;
+
+// Fetch data.json and populate all data arrays
+(function(){
+  var base=window.location.href.replace(/\/[^\/]*$/,'/');
+  fetch(base+'data.json').then(function(r){return r.json()}).then(function(data){
+    // Deep clone into session variables (so admin edits don't affect source)
+    users=JSON.parse(JSON.stringify(data.users));
+    employers=JSON.parse(JSON.stringify(data.employers));
+    candidates=JSON.parse(JSON.stringify(data.candidates));
+    applications=JSON.parse(JSON.stringify(data.applications));
+    talentPool=JSON.parse(JSON.stringify(data.talentPool));
+    employerDemand=JSON.parse(JSON.stringify(data.employerDemand));
+    conversations=JSON.parse(JSON.stringify(data.conversations));
+    kpiData=JSON.parse(JSON.stringify(data.kpis));
+    settingsData=JSON.parse(JSON.stringify(data.settings||{}));
+    hbDataLoaded=true;
+    console.log('[HireBase Admin] data.json loaded ✓',{users:users.length,employers:employers.length,candidates:candidates.length,talentPool:talentPool.length,kpiCats:Object.keys(kpiData).length});
+  }).catch(function(err){
+    console.warn('[HireBase Admin] data.json fetch failed, using inline fallback:',err);
+    // ── Inline fallback so admin works without data.json ──
+    users=[
+      {id:1,email:"admin@hirebase.eu",password:"admin123",name:"System Admin",role:"admin",avatar:"SA"},
+      {id:2,email:"nikos@athenshotel.gr",password:"emp123",name:"Nikos Papadopoulos",role:"employer",company:"Athens Grand Hotel",avatar:"NP"},
+      {id:3,email:"elena@careservices.gr",password:"emp123",name:"Elena Petridou",role:"employer",company:"Thessaloniki Care Services",avatar:"EP"},
+      {id:4,email:"maria@worker.ph",password:"wrk123",name:"Maria Reyes",role:"worker",avatar:"MR"}
+    ];
+    employers=[
+      {id:1,company:"Athens Grand Hotel",contact:"Nikos Papadopoulos",email:"nikos@athenshotel.gr",phone:"+30 210 123 4567",sector:"Hospitality",location:"Athens",workers:5,status:"Active",joined:"2025-12-01",requests:3},
+      {id:2,company:"Thessaloniki Care Services",contact:"Elena Petridou",email:"elena@careservices.gr",phone:"+30 2310 987 654",sector:"Care Services",location:"Thessaloniki",workers:3,status:"Active",joined:"2026-01-15",requests:2},
+      {id:3,company:"Crete Beach Resort",contact:"Dimitris Manolis",email:"dimitris@creteresort.gr",phone:"+30 2810 555 123",sector:"Hospitality",location:"Crete",workers:8,status:"Active",joined:"2026-02-01",requests:4},
+      {id:4,company:"Aegean Cleaning Co.",contact:"Sofia Alexiou",email:"sofia@aegeanclean.gr",phone:"+30 211 444 5678",sector:"Housekeeping",location:"Athens",workers:4,status:"Pending",joined:"2026-03-10",requests:1},
+      {id:5,company:"Hellenic Senior Living",contact:"George Kostas",email:"george@hellenicsenior.gr",phone:"+30 2310 111 222",sector:"Care Services",location:"Thessaloniki",workers:6,status:"Active",joined:"2025-11-20",requests:3}
+    ];
+    candidates=[
+      {id:1,name:"Maria Reyes",email:"maria@worker.ph",phone:"+63 917 123 4567",sector:"Hospitality",role:"Hotel Housekeeper",exp:"6 years",loc:"Manila",score:92,status:"Deployed",eng:"B2",docs:{oec:1,owwa:1,pdos:1,med:1,visa:1}},
+      {id:2,name:"Jose Cruz",email:"jose@worker.ph",phone:"+63 918 234 5678",sector:"F&B",role:"Line Cook",exp:"3 years",loc:"Cebu",score:88,status:"Visa Pending",eng:"B1",docs:{oec:1,owwa:1,pdos:1,med:1,visa:0}},
+      {id:3,name:"Anna Lim",email:"anna@worker.ph",phone:"+63 919 345 6789",sector:"Care",role:"Care Worker",exp:"7 years",loc:"Davao",score:95,status:"Interview",eng:"C1",docs:{oec:0,owwa:0,pdos:0,med:0,visa:0}},
+      {id:4,name:"Roberto Santos",email:"roberto@worker.ph",phone:"+63 920 456 7890",sector:"Construction",role:"Electrician",exp:"10 years",loc:"Manila",score:90,status:"Ready",eng:"B1",docs:{oec:1,owwa:1,pdos:0,med:1,visa:0}},
+      {id:5,name:"Grace Dela Cruz",email:"grace@worker.ph",phone:"+63 921 567 8901",sector:"Hospitality",role:"Front Desk",exp:"4 years",loc:"Quezon City",score:86,status:"Ready",eng:"B2",docs:{oec:0,owwa:0,pdos:0,med:0,visa:0}},
+      {id:6,name:"Miguel Torres",email:"miguel@worker.ph",phone:"+63 922 678 9012",sector:"F&B",role:"Barista",exp:"2 years",loc:"Cebu",score:78,status:"Screening",eng:"A2",docs:{oec:0,owwa:0,pdos:0,med:0,visa:0}},
+      {id:7,name:"Patricia Ramos",email:"patricia@worker.ph",phone:"+63 923 789 0123",sector:"Care",role:"Nursing Aide",exp:"8 years",loc:"Manila",score:94,status:"Deployed",eng:"C1",docs:{oec:1,owwa:1,pdos:1,med:1,visa:1}},
+      {id:8,name:"Carlos Garcia",email:"carlos@worker.ph",phone:"+63 924 890 1234",sector:"Housekeeping",role:"Cleaner",exp:"3 years",loc:"Davao",score:82,status:"Ready",eng:"B1",docs:{oec:0,owwa:0,pdos:0,med:1,visa:0}}
+    ];
+    applications=[
+      {id:"HB-2026-0042",cand:"Maria Reyes",emp:"Athens Grand Hotel",role:"Housekeeper",stage:"Deployed",progress:100,start:"2025-12-02",deploy:"2026-03-01",tl:[{s:"Request",d:"Dec 2, 2025",st:"done"},{s:"Matched",d:"Dec 8, 2025",st:"done"},{s:"Interview",d:"Dec 15, 2025",st:"done"},{s:"DMW Docs",d:"Jan 5, 2026",st:"done"},{s:"Medical",d:"Jan 12, 2026",st:"done"},{s:"Visa",d:"Feb 5, 2026",st:"done"},{s:"PDOS",d:"Feb 20, 2026",st:"done"},{s:"Deployed",d:"Mar 1, 2026",st:"done"}]},
+      {id:"HB-2026-0067",cand:"Jose Cruz",emp:"Crete Beach Resort",role:"Line Cook",stage:"Visa Pending",progress:62,start:"2026-01-10",deploy:null,tl:[{s:"Request",d:"Jan 10, 2026",st:"done"},{s:"Matched",d:"Jan 17, 2026",st:"done"},{s:"Interview",d:"Jan 25, 2026",st:"done"},{s:"DMW Docs",d:"Feb 15, 2026",st:"done"},{s:"Medical",d:"Feb 22, 2026",st:"done"},{s:"Visa",d:"Mar 5, 2026",st:"active"},{s:"PDOS",d:"Pending",st:"pending"},{s:"Deployed",d:"Est. Apr 15",st:"pending"}]},
+      {id:"HB-2026-0089",cand:"Anna Lim",emp:"Thessaloniki Care",role:"Care Worker",stage:"Interview",progress:35,start:"2026-02-20",deploy:null,tl:[{s:"Request",d:"Feb 20, 2026",st:"done"},{s:"Matched",d:"Feb 27, 2026",st:"done"},{s:"Interview",d:"Mar 18, 2026",st:"active"},{s:"DMW Docs",d:"Pending",st:"pending"},{s:"Medical",d:"Pending",st:"pending"},{s:"Visa",d:"Pending",st:"pending"},{s:"PDOS",d:"Pending",st:"pending"},{s:"Deployed",d:"Est. Jun 2026",st:"pending"}]},
+      {id:"HB-2026-0095",cand:"Roberto Santos",emp:"Athens Grand Hotel",role:"Electrician",stage:"DMW Docs",progress:50,start:"2026-02-01",deploy:null,tl:[{s:"Request",d:"Feb 1, 2026",st:"done"},{s:"Matched",d:"Feb 7, 2026",st:"done"},{s:"Interview",d:"Feb 14, 2026",st:"done"},{s:"DMW Docs",d:"Mar 10, 2026",st:"active"},{s:"Medical",d:"Pending",st:"pending"},{s:"Visa",d:"Pending",st:"pending"},{s:"PDOS",d:"Pending",st:"pending"},{s:"Deployed",d:"Est. May 2026",st:"pending"}]},
+      {id:"HB-2026-0101",cand:"Patricia Ramos",emp:"Hellenic Senior Living",role:"Nursing Aide",stage:"Deployed",progress:100,start:"2025-11-25",deploy:"2026-02-15",tl:[{s:"Request",d:"Nov 25, 2025",st:"done"},{s:"Matched",d:"Dec 1, 2025",st:"done"},{s:"Interview",d:"Dec 8, 2025",st:"done"},{s:"DMW Docs",d:"Dec 20, 2025",st:"done"},{s:"Medical",d:"Jan 5, 2026",st:"done"},{s:"Visa",d:"Jan 25, 2026",st:"done"},{s:"PDOS",d:"Feb 10, 2026",st:"done"},{s:"Deployed",d:"Feb 15, 2026",st:"done"}]}
+    ];
+    talentPool=[{"role": "Housekeeper", "icon": "🧹", "count": 14, "ready": 8, "deployed": 3, "color": "var(--blue)", "candidates": [{"name": "Maria Reyes", "status": "Deployed", "score": 92, "loc": "Manila", "exp": "6 yrs", "eng": "B2", "employer": "Athens Grand Hotel"}, {"name": "Grace Dela Cruz", "status": "Ready", "score": 86, "loc": "Quezon City", "exp": "4 yrs", "eng": "B2", "employer": null}, {"name": "Teresa Villanueva", "status": "Ready", "score": 88, "loc": "Manila", "exp": "5 yrs", "eng": "B1", "employer": null}, {"name": "Carmen Aquino", "status": "Ready", "score": 84, "loc": "Cebu", "exp": "3 yrs", "eng": "B1", "employer": null}, {"name": "Rosalie Mendoza", "status": "Ready", "score": 80, "loc": "Davao", "exp": "2 yrs", "eng": "A2", "employer": null}, {"name": "Lorna Bautista", "status": "Ready", "score": 82, "loc": "Manila", "exp": "4 yrs", "eng": "B1", "employer": null}, {"name": "Patricia Santos", "status": "Deployed", "score": 90, "loc": "Manila", "exp": "7 yrs", "eng": "B2", "employer": "Crete Beach Resort"}, {"name": "Elena Ramos", "status": "Ready", "score": 79, "loc": "Cebu", "exp": "2 yrs", "eng": "A2", "employer": null}, {"name": "Diana Cruz", "status": "Deployed", "score": 91, "loc": "Manila", "exp": "6 yrs", "eng": "B2", "employer": "Aegean Cleaning Co."}, {"name": "Susan Magsaysay", "status": "Ready", "score": 83, "loc": "Davao", "exp": "3 yrs", "eng": "B1", "employer": null}, {"name": "Mila Flores", "status": "Screening", "score": 75, "loc": "Cebu", "exp": "1 yr", "eng": "A2", "employer": null}, {"name": "Nora Gonzales", "status": "Screening", "score": 72, "loc": "Manila", "exp": "1 yr", "eng": "A2", "employer": null}, {"name": "Joy Pascual", "status": "Screening", "score": 74, "loc": "Quezon City", "exp": "2 yrs", "eng": "B1", "employer": null}, {"name": "Ana Dimaculangan", "status": "Screening", "score": 70, "loc": "Davao", "exp": "1 yr", "eng": "A1", "employer": null}]}, {"role": "Line Cook", "icon": "👨‍🍳", "count": 11, "ready": 5, "deployed": 2, "color": "var(--amber)", "candidates": [{"name": "Jose Cruz", "status": "Visa Pending", "score": 88, "loc": "Cebu", "exp": "3 yrs", "eng": "B1", "employer": "Crete Beach Resort"}, {"name": "Ricardo Tan", "status": "Ready", "score": 85, "loc": "Manila", "exp": "5 yrs", "eng": "B1", "employer": null}, {"name": "Marco Villanueva", "status": "Ready", "score": 82, "loc": "Cebu", "exp": "4 yrs", "eng": "B1", "employer": null}, {"name": "Eduardo Santos", "status": "Deployed", "score": 89, "loc": "Manila", "exp": "6 yrs", "eng": "B2", "employer": "Athens Grand Hotel"}, {"name": "Fernando Lopez", "status": "Ready", "score": 80, "loc": "Davao", "exp": "3 yrs", "eng": "A2", "employer": null}, {"name": "Paolo Garcia", "status": "Ready", "score": 78, "loc": "Cebu", "exp": "2 yrs", "eng": "A2", "employer": null}, {"name": "Antonio Reyes", "status": "Ready", "score": 81, "loc": "Manila", "exp": "4 yrs", "eng": "B1", "employer": null}, {"name": "Carlos Dela Cruz", "status": "Deployed", "score": 87, "loc": "Manila", "exp": "5 yrs", "eng": "B2", "employer": "Crete Beach Resort"}, {"name": "Ramon Torres", "status": "Screening", "score": 74, "loc": "Cebu", "exp": "1 yr", "eng": "A2", "employer": null}, {"name": "Luis Bautista", "status": "Screening", "score": 72, "loc": "Davao", "exp": "1 yr", "eng": "A1", "employer": null}, {"name": "Miguel Torres", "status": "Screening", "score": 78, "loc": "Cebu", "exp": "2 yrs", "eng": "A2", "employer": null}]}, {"role": "Care Worker", "icon": "💙", "count": 9, "ready": 4, "deployed": 2, "color": "var(--green)", "candidates": [{"name": "Anna Lim", "status": "Interview", "score": 95, "loc": "Davao", "exp": "7 yrs", "eng": "C1", "employer": "Thessaloniki Care"}, {"name": "Patricia Ramos", "status": "Deployed", "score": 94, "loc": "Manila", "exp": "8 yrs", "eng": "C1", "employer": "Hellenic Senior Living"}, {"name": "Cristina Aquino", "status": "Ready", "score": 88, "loc": "Manila", "exp": "5 yrs", "eng": "B2", "employer": null}, {"name": "Rosemarie Santos", "status": "Ready", "score": 86, "loc": "Cebu", "exp": "4 yrs", "eng": "B1", "employer": null}, {"name": "Dolores Mendoza", "status": "Ready", "score": 84, "loc": "Davao", "exp": "3 yrs", "eng": "B1", "employer": null}, {"name": "Victoria Cruz", "status": "Deployed", "score": 92, "loc": "Manila", "exp": "6 yrs", "eng": "B2", "employer": "Thessaloniki Care"}, {"name": "Angelina Torres", "status": "Ready", "score": 82, "loc": "Manila", "exp": "4 yrs", "eng": "B1", "employer": null}, {"name": "Esperanza Lopez", "status": "Screening", "score": 76, "loc": "Cebu", "exp": "2 yrs", "eng": "A2", "employer": null}, {"name": "Lucinda Garcia", "status": "Screening", "score": 73, "loc": "Davao", "exp": "1 yr", "eng": "A2", "employer": null}]}, {"role": "Front Desk", "icon": "🛎️", "count": 7, "ready": 3, "deployed": 1, "color": "var(--purple)", "candidates": [{"name": "Grace Dela Cruz", "status": "Ready", "score": 86, "loc": "Quezon City", "exp": "4 yrs", "eng": "B2", "employer": null}, {"name": "Jennifer Reyes", "status": "Ready", "score": 84, "loc": "Manila", "exp": "3 yrs", "eng": "B2", "employer": null}, {"name": "Michelle Santos", "status": "Ready", "score": 82, "loc": "Cebu", "exp": "2 yrs", "eng": "B1", "employer": null}, {"name": "Karen Villanueva", "status": "Deployed", "score": 88, "loc": "Manila", "exp": "5 yrs", "eng": "B2", "employer": "Athens Grand Hotel"}, {"name": "Stephanie Cruz", "status": "Screening", "score": 76, "loc": "Davao", "exp": "1 yr", "eng": "B1", "employer": null}, {"name": "Nicole Tan", "status": "Screening", "score": 74, "loc": "Cebu", "exp": "1 yr", "eng": "A2", "employer": null}, {"name": "Bianca Lopez", "status": "Screening", "score": 72, "loc": "Manila", "exp": "1 yr", "eng": "A2", "employer": null}]}, {"role": "Electrician", "icon": "⚡", "count": 5, "ready": 3, "deployed": 0, "color": "var(--red)", "candidates": [{"name": "Roberto Santos", "status": "DMW Docs", "score": 90, "loc": "Manila", "exp": "10 yrs", "eng": "B1", "employer": "Athens Grand Hotel"}, {"name": "Danilo Cruz", "status": "Ready", "score": 86, "loc": "Cebu", "exp": "8 yrs", "eng": "B1", "employer": null}, {"name": "Ernesto Reyes", "status": "Ready", "score": 84, "loc": "Manila", "exp": "6 yrs", "eng": "A2", "employer": null}, {"name": "Ronaldo Bautista", "status": "Ready", "score": 82, "loc": "Davao", "exp": "5 yrs", "eng": "A2", "employer": null}, {"name": "Felipe Torres", "status": "Screening", "score": 75, "loc": "Manila", "exp": "3 yrs", "eng": "A2", "employer": null}]}, {"role": "Barista", "icon": "☕", "count": 6, "ready": 2, "deployed": 0, "color": "#7C3AED", "candidates": [{"name": "Miguel Torres", "status": "Screening", "score": 78, "loc": "Cebu", "exp": "2 yrs", "eng": "A2", "employer": null}, {"name": "Rafael Santos", "status": "Ready", "score": 80, "loc": "Manila", "exp": "3 yrs", "eng": "B1", "employer": null}, {"name": "Isabela Cruz", "status": "Ready", "score": 79, "loc": "Cebu", "exp": "2 yrs", "eng": "B1", "employer": null}, {"name": "Diego Reyes", "status": "Screening", "score": 74, "loc": "Davao", "exp": "1 yr", "eng": "A2", "employer": null}, {"name": "Sofia Villanueva", "status": "Screening", "score": 72, "loc": "Manila", "exp": "1 yr", "eng": "A1", "employer": null}, {"name": "Andrea Lopez", "status": "Screening", "score": 71, "loc": "Cebu", "exp": "1 yr", "eng": "A1", "employer": null}]}, {"role": "Cleaner", "icon": "🧽", "count": 8, "ready": 4, "deployed": 1, "color": "var(--blue)", "candidates": [{"name": "Carlos Garcia", "status": "Ready", "score": 82, "loc": "Davao", "exp": "3 yrs", "eng": "B1", "employer": null}, {"name": "Maricel Santos", "status": "Ready", "score": 80, "loc": "Manila", "exp": "2 yrs", "eng": "A2", "employer": null}, {"name": "Gloria Cruz", "status": "Ready", "score": 78, "loc": "Cebu", "exp": "2 yrs", "eng": "A2", "employer": null}, {"name": "Remedios Reyes", "status": "Ready", "score": 76, "loc": "Manila", "exp": "1 yr", "eng": "A2", "employer": null}, {"name": "Luisa Torres", "status": "Deployed", "score": 84, "loc": "Manila", "exp": "4 yrs", "eng": "B1", "employer": "Aegean Cleaning Co."}, {"name": "Beth Aquino", "status": "Screening", "score": 72, "loc": "Davao", "exp": "1 yr", "eng": "A1", "employer": null}, {"name": "Celia Mendoza", "status": "Screening", "score": 70, "loc": "Cebu", "exp": "1 yr", "eng": "A1", "employer": null}, {"name": "Delia Bautista", "status": "Screening", "score": 68, "loc": "Manila", "exp": "<1 yr", "eng": "A1", "employer": null}]}, {"role": "Nursing Aide", "icon": "🏥", "count": 6, "ready": 2, "deployed": 2, "color": "var(--green)", "candidates": [{"name": "Patricia Ramos", "status": "Deployed", "score": 94, "loc": "Manila", "exp": "8 yrs", "eng": "C1", "employer": "Hellenic Senior Living"}, {"name": "Rebecca Cruz", "status": "Deployed", "score": 91, "loc": "Manila", "exp": "6 yrs", "eng": "B2", "employer": "Thessaloniki Care"}, {"name": "Corazon Santos", "status": "Ready", "score": 86, "loc": "Cebu", "exp": "5 yrs", "eng": "B1", "employer": null}, {"name": "Ligaya Torres", "status": "Ready", "score": 84, "loc": "Davao", "exp": "4 yrs", "eng": "B1", "employer": null}, {"name": "Estrella Reyes", "status": "Screening", "score": 76, "loc": "Manila", "exp": "2 yrs", "eng": "A2", "employer": null}, {"name": "Felicidad Lopez", "status": "Screening", "score": 74, "loc": "Cebu", "exp": "2 yrs", "eng": "A2", "employer": null}]}, {"role": "Waiter/Server", "icon": "🍽️", "count": 10, "ready": 6, "deployed": 1, "color": "var(--amber)", "candidates": [{"name": "Alejandro Cruz", "status": "Deployed", "score": 87, "loc": "Manila", "exp": "5 yrs", "eng": "B2", "employer": "Crete Beach Resort"}, {"name": "Benjamin Santos", "status": "Ready", "score": 84, "loc": "Cebu", "exp": "4 yrs", "eng": "B1", "employer": null}, {"name": "Christian Reyes", "status": "Ready", "score": 82, "loc": "Manila", "exp": "3 yrs", "eng": "B1", "employer": null}, {"name": "Dominic Torres", "status": "Ready", "score": 80, "loc": "Davao", "exp": "2 yrs", "eng": "A2", "employer": null}, {"name": "Emmanuel Lopez", "status": "Ready", "score": 79, "loc": "Cebu", "exp": "2 yrs", "eng": "A2", "employer": null}, {"name": "Frederick Garcia", "status": "Ready", "score": 78, "loc": "Manila", "exp": "2 yrs", "eng": "B1", "employer": null}, {"name": "Gabriel Villanueva", "status": "Ready", "score": 77, "loc": "Davao", "exp": "1 yr", "eng": "A2", "employer": null}, {"name": "Henry Bautista", "status": "Screening", "score": 74, "loc": "Cebu", "exp": "1 yr", "eng": "A2", "employer": null}, {"name": "Ivan Aquino", "status": "Screening", "score": 72, "loc": "Manila", "exp": "1 yr", "eng": "A1", "employer": null}, {"name": "James Mendoza", "status": "Screening", "score": 70, "loc": "Davao", "exp": "<1 yr", "eng": "A1", "employer": null}]}, {"role": "Plumber", "icon": "🔧", "count": 4, "ready": 2, "deployed": 0, "color": "#64748B", "candidates": [{"name": "Oscar Santos", "status": "Ready", "score": 84, "loc": "Manila", "exp": "7 yrs", "eng": "B1", "employer": null}, {"name": "Pedro Cruz", "status": "Ready", "score": 80, "loc": "Cebu", "exp": "5 yrs", "eng": "A2", "employer": null}, {"name": "Quirino Reyes", "status": "Screening", "score": 74, "loc": "Davao", "exp": "2 yrs", "eng": "A2", "employer": null}, {"name": "Renato Torres", "status": "Screening", "score": 72, "loc": "Manila", "exp": "2 yrs", "eng": "A1", "employer": null}]}, {"role": "Laundry Staff", "icon": "👕", "count": 5, "ready": 3, "deployed": 0, "color": "#60A5FA", "candidates": [{"name": "Teresita Santos", "status": "Ready", "score": 80, "loc": "Manila", "exp": "3 yrs", "eng": "B1", "employer": null}, {"name": "Urduja Cruz", "status": "Ready", "score": 78, "loc": "Cebu", "exp": "2 yrs", "eng": "A2", "employer": null}, {"name": "Vivian Reyes", "status": "Ready", "score": 76, "loc": "Davao", "exp": "2 yrs", "eng": "A2", "employer": null}, {"name": "Wilma Torres", "status": "Screening", "score": 72, "loc": "Manila", "exp": "1 yr", "eng": "A1", "employer": null}, {"name": "Ximena Lopez", "status": "Screening", "score": 70, "loc": "Cebu", "exp": "1 yr", "eng": "A1", "employer": null}]}, {"role": "Farm Worker", "icon": "🌾", "count": 3, "ready": 1, "deployed": 0, "color": "#10B981", "candidates": [{"name": "Yolanda Santos", "status": "Ready", "score": 76, "loc": "Davao", "exp": "3 yrs", "eng": "A2", "employer": null}, {"name": "Zenaida Cruz", "status": "Screening", "score": 72, "loc": "Cebu", "exp": "1 yr", "eng": "A1", "employer": null}, {"name": "Amelia Reyes", "status": "Screening", "score": 70, "loc": "Manila", "exp": "1 yr", "eng": "A1", "employer": null}]}];
+    employerDemand=[{"emp": "Athens Grand Hotel", "sector": "Hospitality", "needs": [{"role": "Housekeeper", "qty": 2}, {"role": "Front Desk", "qty": 1}, {"role": "Electrician", "qty": 1}, {"role": "Laundry Staff", "qty": 1}], "total": 5, "urgent": 2}, {"emp": "Crete Beach Resort", "sector": "Hospitality", "needs": [{"role": "Line Cook", "qty": 3}, {"role": "Waiter/Server", "qty": 3}, {"role": "Barista", "qty": 2}], "total": 8, "urgent": 5}, {"emp": "Thessaloniki Care Services", "sector": "Care", "needs": [{"role": "Care Worker", "qty": 2}, {"role": "Nursing Aide", "qty": 1}], "total": 3, "urgent": 1}, {"emp": "Aegean Cleaning Co.", "sector": "Housekeeping", "needs": [{"role": "Cleaner", "qty": 3}, {"role": "Housekeeper", "qty": 1}], "total": 4, "urgent": 2}, {"emp": "Hellenic Senior Living", "sector": "Care", "needs": [{"role": "Care Worker", "qty": 3}, {"role": "Nursing Aide", "qty": 2}, {"role": "Cleaner", "qty": 1}], "total": 6, "urgent": 3}];
+    conversations=[{"id": 1, "name": "Nikos Papadopoulos", "role": "Athens Grand Hotel · Employer", "avatar": "NP", "unread": 2, "msgs": [{"from": "nikos", "text": "Hello, I need 2 more housekeepers for the summer season. Can you help?", "time": "Mar 18, 10:30"}, {"from": "admin", "text": "Hi Nikos! Absolutely. We have 8 ready housekeepers in our pool. I'll send you a shortlist by tomorrow.", "time": "Mar 18, 11:15"}, {"from": "nikos", "text": "That would be great. We need them by May at the latest.", "time": "Mar 18, 11:20"}, {"from": "nikos", "text": "Also, can you include candidates with hotel experience specifically?", "time": "Mar 18, 11:22"}]}, {"id": 2, "name": "Maria Reyes", "role": "Housekeeper · Deployed", "avatar": "MR", "unread": 0, "msgs": [{"from": "maria", "text": "Hi, I arrived in Athens safely. The hotel staff was very welcoming!", "time": "Mar 1, 18:00"}, {"from": "admin", "text": "Welcome to Greece, Maria! So glad to hear that. How is the accommodation?", "time": "Mar 1, 18:30"}, {"from": "maria", "text": "Very good, thank you. The room is nice and close to work.", "time": "Mar 1, 19:00"}, {"from": "admin", "text": "Perfect. Remember, we're here if you need anything. Your 90-day check-in is scheduled for May 30.", "time": "Mar 2, 09:00"}]}, {"id": 3, "name": "Elena Petridou", "role": "Thessaloniki Care · Employer", "avatar": "EP", "unread": 1, "msgs": [{"from": "elena", "text": "When can we expect Anna Lim's interview to be completed?", "time": "Mar 15, 14:00"}, {"from": "admin", "text": "The video interview is scheduled for March 18. You'll receive the recording and evaluation within 24 hours after.", "time": "Mar 15, 14:45"}, {"from": "elena", "text": "Perfect. We really need her to start by June.", "time": "Mar 17, 09:00"}]}, {"id": 4, "name": "Jose Cruz", "role": "Line Cook · Visa Pending", "avatar": "JC", "unread": 0, "msgs": [{"from": "jose", "text": "Any update on my visa application?", "time": "Mar 12, 10:00"}, {"from": "admin", "text": "Hi Jose, your Type D visa was submitted to the Greek Consulate on March 5. Typical processing is 2-4 weeks. We'll update you as soon as we hear back.", "time": "Mar 12, 10:30"}, {"from": "jose", "text": "Thank you. I'm very excited about this opportunity!", "time": "Mar 12, 11:00"}]}];
+    kpiData={"pipeline": {"title": "Recruitment Pipeline", "code": "RP", "color": "var(--blue)", "kpis": [{"id": "RP-01", "name": "Staffing Requests Received", "target": ">20/mo by Y2", "current": "12/mo", "status": "On Track", "pct": 60}, {"id": "RP-02", "name": "Requests Conversion Rate", "target": ">60%", "current": "68%", "status": "Above", "pct": 68}, {"id": "RP-03", "name": "Candidates Sourced per Request", "target": "8-15", "current": "11", "status": "On Track", "pct": 73}, {"id": "RP-04", "name": "Shortlist Acceptance Rate", "target": ">50%", "current": "55%", "status": "Above", "pct": 55}, {"id": "RP-05", "name": "Interview-to-Offer Ratio", "target": ">40%", "current": "45%", "status": "Above", "pct": 45}, {"id": "RP-06", "name": "Offer Acceptance Rate", "target": ">85%", "current": "88%", "status": "Above", "pct": 88}, {"id": "RP-07", "name": "Pipeline Fill Rate", "target": ">75%", "current": "72%", "status": "Near", "pct": 72}, {"id": "RP-08", "name": "Average Pipeline Depth", "target": ">3:1", "current": "3.5:1", "status": "Above", "pct": 78}, {"id": "RP-09", "name": "Request Abandonment Rate", "target": "<20%", "current": "15%", "status": "Above", "pct": 85}, {"id": "RP-10", "name": "Repeat Request Rate", "target": ">40% by Y2", "current": "33%", "status": "Building", "pct": 33}]}, "time": {"title": "Time Performance", "code": "TP", "color": "var(--amber)", "kpis": [{"id": "TP-01", "name": "Time-to-First-Shortlist", "target": "<7 days", "current": "5.2 days", "status": "Above", "pct": 85}, {"id": "TP-02", "name": "Time-to-Interview", "target": "<10 days", "current": "8 days", "status": "Above", "pct": 80}, {"id": "TP-03", "name": "Time-to-Offer", "target": "<30 days", "current": "24 days", "status": "Above", "pct": 80}, {"id": "TP-04", "name": "Time-to-Deployment", "target": "<90 days", "current": "72 days", "status": "Above", "pct": 80}, {"id": "TP-05", "name": "Total Time-to-Hire", "target": "<120 days", "current": "96 days", "status": "Above", "pct": 80}, {"id": "TP-06", "name": "Document Processing (PH)", "target": "<30 days", "current": "22 days", "status": "Above", "pct": 73}, {"id": "TP-07", "name": "Visa Processing (GR)", "target": "<45 days", "current": "38 days", "status": "Above", "pct": 84}, {"id": "TP-08", "name": "Registration Time", "target": "<14 days", "current": "10 days", "status": "Above", "pct": 71}, {"id": "TP-09", "name": "Response to Inquiries", "target": "<4 hours", "current": "2.5 hrs", "status": "Above", "pct": 63}, {"id": "TP-10", "name": "Platform Uptime", "target": ">99.5%", "current": "99.8%", "status": "Above", "pct": 99}]}, "compliance": {"title": "Compliance & Documentation", "code": "CD", "color": "var(--green)", "kpis": [{"id": "CD-01", "name": "Document Completeness Rate", "target": "100%", "current": "100%", "status": "Met", "pct": 100}, {"id": "CD-02", "name": "First-Submission Approval (DMW)", "target": ">80%", "current": "85%", "status": "Above", "pct": 85}, {"id": "CD-03", "name": "First-Submission Visa Approval", "target": ">85%", "current": "90%", "status": "Above", "pct": 90}, {"id": "CD-04", "name": "Contract Compliance Rate", "target": ">90%", "current": "95%", "status": "Above", "pct": 95}, {"id": "CD-05", "name": "OEC Issuance Success Rate", "target": ">95%", "current": "98%", "status": "Above", "pct": 98}, {"id": "CD-06", "name": "Medical Clearance Pass Rate", "target": ">90%", "current": "92%", "status": "Above", "pct": 92}, {"id": "CD-07", "name": "Regulatory Incidents", "target": "0", "current": "0", "status": "Met", "pct": 100}, {"id": "CD-08", "name": "Audit Readiness Score", "target": ">95%", "current": "97%", "status": "Above", "pct": 97}, {"id": "CD-09", "name": "Doc Expiry Alert Compliance", "target": "100%", "current": "100%", "status": "Met", "pct": 100}, {"id": "CD-10", "name": "PDOS Completion Rate", "target": "100%", "current": "100%", "status": "Met", "pct": 100}]}, "financial": {"title": "Financial & Revenue", "code": "FR", "color": "var(--purple)", "kpis": [{"id": "FR-01", "name": "Revenue per Placement", "target": ">€4,000", "current": "€4,350", "status": "Above", "pct": 87}, {"id": "FR-02", "name": "Cost per Placement", "target": "<€2,000", "current": "€1,680", "status": "Above", "pct": 84}, {"id": "FR-03", "name": "Gross Margin per Placement", "target": ">50%", "current": "61%", "status": "Above", "pct": 61}, {"id": "FR-04", "name": "Monthly Recurring Revenue", "target": "+10% MoM", "current": "+12%", "status": "Above", "pct": 72}, {"id": "FR-05", "name": "Customer Lifetime Value", "target": ">€20,000", "current": "€22,500", "status": "Above", "pct": 75}, {"id": "FR-06", "name": "Customer Acquisition Cost", "target": "<€2,000", "current": "€1,450", "status": "Above", "pct": 73}, {"id": "FR-07", "name": "CLV:CAC Ratio", "target": ">5:1", "current": "15.5:1", "status": "Above", "pct": 100}, {"id": "FR-08", "name": "Revenue Concentration Risk", "target": "<40%", "current": "35%", "status": "Above", "pct": 88}, {"id": "FR-09", "name": "Invoice Collection Period", "target": "<30 days", "current": "22 days", "status": "Above", "pct": 73}, {"id": "FR-10", "name": "Add-On Attachment Rate", "target": ">50%", "current": "48%", "status": "Near", "pct": 48}]}, "quality": {"title": "Quality & Retention", "code": "CQ", "color": "var(--red)", "kpis": [{"id": "CQ-01", "name": "Candidate Verification Score", "target": ">85/100", "current": "89", "status": "Above", "pct": 89}, {"id": "CQ-02", "name": "Employer Satisfaction (CSAT)", "target": ">4.2/5", "current": "4.5", "status": "Above", "pct": 90}, {"id": "CQ-03", "name": "Worker Satisfaction", "target": ">4.0/5", "current": "4.3", "status": "Above", "pct": 86}, {"id": "CQ-04", "name": "90-Day Retention Rate", "target": ">90%", "current": "92%", "status": "Above", "pct": 92}, {"id": "CQ-05", "name": "180-Day Retention Rate", "target": ">80%", "current": "85%", "status": "Above", "pct": 85}, {"id": "CQ-06", "name": "12-Month Retention Rate", "target": ">70%", "current": "N/A", "status": "Pending", "pct": 0}, {"id": "CQ-07", "name": "Replacement Trigger Rate", "target": "<10%", "current": "8%", "status": "Above", "pct": 92}, {"id": "CQ-08", "name": "Worker Performance Rating", "target": ">4.0/5", "current": "4.2", "status": "Above", "pct": 84}, {"id": "CQ-09", "name": "Cultural Adaptation Score", "target": ">3.5/5", "current": "3.8", "status": "Above", "pct": 76}, {"id": "CQ-10", "name": "Contract Completion Rate", "target": ">75%", "current": "N/A", "status": "Pending", "pct": 0}]}, "platform": {"title": "Platform & Operations", "code": "PO", "color": "#60A5FA", "kpis": [{"id": "PO-01", "name": "Active Employer Accounts", "target": ">50 by Y2", "current": "5", "status": "Building", "pct": 10}, {"id": "PO-02", "name": "Employer Login Frequency", "target": ">4x/mo", "current": "6x", "status": "Above", "pct": 100}, {"id": "PO-03", "name": "Talent Pool Size (Active)", "target": ">500 by Y2", "current": "86", "status": "Building", "pct": 17}, {"id": "PO-04", "name": "Profile Completeness", "target": ">90%", "current": "88%", "status": "Near", "pct": 88}, {"id": "PO-05", "name": "Request-to-Match Speed", "target": "<24 hrs", "current": "18 hrs", "status": "Above", "pct": 75}, {"id": "PO-06", "name": "Dashboard Feature Adoption", "target": ">60%", "current": "55%", "status": "Near", "pct": 55}, {"id": "PO-07", "name": "Support Ticket Resolution", "target": "<24 hrs", "current": "16 hrs", "status": "Above", "pct": 67}, {"id": "PO-08", "name": "Net Promoter Score (NPS)", "target": ">40", "current": "45", "status": "Above", "pct": 75}, {"id": "PO-09", "name": "Data Accuracy Rate", "target": ">98%", "current": "99.1%", "status": "Above", "pct": 99}, {"id": "PO-10", "name": "System Incident Rate", "target": "<2/month", "current": "1", "status": "Above", "pct": 95}]}, "growth": {"title": "Market & Growth", "code": "MG", "color": "var(--green)", "kpis": [{"id": "MG-01", "name": "Market Share (PH-GR)", "target": ">5% by Y3", "current": "~1%", "status": "Building", "pct": 20}, {"id": "MG-02", "name": "Website Conversion Rate", "target": ">3%", "current": "3.8%", "status": "Above", "pct": 76}, {"id": "MG-03", "name": "Sector Diversification", "target": ">5 sectors", "current": "6", "status": "Above", "pct": 100}, {"id": "MG-04", "name": "Geographic Coverage (GR)", "target": ">5 regions", "current": "3", "status": "Building", "pct": 60}, {"id": "MG-05", "name": "Brand Awareness", "target": ">20% by Y2", "current": "8%", "status": "Building", "pct": 40}, {"id": "MG-06", "name": "Content Engagement", "target": ">2.5%", "current": "3.1%", "status": "Above", "pct": 82}, {"id": "MG-07", "name": "Referral Rate", "target": ">25%", "current": "30%", "status": "Above", "pct": 75}, {"id": "MG-08", "name": "Media Mentions", "target": ">3/quarter", "current": "2", "status": "Near", "pct": 67}, {"id": "MG-09", "name": "Partnership Pipeline", "target": ">5 active", "current": "4", "status": "Near", "pct": 80}]}};
+    settingsData={"notifications": [{"label": "New employer registration", "desc": "Email when a new employer signs up", "checked": true}, {"label": "Application stage changes", "desc": "Notify on pipeline progress", "checked": true}, {"label": "Document uploads", "desc": "Alert when workers upload documents", "checked": true}, {"label": "Visa status updates", "desc": "Notify on visa processing changes", "checked": true}, {"label": "Worker deployment alerts", "desc": "Email when worker arrives in Greece", "checked": true}, {"label": "Weekly summary report", "desc": "Automated weekly KPI email", "checked": false}, {"label": "Message notifications", "desc": "Email on new platform messages", "checked": false}]};
+    hbDataLoaded=true;
+  }
+})();
 
 // ═══ STATUS COLORS ═══
 const sc={"Active":"background:#D1FAE5;color:#065F46","Pending":"background:#FEF3C7;color:#92400E","Deployed":"background:#D1FAE5;color:#065F46","Visa Pending":"background:#FEF3C7;color:#92400E","Interview":"background:#EFF6FF;color:#1E40AF","Ready":"background:#E0E7FF;color:#3730A3","Screening":"background:#F1F5F9;color:#475569","DMW Docs":"background:#FEF3C7;color:#92400E"};
@@ -714,128 +752,7 @@ function addUser(){
   alert('User created successfully!');
 }
 
-// ═══ TALENT POOL & EMPLOYER DEMAND DATA ═══
-const talentPool=[
-  {role:"Housekeeper",icon:"🧹",count:14,ready:8,deployed:3,color:"var(--blue)",candidates:[
-    {name:"Maria Reyes",status:"Deployed",score:92,loc:"Manila",exp:"6 yrs",eng:"B2",employer:"Athens Grand Hotel"},
-    {name:"Grace Dela Cruz",status:"Ready",score:86,loc:"Quezon City",exp:"4 yrs",eng:"B2",employer:null},
-    {name:"Teresa Villanueva",status:"Ready",score:88,loc:"Manila",exp:"5 yrs",eng:"B1",employer:null},
-    {name:"Carmen Aquino",status:"Ready",score:84,loc:"Cebu",exp:"3 yrs",eng:"B1",employer:null},
-    {name:"Rosalie Mendoza",status:"Ready",score:80,loc:"Davao",exp:"2 yrs",eng:"A2",employer:null},
-    {name:"Lorna Bautista",status:"Ready",score:82,loc:"Manila",exp:"4 yrs",eng:"B1",employer:null},
-    {name:"Patricia Santos",status:"Deployed",score:90,loc:"Manila",exp:"7 yrs",eng:"B2",employer:"Crete Beach Resort"},
-    {name:"Elena Ramos",status:"Ready",score:79,loc:"Cebu",exp:"2 yrs",eng:"A2",employer:null},
-    {name:"Diana Cruz",status:"Deployed",score:91,loc:"Manila",exp:"6 yrs",eng:"B2",employer:"Aegean Cleaning Co."},
-    {name:"Susan Magsaysay",status:"Ready",score:83,loc:"Davao",exp:"3 yrs",eng:"B1",employer:null},
-    {name:"Mila Flores",status:"Screening",score:75,loc:"Cebu",exp:"1 yr",eng:"A2",employer:null},
-    {name:"Nora Gonzales",status:"Screening",score:72,loc:"Manila",exp:"1 yr",eng:"A2",employer:null},
-    {name:"Joy Pascual",status:"Screening",score:74,loc:"Quezon City",exp:"2 yrs",eng:"B1",employer:null},
-    {name:"Ana Dimaculangan",status:"Screening",score:70,loc:"Davao",exp:"1 yr",eng:"A1",employer:null}
-  ]},
-  {role:"Line Cook",icon:"👨‍🍳",count:11,ready:5,deployed:2,color:"var(--amber)",candidates:[
-    {name:"Jose Cruz",status:"Visa Pending",score:88,loc:"Cebu",exp:"3 yrs",eng:"B1",employer:"Crete Beach Resort"},
-    {name:"Ricardo Tan",status:"Ready",score:85,loc:"Manila",exp:"5 yrs",eng:"B1",employer:null},
-    {name:"Marco Villanueva",status:"Ready",score:82,loc:"Cebu",exp:"4 yrs",eng:"B1",employer:null},
-    {name:"Eduardo Santos",status:"Deployed",score:89,loc:"Manila",exp:"6 yrs",eng:"B2",employer:"Athens Grand Hotel"},
-    {name:"Fernando Lopez",status:"Ready",score:80,loc:"Davao",exp:"3 yrs",eng:"A2",employer:null},
-    {name:"Paolo Garcia",status:"Ready",score:78,loc:"Cebu",exp:"2 yrs",eng:"A2",employer:null},
-    {name:"Antonio Reyes",status:"Ready",score:81,loc:"Manila",exp:"4 yrs",eng:"B1",employer:null},
-    {name:"Carlos Dela Cruz",status:"Deployed",score:87,loc:"Manila",exp:"5 yrs",eng:"B2",employer:"Crete Beach Resort"},
-    {name:"Ramon Torres",status:"Screening",score:74,loc:"Cebu",exp:"1 yr",eng:"A2",employer:null},
-    {name:"Luis Bautista",status:"Screening",score:72,loc:"Davao",exp:"1 yr",eng:"A1",employer:null},
-    {name:"Miguel Torres",status:"Screening",score:78,loc:"Cebu",exp:"2 yrs",eng:"A2",employer:null}
-  ]},
-  {role:"Care Worker",icon:"💙",count:9,ready:4,deployed:2,color:"var(--green)",candidates:[
-    {name:"Anna Lim",status:"Interview",score:95,loc:"Davao",exp:"7 yrs",eng:"C1",employer:"Thessaloniki Care"},
-    {name:"Patricia Ramos",status:"Deployed",score:94,loc:"Manila",exp:"8 yrs",eng:"C1",employer:"Hellenic Senior Living"},
-    {name:"Cristina Aquino",status:"Ready",score:88,loc:"Manila",exp:"5 yrs",eng:"B2",employer:null},
-    {name:"Rosemarie Santos",status:"Ready",score:86,loc:"Cebu",exp:"4 yrs",eng:"B1",employer:null},
-    {name:"Dolores Mendoza",status:"Ready",score:84,loc:"Davao",exp:"3 yrs",eng:"B1",employer:null},
-    {name:"Victoria Cruz",status:"Deployed",score:92,loc:"Manila",exp:"6 yrs",eng:"B2",employer:"Thessaloniki Care"},
-    {name:"Angelina Torres",status:"Ready",score:82,loc:"Manila",exp:"4 yrs",eng:"B1",employer:null},
-    {name:"Esperanza Lopez",status:"Screening",score:76,loc:"Cebu",exp:"2 yrs",eng:"A2",employer:null},
-    {name:"Lucinda Garcia",status:"Screening",score:73,loc:"Davao",exp:"1 yr",eng:"A2",employer:null}
-  ]},
-  {role:"Front Desk",icon:"🛎️",count:7,ready:3,deployed:1,color:"var(--purple)",candidates:[
-    {name:"Grace Dela Cruz",status:"Ready",score:86,loc:"Quezon City",exp:"4 yrs",eng:"B2",employer:null},
-    {name:"Jennifer Reyes",status:"Ready",score:84,loc:"Manila",exp:"3 yrs",eng:"B2",employer:null},
-    {name:"Michelle Santos",status:"Ready",score:82,loc:"Cebu",exp:"2 yrs",eng:"B1",employer:null},
-    {name:"Karen Villanueva",status:"Deployed",score:88,loc:"Manila",exp:"5 yrs",eng:"B2",employer:"Athens Grand Hotel"},
-    {name:"Stephanie Cruz",status:"Screening",score:76,loc:"Davao",exp:"1 yr",eng:"B1",employer:null},
-    {name:"Nicole Tan",status:"Screening",score:74,loc:"Cebu",exp:"1 yr",eng:"A2",employer:null},
-    {name:"Bianca Lopez",status:"Screening",score:72,loc:"Manila",exp:"1 yr",eng:"A2",employer:null}
-  ]},
-  {role:"Electrician",icon:"⚡",count:5,ready:3,deployed:0,color:"var(--red)",candidates:[
-    {name:"Roberto Santos",status:"DMW Docs",score:90,loc:"Manila",exp:"10 yrs",eng:"B1",employer:"Athens Grand Hotel"},
-    {name:"Danilo Cruz",status:"Ready",score:86,loc:"Cebu",exp:"8 yrs",eng:"B1",employer:null},
-    {name:"Ernesto Reyes",status:"Ready",score:84,loc:"Manila",exp:"6 yrs",eng:"A2",employer:null},
-    {name:"Ronaldo Bautista",status:"Ready",score:82,loc:"Davao",exp:"5 yrs",eng:"A2",employer:null},
-    {name:"Felipe Torres",status:"Screening",score:75,loc:"Manila",exp:"3 yrs",eng:"A2",employer:null}
-  ]},
-  {role:"Barista",icon:"☕",count:6,ready:2,deployed:0,color:"#7C3AED",candidates:[
-    {name:"Miguel Torres",status:"Screening",score:78,loc:"Cebu",exp:"2 yrs",eng:"A2",employer:null},
-    {name:"Rafael Santos",status:"Ready",score:80,loc:"Manila",exp:"3 yrs",eng:"B1",employer:null},
-    {name:"Isabela Cruz",status:"Ready",score:79,loc:"Cebu",exp:"2 yrs",eng:"B1",employer:null},
-    {name:"Diego Reyes",status:"Screening",score:74,loc:"Davao",exp:"1 yr",eng:"A2",employer:null},
-    {name:"Sofia Villanueva",status:"Screening",score:72,loc:"Manila",exp:"1 yr",eng:"A1",employer:null},
-    {name:"Andrea Lopez",status:"Screening",score:71,loc:"Cebu",exp:"1 yr",eng:"A1",employer:null}
-  ]},
-  {role:"Cleaner",icon:"🧽",count:8,ready:4,deployed:1,color:"var(--blue)",candidates:[
-    {name:"Carlos Garcia",status:"Ready",score:82,loc:"Davao",exp:"3 yrs",eng:"B1",employer:null},
-    {name:"Maricel Santos",status:"Ready",score:80,loc:"Manila",exp:"2 yrs",eng:"A2",employer:null},
-    {name:"Gloria Cruz",status:"Ready",score:78,loc:"Cebu",exp:"2 yrs",eng:"A2",employer:null},
-    {name:"Remedios Reyes",status:"Ready",score:76,loc:"Manila",exp:"1 yr",eng:"A2",employer:null},
-    {name:"Luisa Torres",status:"Deployed",score:84,loc:"Manila",exp:"4 yrs",eng:"B1",employer:"Aegean Cleaning Co."},
-    {name:"Beth Aquino",status:"Screening",score:72,loc:"Davao",exp:"1 yr",eng:"A1",employer:null},
-    {name:"Celia Mendoza",status:"Screening",score:70,loc:"Cebu",exp:"1 yr",eng:"A1",employer:null},
-    {name:"Delia Bautista",status:"Screening",score:68,loc:"Manila",exp:"<1 yr",eng:"A1",employer:null}
-  ]},
-  {role:"Nursing Aide",icon:"🏥",count:6,ready:2,deployed:2,color:"var(--green)",candidates:[
-    {name:"Patricia Ramos",status:"Deployed",score:94,loc:"Manila",exp:"8 yrs",eng:"C1",employer:"Hellenic Senior Living"},
-    {name:"Rebecca Cruz",status:"Deployed",score:91,loc:"Manila",exp:"6 yrs",eng:"B2",employer:"Thessaloniki Care"},
-    {name:"Corazon Santos",status:"Ready",score:86,loc:"Cebu",exp:"5 yrs",eng:"B1",employer:null},
-    {name:"Ligaya Torres",status:"Ready",score:84,loc:"Davao",exp:"4 yrs",eng:"B1",employer:null},
-    {name:"Estrella Reyes",status:"Screening",score:76,loc:"Manila",exp:"2 yrs",eng:"A2",employer:null},
-    {name:"Felicidad Lopez",status:"Screening",score:74,loc:"Cebu",exp:"2 yrs",eng:"A2",employer:null}
-  ]},
-  {role:"Waiter/Server",icon:"🍽️",count:10,ready:6,deployed:1,color:"var(--amber)",candidates:[
-    {name:"Alejandro Cruz",status:"Deployed",score:87,loc:"Manila",exp:"5 yrs",eng:"B2",employer:"Crete Beach Resort"},
-    {name:"Benjamin Santos",status:"Ready",score:84,loc:"Cebu",exp:"4 yrs",eng:"B1",employer:null},
-    {name:"Christian Reyes",status:"Ready",score:82,loc:"Manila",exp:"3 yrs",eng:"B1",employer:null},
-    {name:"Dominic Torres",status:"Ready",score:80,loc:"Davao",exp:"2 yrs",eng:"A2",employer:null},
-    {name:"Emmanuel Lopez",status:"Ready",score:79,loc:"Cebu",exp:"2 yrs",eng:"A2",employer:null},
-    {name:"Frederick Garcia",status:"Ready",score:78,loc:"Manila",exp:"2 yrs",eng:"B1",employer:null},
-    {name:"Gabriel Villanueva",status:"Ready",score:77,loc:"Davao",exp:"1 yr",eng:"A2",employer:null},
-    {name:"Henry Bautista",status:"Screening",score:74,loc:"Cebu",exp:"1 yr",eng:"A2",employer:null},
-    {name:"Ivan Aquino",status:"Screening",score:72,loc:"Manila",exp:"1 yr",eng:"A1",employer:null},
-    {name:"James Mendoza",status:"Screening",score:70,loc:"Davao",exp:"<1 yr",eng:"A1",employer:null}
-  ]},
-  {role:"Plumber",icon:"🔧",count:4,ready:2,deployed:0,color:"var(--g500)",candidates:[
-    {name:"Oscar Santos",status:"Ready",score:84,loc:"Manila",exp:"7 yrs",eng:"B1",employer:null},
-    {name:"Pedro Cruz",status:"Ready",score:80,loc:"Cebu",exp:"5 yrs",eng:"A2",employer:null},
-    {name:"Quirino Reyes",status:"Screening",score:74,loc:"Davao",exp:"2 yrs",eng:"A2",employer:null},
-    {name:"Renato Torres",status:"Screening",score:72,loc:"Manila",exp:"2 yrs",eng:"A1",employer:null}
-  ]},
-  {role:"Laundry Staff",icon:"👕",count:5,ready:3,deployed:0,color:"var(--blue-l)",candidates:[
-    {name:"Teresita Santos",status:"Ready",score:80,loc:"Manila",exp:"3 yrs",eng:"B1",employer:null},
-    {name:"Urduja Cruz",status:"Ready",score:78,loc:"Cebu",exp:"2 yrs",eng:"A2",employer:null},
-    {name:"Vivian Reyes",status:"Ready",score:76,loc:"Davao",exp:"2 yrs",eng:"A2",employer:null},
-    {name:"Wilma Torres",status:"Screening",score:72,loc:"Manila",exp:"1 yr",eng:"A1",employer:null},
-    {name:"Ximena Lopez",status:"Screening",score:70,loc:"Cebu",exp:"1 yr",eng:"A1",employer:null}
-  ]},
-  {role:"Farm Worker",icon:"🌾",count:3,ready:1,deployed:0,color:"var(--green)",candidates:[
-    {name:"Yolanda Santos",status:"Ready",score:76,loc:"Davao",exp:"3 yrs",eng:"A2",employer:null},
-    {name:"Zenaida Cruz",status:"Screening",score:72,loc:"Cebu",exp:"1 yr",eng:"A1",employer:null},
-    {name:"Amelia Reyes",status:"Screening",score:70,loc:"Manila",exp:"1 yr",eng:"A1",employer:null}
-  ]}
-];
-const employerDemand=[
-  {emp:"Athens Grand Hotel",sector:"Hospitality",needs:[{role:"Housekeeper",qty:2},{role:"Front Desk",qty:1},{role:"Electrician",qty:1},{role:"Laundry Staff",qty:1}],total:5,urgent:2},
-  {emp:"Crete Beach Resort",sector:"Hospitality",needs:[{role:"Line Cook",qty:3},{role:"Waiter/Server",qty:3},{role:"Barista",qty:2}],total:8,urgent:5},
-  {emp:"Thessaloniki Care Services",sector:"Care",needs:[{role:"Care Worker",qty:2},{role:"Nursing Aide",qty:1}],total:3,urgent:1},
-  {emp:"Aegean Cleaning Co.",sector:"Housekeeping",needs:[{role:"Cleaner",qty:3},{role:"Housekeeper",qty:1}],total:4,urgent:2},
-  {emp:"Hellenic Senior Living",sector:"Care",needs:[{role:"Care Worker",qty:3},{role:"Nursing Aide",qty:2},{role:"Cleaner",qty:1}],total:6,urgent:3}
-];
+// ═══ TALENT POOL & EMPLOYER DEMAND — loaded from data.json above ═══
 
 function renderDashboardPanels(){
   const maxCount=Math.max(...talentPool.map(t=>t.count));
@@ -975,30 +892,7 @@ function renderDocuments(){
 }
 
 // ═══ MESSAGING ═══
-const conversations=[
-  {id:1,name:"Nikos Papadopoulos",role:"Athens Grand Hotel · Employer",avatar:"NP",unread:2,msgs:[
-    {from:"nikos",text:"Hello, I need 2 more housekeepers for the summer season. Can you help?",time:"Mar 18, 10:30"},
-    {from:"admin",text:"Hi Nikos! Absolutely. We have 8 ready housekeepers in our pool. I'll send you a shortlist by tomorrow.",time:"Mar 18, 11:15"},
-    {from:"nikos",text:"That would be great. We need them by May at the latest.",time:"Mar 18, 11:20"},
-    {from:"nikos",text:"Also, can you include candidates with hotel experience specifically?",time:"Mar 18, 11:22"}
-  ]},
-  {id:2,name:"Maria Reyes",role:"Housekeeper · Deployed",avatar:"MR",unread:0,msgs:[
-    {from:"maria",text:"Hi, I arrived in Athens safely. The hotel staff was very welcoming!",time:"Mar 1, 18:00"},
-    {from:"admin",text:"Welcome to Greece, Maria! So glad to hear that. How is the accommodation?",time:"Mar 1, 18:30"},
-    {from:"maria",text:"Very good, thank you. The room is nice and close to work.",time:"Mar 1, 19:00"},
-    {from:"admin",text:"Perfect. Remember, we're here if you need anything. Your 90-day check-in is scheduled for May 30.",time:"Mar 2, 09:00"}
-  ]},
-  {id:3,name:"Elena Petridou",role:"Thessaloniki Care · Employer",avatar:"EP",unread:1,msgs:[
-    {from:"elena",text:"When can we expect Anna Lim's interview to be completed?",time:"Mar 15, 14:00"},
-    {from:"admin",text:"The video interview is scheduled for March 18. You'll receive the recording and evaluation within 24 hours after.",time:"Mar 15, 14:45"},
-    {from:"elena",text:"Perfect. We really need her to start by June.",time:"Mar 17, 09:00"}
-  ]},
-  {id:4,name:"Jose Cruz",role:"Line Cook · Visa Pending",avatar:"JC",unread:0,msgs:[
-    {from:"jose",text:"Any update on my visa application?",time:"Mar 12, 10:00"},
-    {from:"admin",text:"Hi Jose, your Type D visa was submitted to the Greek Consulate on March 5. Typical processing is 2-4 weeks. We'll update you as soon as we hear back.",time:"Mar 12, 10:30"},
-    {from:"jose",text:"Thank you. I'm very excited about this opportunity!",time:"Mar 12, 11:00"}
-  ]}
-];
+// ═══ MESSAGING — conversations loaded from data.json ═══
 let activeConv=0;
 function renderMessaging(){
   renderMsgList('');
@@ -1032,7 +926,7 @@ function sendMsg(){
 
 // ═══ SETTINGS ═══
 function renderSettings(){
-  const notifs=[
+  const notifs=(settingsData&&settingsData.notifications)?settingsData.notifications:[
     {label:"New employer registration",desc:"Email when a new employer signs up",checked:true},
     {label:"Application stage changes",desc:"Notify on pipeline progress",checked:true},
     {label:"Document uploads",desc:"Alert when workers upload documents",checked:true},
@@ -1044,91 +938,7 @@ function renderSettings(){
   document.getElementById('notif-settings').innerHTML=notifs.map((n,i)=>`<div style="display:flex;justify-content:space-between;align-items:center;padding:12px;background:var(--g50);border-radius:10px;margin-bottom:8px"><div><div style="font-size:14px;font-weight:500;color:var(--g800)">${n.label}</div><div style="font-size:12px;color:var(--g500)">${n.desc}</div></div><input type="checkbox" ${n.checked?'checked':''} style="width:18px;height:18px;accent-color:var(--blue)"></div>`).join('');
 }
 
-// ═══ KPIs & ANALYTICS (69 KPIs) ═══
-const kpiData={
-  pipeline:{title:"Recruitment Pipeline",code:"RP",color:"var(--blue)",kpis:[
-    {id:"RP-01",name:"Staffing Requests Received",target:">20/mo by Y2",current:"12/mo",status:"On Track",pct:60},
-    {id:"RP-02",name:"Requests Conversion Rate",target:">60%",current:"68%",status:"Above",pct:68},
-    {id:"RP-03",name:"Candidates Sourced per Request",target:"8-15",current:"11",status:"On Track",pct:73},
-    {id:"RP-04",name:"Shortlist Acceptance Rate",target:">50%",current:"55%",status:"Above",pct:55},
-    {id:"RP-05",name:"Interview-to-Offer Ratio",target:">40%",current:"45%",status:"Above",pct:45},
-    {id:"RP-06",name:"Offer Acceptance Rate",target:">85%",current:"88%",status:"Above",pct:88},
-    {id:"RP-07",name:"Pipeline Fill Rate",target:">75%",current:"72%",status:"Near",pct:72},
-    {id:"RP-08",name:"Average Pipeline Depth",target:">3:1",current:"3.5:1",status:"Above",pct:78},
-    {id:"RP-09",name:"Request Abandonment Rate",target:"<20%",current:"15%",status:"Above",pct:85},
-    {id:"RP-10",name:"Repeat Request Rate",target:">40% by Y2",current:"33%",status:"Building",pct:33}
-  ]},
-  time:{title:"Time Performance",code:"TP",color:"var(--amber)",kpis:[
-    {id:"TP-01",name:"Time-to-First-Shortlist",target:"<7 days",current:"5.2 days",status:"Above",pct:85},
-    {id:"TP-02",name:"Time-to-Interview",target:"<10 days",current:"8 days",status:"Above",pct:80},
-    {id:"TP-03",name:"Time-to-Offer",target:"<30 days",current:"24 days",status:"Above",pct:80},
-    {id:"TP-04",name:"Time-to-Deployment",target:"<90 days",current:"72 days",status:"Above",pct:80},
-    {id:"TP-05",name:"Total Time-to-Hire",target:"<120 days",current:"96 days",status:"Above",pct:80},
-    {id:"TP-06",name:"Document Processing (PH)",target:"<30 days",current:"22 days",status:"Above",pct:73},
-    {id:"TP-07",name:"Visa Processing (GR)",target:"<45 days",current:"38 days",status:"Above",pct:84},
-    {id:"TP-08",name:"Registration Time",target:"<14 days",current:"10 days",status:"Above",pct:71},
-    {id:"TP-09",name:"Response to Inquiries",target:"<4 hours",current:"2.5 hrs",status:"Above",pct:63},
-    {id:"TP-10",name:"Platform Uptime",target:">99.5%",current:"99.8%",status:"Above",pct:99}
-  ]},
-  compliance:{title:"Compliance & Documentation",code:"CD",color:"var(--green)",kpis:[
-    {id:"CD-01",name:"Document Completeness Rate",target:"100%",current:"100%",status:"Met",pct:100},
-    {id:"CD-02",name:"First-Submission Approval (DMW)",target:">80%",current:"85%",status:"Above",pct:85},
-    {id:"CD-03",name:"First-Submission Visa Approval",target:">85%",current:"90%",status:"Above",pct:90},
-    {id:"CD-04",name:"Contract Compliance Rate",target:">90%",current:"95%",status:"Above",pct:95},
-    {id:"CD-05",name:"OEC Issuance Success Rate",target:">95%",current:"98%",status:"Above",pct:98},
-    {id:"CD-06",name:"Medical Clearance Pass Rate",target:">90%",current:"92%",status:"Above",pct:92},
-    {id:"CD-07",name:"Regulatory Incidents",target:"0",current:"0",status:"Met",pct:100},
-    {id:"CD-08",name:"Audit Readiness Score",target:">95%",current:"97%",status:"Above",pct:97},
-    {id:"CD-09",name:"Doc Expiry Alert Compliance",target:"100%",current:"100%",status:"Met",pct:100},
-    {id:"CD-10",name:"PDOS Completion Rate",target:"100%",current:"100%",status:"Met",pct:100}
-  ]},
-  financial:{title:"Financial & Revenue",code:"FR",color:"var(--purple)",kpis:[
-    {id:"FR-01",name:"Revenue per Placement",target:">€4,000",current:"€4,350",status:"Above",pct:87},
-    {id:"FR-02",name:"Cost per Placement",target:"<€2,000",current:"€1,680",status:"Above",pct:84},
-    {id:"FR-03",name:"Gross Margin per Placement",target:">50%",current:"61%",status:"Above",pct:61},
-    {id:"FR-04",name:"Monthly Recurring Revenue",target:"+10% MoM",current:"+12%",status:"Above",pct:72},
-    {id:"FR-05",name:"Customer Lifetime Value",target:">€20,000",current:"€22,500",status:"Above",pct:75},
-    {id:"FR-06",name:"Customer Acquisition Cost",target:"<€2,000",current:"€1,450",status:"Above",pct:73},
-    {id:"FR-07",name:"CLV:CAC Ratio",target:">5:1",current:"15.5:1",status:"Above",pct:100},
-    {id:"FR-08",name:"Revenue Concentration Risk",target:"<40%",current:"35%",status:"Above",pct:88},
-    {id:"FR-09",name:"Invoice Collection Period",target:"<30 days",current:"22 days",status:"Above",pct:73},
-    {id:"FR-10",name:"Add-On Attachment Rate",target:">50%",current:"48%",status:"Near",pct:48}
-  ]},
-  quality:{title:"Quality & Retention",code:"CQ",color:"var(--red)",kpis:[
-    {id:"CQ-01",name:"Candidate Verification Score",target:">85/100",current:"89",status:"Above",pct:89},
-    {id:"CQ-02",name:"Employer Satisfaction (CSAT)",target:">4.2/5",current:"4.5",status:"Above",pct:90},
-    {id:"CQ-03",name:"Worker Satisfaction",target:">4.0/5",current:"4.3",status:"Above",pct:86},
-    {id:"CQ-04",name:"90-Day Retention Rate",target:">90%",current:"92%",status:"Above",pct:92},
-    {id:"CQ-05",name:"180-Day Retention Rate",target:">80%",current:"85%",status:"Above",pct:85},
-    {id:"CQ-06",name:"12-Month Retention Rate",target:">70%",current:"N/A",status:"Pending",pct:0},
-    {id:"CQ-07",name:"Replacement Trigger Rate",target:"<10%",current:"8%",status:"Above",pct:92},
-    {id:"CQ-08",name:"Worker Performance Rating",target:">4.0/5",current:"4.2",status:"Above",pct:84},
-    {id:"CQ-09",name:"Cultural Adaptation Score",target:">3.5/5",current:"3.8",status:"Above",pct:76},
-    {id:"CQ-10",name:"Contract Completion Rate",target:">75%",current:"N/A",status:"Pending",pct:0}
-  ]},
-  platform:{title:"Platform & Operations",code:"PO",color:"var(--blue-l)",kpis:[
-    {id:"PO-01",name:"Active Employer Accounts",target:">50 by Y2",current:"5",status:"Building",pct:10},
-    {id:"PO-02",name:"Employer Login Frequency",target:">4x/mo",current:"6x",status:"Above",pct:100},
-    {id:"PO-03",name:"Talent Pool Size (Active)",target:">500 by Y2",current:"86",status:"Building",pct:17},
-    {id:"PO-04",name:"Profile Completeness",target:">90%",current:"88%",status:"Near",pct:88},
-    {id:"PO-05",name:"Request-to-Match Speed",target:"<24 hrs",current:"18 hrs",status:"Above",pct:75},
-    {id:"PO-06",name:"Dashboard Feature Adoption",target:">60%",current:"55%",status:"Near",pct:55},
-    {id:"PO-07",name:"Support Ticket Resolution",target:"<24 hrs",current:"16 hrs",status:"Above",pct:67},
-    {id:"PO-08",name:"Net Promoter Score (NPS)",target:">40",current:"45",status:"Above",pct:75},
-    {id:"PO-09",name:"Data Accuracy Rate",target:">98%",current:"99.1%",status:"Above",pct:99}
-  ]},
-  growth:{title:"Market & Growth",code:"MG",color:"var(--green)",kpis:[
-    {id:"MG-01",name:"Market Share (PH-GR)",target:">5% by Y3",current:"~1%",status:"Building",pct:20},
-    {id:"MG-02",name:"Website Conversion Rate",target:">3%",current:"3.8%",status:"Above",pct:76},
-    {id:"MG-03",name:"Sector Diversification",target:">5 sectors",current:"6",status:"Above",pct:100},
-    {id:"MG-04",name:"Geographic Coverage (GR)",target:">5 regions",current:"3",status:"Building",pct:60},
-    {id:"MG-05",name:"Brand Awareness",target:">20% by Y2",current:"8%",status:"Building",pct:40},
-    {id:"MG-06",name:"Content Engagement",target:">2.5%",current:"3.1%",status:"Above",pct:82},
-    {id:"MG-07",name:"Referral Rate",target:">25%",current:"30%",status:"Above",pct:75},
-    {id:"MG-08",name:"Media Mentions",target:">3/quarter",current:"2",status:"Near",pct:67},
-    {id:"MG-09",name:"Partnership Pipeline",target:">5 active",current:"4",status:"Near",pct:80}
-  ]}
-};
+// ═══ KPIs & ANALYTICS (69 KPIs) — loaded from data.json ═══
 let currentKpiTab='overview';
 function switchKpiTab(tab,btn){
   currentKpiTab=tab;
