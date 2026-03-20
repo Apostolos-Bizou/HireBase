@@ -71,6 +71,7 @@ ul,ol{list-style:none}.container{max-width:1200px;margin:0 auto;padding:0 32px}
 @keyframes float{0%,100%{transform:translateY(0)}50%{transform:translateY(-10px)}}
 @keyframes pulse{0%,100%{opacity:1}50%{opacity:.5}}
 @keyframes glow-pulse{0%,100%{box-shadow:0 0 30px rgba(37,99,235,.08)}50%{box-shadow:0 0 60px rgba(37,99,235,.15)}}
+@keyframes loadBar{from{width:0%}to{width:100%}}
 .anim-fade-up{opacity:0;animation:fadeUp .8s cubic-bezier(.16,1,.3,1) forwards}
 .anim-delay-1{animation-delay:.1s}.anim-delay-2{animation-delay:.2s}.anim-delay-3{animation-delay:.35s}.anim-delay-4{animation-delay:.5s}
 
@@ -630,15 +631,15 @@ body.role-employer .role-selector-active,body.role-worker .role-selector-active{
   <p class="section-desc" style="margin:0 auto 32px">Create your profile and get matched with employers in Greece. It takes less than 5 minutes.</p>
   <div class="glass-dark" style="padding:36px;text-align:left">
     <div style="display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-bottom:16px">
-      <div class="form-group" style="margin:0"><label style="color:var(--gray-400)">Full Name</label><input type="text" placeholder="Juan Dela Cruz" style="background:rgba(255,255,255,.04);border-color:rgba(255,255,255,.08);color:var(--white)"></div>
-      <div class="form-group" style="margin:0"><label style="color:var(--gray-400)">Email</label><input type="email" placeholder="juan@email.com" style="background:rgba(255,255,255,.04);border-color:rgba(255,255,255,.08);color:var(--white)"></div>
+      <div class="form-group" style="margin:0"><label style="color:var(--gray-400)">Full Name</label><input type="text" id="wrk-name" placeholder="Juan Dela Cruz" style="background:rgba(255,255,255,.04);border-color:rgba(255,255,255,.08);color:var(--white)"></div>
+      <div class="form-group" style="margin:0"><label style="color:var(--gray-400)">Email</label><input type="email" id="wrk-email" placeholder="juan@email.com" style="background:rgba(255,255,255,.04);border-color:rgba(255,255,255,.08);color:var(--white)"></div>
     </div>
     <div style="display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-bottom:16px">
-      <div class="form-group" style="margin:0"><label style="color:var(--gray-400)">Phone</label><input type="tel" placeholder="+63 XXX XXX XXXX" style="background:rgba(255,255,255,.04);border-color:rgba(255,255,255,.08);color:var(--white)"></div>
-      <div class="form-group" style="margin:0"><label style="color:var(--gray-400)">Preferred Sector</label><select style="background:rgba(255,255,255,.04);border-color:rgba(255,255,255,.08);color:var(--white)"><option>Hospitality</option><option>F&B</option><option>Care Services</option><option>Housekeeping</option><option>Construction</option><option>Retail</option></select></div>
+      <div class="form-group" style="margin:0"><label style="color:var(--gray-400)">Phone</label><input type="tel" id="wrk-phone" placeholder="+63 XXX XXX XXXX" style="background:rgba(255,255,255,.04);border-color:rgba(255,255,255,.08);color:var(--white)"></div>
+      <div class="form-group" style="margin:0"><label style="color:var(--gray-400)">Preferred Sector</label><select id="wrk-sector" style="background:rgba(255,255,255,.04);border-color:rgba(255,255,255,.08);color:var(--white)"><option>Hospitality</option><option>F&B</option><option>Care Services</option><option>Housekeeping</option><option>Construction</option><option>Retail</option></select></div>
     </div>
-    <div class="form-group" style="margin-bottom:20px"><label style="color:var(--gray-400)">Years of Experience</label><select style="background:rgba(255,255,255,.04);border-color:rgba(255,255,255,.08);color:var(--white);width:100%"><option>1–2 years</option><option>3–5 years</option><option>5–10 years</option><option>10+ years</option></select></div>
-    <button class="btn btn-green btn-lg" style="width:100%;justify-content:center">Register My Interest</button>
+    <div class="form-group" style="margin-bottom:20px"><label style="color:var(--gray-400)">Years of Experience</label><select id="wrk-exp" style="background:rgba(255,255,255,.04);border-color:rgba(255,255,255,.08);color:var(--white);width:100%"><option>1–2 years</option><option>3–5 years</option><option>5–10 years</option><option>10+ years</option></select></div>
+    <button class="btn btn-green btn-lg" style="width:100%;justify-content:center" onclick="handleWorkerRegister(this)">Register My Interest</button>
     <div style="text-align:center;font-size:12px;color:var(--gray-500);margin-top:12px">Free registration. No fees, ever.</div>
   </div>
 </div></section>
@@ -697,8 +698,56 @@ function openModal(){document.getElementById('loginModal').classList.add('active
 function closeModal(){document.getElementById('loginModal').classList.remove('active')}
 function showRegister(){document.getElementById('modal-login-view').style.display='none';document.getElementById('modal-register-view').style.display='block'}
 function showLogin(){document.getElementById('modal-login-view').style.display='block';document.getElementById('modal-register-view').style.display='none'}
-function handleLogin(){closeModal();alert('Demo: Login successful! In production, this connects to your employer dashboard.')}
-function handleRegister(){closeModal();alert('Demo: Registration submitted! You will receive your credentials via email within 24 hours.')}
+function handleLogin(){
+  var email=document.getElementById('login-email').value.trim();
+  var pass=document.getElementById('login-pass').value.trim();
+  if(!email||!pass){return}
+  // Store credentials for admin.html auto-login
+  try{localStorage.setItem('hirebase-autologin',JSON.stringify({email:email,password:pass}))}catch(e){}
+  closeModal();
+  // Show success then redirect
+  var overlay=document.createElement('div');
+  overlay.style.cssText='position:fixed;inset:0;background:rgba(11,17,32,.9);display:flex;flex-direction:column;align-items:center;justify-content:center;z-index:10000';
+  overlay.innerHTML='<div style="font-size:48px;margin-bottom:16px;animation:scaleIn .4s ease">✓</div><div style="font-family:var(--font-heading);font-size:22px;font-weight:700;color:var(--white)">Signing in...</div><div style="font-size:14px;color:var(--gray-400);margin-top:8px">Redirecting to your dashboard</div>';
+  document.body.appendChild(overlay);
+  setTimeout(function(){window.location.href='admin.html'},1200);
+}
+function handleRegister(){
+  // Store as new employer
+  var company=document.querySelector('#modal-register-view input[placeholder="Your company"]');
+  var name=document.querySelector('#modal-register-view input[placeholder="Your name"]');
+  var email=document.querySelector('#modal-register-view input[placeholder="name@company.gr"]');
+  if(!email||!email.value.trim()){return}
+  try{localStorage.setItem('hirebase-autologin',JSON.stringify({email:'nikos@athenshotel.gr',password:'emp123',newEmployer:true}))}catch(e){}
+  closeModal();
+  var overlay=document.createElement('div');
+  overlay.style.cssText='position:fixed;inset:0;background:rgba(11,17,32,.9);display:flex;flex-direction:column;align-items:center;justify-content:center;z-index:10000';
+  overlay.innerHTML='<div style="font-size:48px;margin-bottom:16px;animation:scaleIn .4s ease">✓</div><div style="font-family:var(--font-heading);font-size:22px;font-weight:700;color:var(--white)">Account created!</div><div style="font-size:14px;color:var(--gray-400);margin-top:8px">Redirecting to your employer dashboard</div>';
+  document.body.appendChild(overlay);
+  setTimeout(function(){window.location.href='admin.html'},1500);
+}
+function handleWorkerRegister(btn){
+  var name=document.getElementById('wrk-name').value.trim();
+  var email=document.getElementById('wrk-email').value.trim();
+  if(!name||!email){
+    btn.style.background='var(--red)';btn.textContent='Please fill in Name & Email';
+    setTimeout(function(){btn.style.background='';btn.textContent='Register My Interest'},2000);
+    return;
+  }
+  // Store worker auto-login (uses demo worker account)
+  try{localStorage.setItem('hirebase-autologin',JSON.stringify({email:'maria@worker.ph',password:'wrk123',workerName:name,workerEmail:email}))}catch(e){}
+  btn.disabled=true;
+  btn.innerHTML='<span style="display:inline-flex;align-items:center;gap:8px"><span style="font-size:20px">✓</span> Registration Complete!</span>';
+  btn.style.background='var(--green)';
+  // Show success overlay then redirect
+  setTimeout(function(){
+    var overlay=document.createElement('div');
+    overlay.style.cssText='position:fixed;inset:0;background:rgba(11,17,32,.92);display:flex;flex-direction:column;align-items:center;justify-content:center;z-index:10000';
+    overlay.innerHTML='<div style="font-size:56px;margin-bottom:20px;animation:scaleIn .4s ease">🎉</div><div style="font-family:var(--font-heading);font-size:24px;font-weight:700;color:var(--white)">Welcome, '+name.split(' ')[0]+'!</div><div style="font-size:15px;color:var(--gray-400);margin-top:10px">Opening your personal dashboard...</div><div style="margin-top:24px;width:200px;height:4px;background:rgba(255,255,255,.1);border-radius:4px;overflow:hidden"><div style="height:100%;width:0%;background:var(--green);border-radius:4px;animation:loadBar 1.2s ease forwards"></div></div>';
+    document.body.appendChild(overlay);
+    setTimeout(function(){window.location.href='admin.html'},1500);
+  },800);
+}
 </script>
 <script>
 // Nav
