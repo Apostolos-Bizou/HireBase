@@ -128,6 +128,7 @@ tr:last-child td{border-bottom:none}
 /* Responsive */
 @media(max-width:900px){#sidebar{width:56px;overflow:hidden}.sb-brand>div:last-child,.sb-item span:last-child,.sb-user,.sb-role{display:none}.sb-item{justify-content:center;padding:12px 0}#main{padding:20px}.stats-row{flex-direction:column}.two-col{grid-template-columns:1fr}.pipeline-row{flex-wrap:wrap}.pipe-card{min-width:120px}}
 @media(max-width:640px){#sidebar{display:none}#main{padding:16px}.page-title{font-size:22px}.stat-val{font-size:24px}.cards-grid{grid-template-columns:1fr}.detail-grid{grid-template-columns:1fr}}
+@keyframes fadeIn{from{opacity:0;transform:translateY(20px)}to{opacity:1;transform:translateY(0)}}
 /* Pool & Demand bars */
 .pool-row{display:flex;align-items:center;gap:12px;margin-bottom:14px}
 .pool-label{font-size:13px;color:var(--g600);min-width:110px;font-weight:500}
@@ -250,21 +251,21 @@ tr:last-child td{border-bottom:none}
 
     <!-- EMPLOYERS -->
     <div class="page" id="pg-employers">
-      <div class="page-header"><h2 class="page-title">Employers (5)</h2><button class="btn btn-p" onclick="alert('Demo: Add employer form')">+ Add Employer</button></div>
+      <div class="page-header"><h2 class="page-title">Employers (<span id="emp-count">5</span>)</h2><button class="btn btn-p" onclick="showModal('add-emp-modal')">+ Add Employer</button></div>
       <input class="search-bar" id="emp-search" placeholder="Search employers..." oninput="filterEmployers()">
       <div class="tbl-wrap"><table><thead><tr><th>Company</th><th>Contact</th><th>Sector</th><th>Location</th><th>Workers</th><th>Status</th><th></th></tr></thead><tbody id="emp-tbody"></tbody></table></div>
     </div>
 
     <!-- CANDIDATES -->
     <div class="page" id="pg-candidates">
-      <div class="page-header"><h2 class="page-title">Candidates (8)</h2><button class="btn btn-p" onclick="alert('Demo: Add candidate form')">+ Add Candidate</button></div>
+      <div class="page-header"><h2 class="page-title">Candidates (<span id="cand-count">8</span>)</h2><button class="btn btn-p" onclick="showModal('add-cand-modal')">+ Add Candidate</button></div>
       <input class="search-bar" id="cand-search" placeholder="Search candidates..." oninput="filterCandidates()">
       <div class="cards-grid" id="cand-grid"></div>
     </div>
 
     <!-- APPLICATIONS -->
     <div class="page" id="pg-applications">
-      <div class="page-header"><h2 class="page-title">Applications (5)</h2><button class="btn btn-p" onclick="alert('Demo: Create new application')">+ New Application</button></div>
+      <div class="page-header"><h2 class="page-title">Applications (<span id="app-count">5</span>)</h2><button class="btn btn-p" onclick="showModal('add-app-modal')">+ New Application</button></div>
       <div id="app-list"></div>
     </div>
 
@@ -328,7 +329,7 @@ tr:last-child td{border-bottom:none}
 
     <!-- DOCUMENTS -->
     <div class="page" id="pg-documents">
-      <div class="page-header"><h2 class="page-title">Document Management</h2><button class="btn btn-p" onclick="alert('Demo: Upload document wizard')">+ Upload Document</button></div>
+      <div class="page-header"><h2 class="page-title">Document Management</h2><button class="btn btn-p" onclick="showModal('upload-doc-modal')">+ Upload Document</button></div>
       <div style="display:flex;gap:12px;margin-bottom:20px;flex-wrap:wrap">
         <button class="btn btn-p doc-filter active" onclick="filterDocs('all',this)">All Documents</button>
         <button class="btn btn-g doc-filter" onclick="filterDocs('complete',this)">Complete</button>
@@ -370,12 +371,12 @@ tr:last-child td{border-bottom:none}
           <div class="form-g"><label>Support Email</label><input value="support@hirebase.eu"></div>
           <div class="form-g"><label>Phone</label><input value="+30 2310 000 000"></div>
           <div class="form-g"><label>Default Language</label><select><option>English</option><option>Greek</option><option>Filipino</option></select></div>
-          <button class="btn btn-p" onclick="alert('Demo: Settings saved')">Save Changes</button>
+          <button class="btn btn-p" onclick="saveFeedback(this,'General settings saved!')">Save Changes</button>
         </div>
         <div style="background:var(--w);border:1px solid var(--g200);border-radius:16px;padding:24px">
           <h3 style="font-family:var(--heading);font-size:16px;font-weight:600;color:var(--g800);margin-bottom:20px">Notifications</h3>
           <div id="notif-settings"></div>
-          <button class="btn btn-p" style="margin-top:16px" onclick="alert('Demo: Notification settings saved')">Save Notifications</button>
+          <button class="btn btn-p" style="margin-top:16px" onclick="saveFeedback(this,'Notification preferences saved!')">Save Notifications</button>
         </div>
         <div style="background:var(--w);border:1px solid var(--g200);border-radius:16px;padding:24px">
           <h3 style="font-family:var(--heading);font-size:16px;font-weight:600;color:var(--g800);margin-bottom:20px">Pricing Configuration</h3>
@@ -383,7 +384,7 @@ tr:last-child td{border-bottom:none}
           <div class="form-g"><label>Platform Subscription (€/mo)</label><input type="number" value="500" min="200" max="1000"></div>
           <div class="form-g"><label>Enterprise Flat Fee (€)</label><input type="number" value="4500" min="3000" max="8000"></div>
           <div class="form-g"><label>Compliance Package (€/worker)</label><input type="number" value="1000" min="500" max="2000"></div>
-          <button class="btn btn-p" onclick="alert('Demo: Pricing saved')">Save Pricing</button>
+          <button class="btn btn-p" onclick="saveFeedback(this,'Pricing configuration updated!')">Save Pricing</button>
         </div>
         <div style="background:var(--w);border:1px solid var(--g200);border-radius:16px;padding:24px">
           <h3 style="font-family:var(--heading);font-size:16px;font-weight:600;color:var(--g800);margin-bottom:20px">Data & Security</h3>
@@ -391,8 +392,8 @@ tr:last-child td{border-bottom:none}
             <div style="display:flex;justify-content:space-between;align-items:center;padding:14px;background:var(--g50);border-radius:10px"><div><div style="font-size:14px;font-weight:600;color:var(--g800)">Two-Factor Authentication</div><div style="font-size:12px;color:var(--g500)">Require 2FA for admin accounts</div></div><label style="position:relative;width:44px;height:24px"><input type="checkbox" checked style="opacity:0;width:0;height:0"><span style="position:absolute;inset:0;background:var(--green);border-radius:12px;cursor:pointer"></span></label></div>
             <div style="display:flex;justify-content:space-between;align-items:center;padding:14px;background:var(--g50);border-radius:10px"><div><div style="font-size:14px;font-weight:600;color:var(--g800)">Session Timeout</div><div style="font-size:12px;color:var(--g500)">Auto logout after inactivity</div></div><select style="padding:6px 12px;border:1px solid var(--g200);border-radius:6px;font-size:13px"><option>30 minutes</option><option selected>1 hour</option><option>2 hours</option></select></div>
             <div style="display:flex;justify-content:space-between;align-items:center;padding:14px;background:var(--g50);border-radius:10px"><div><div style="font-size:14px;font-weight:600;color:var(--g800)">GDPR Compliance</div><div style="font-size:12px;color:var(--g500)">Data retention policies active</div></div><span class="badge" style="background:#D1FAE5;color:#065F46">Active ✓</span></div>
-            <button class="btn btn-g" onclick="alert('Demo: Export all platform data')">Export All Data</button>
-            <button class="btn btn-d" style="font-size:14px;padding:10px 20px" onclick="alert('Demo: This would purge old records')">Purge Old Records</button>
+            <button class="btn btn-g" onclick="saveFeedback(this,'Data export started! File will download shortly.')">Export All Data</button>
+            <button class="btn btn-d" style="font-size:14px;padding:10px 20px" onclick="if(confirm('Are you sure? This will purge records older than 2 years.'))saveFeedback(this,'Old records purged successfully.')">Purge Old Records</button>
           </div>
         </div>
       </div>
@@ -426,10 +427,76 @@ tr:last-child td{border-bottom:none}
   </div>
 </div>
 
-<!-- MODAL -->
+<!-- MODALS -->
 <div class="modal-bg" id="detail-modal" onclick="if(event.target===this)closeModal('detail-modal')">
   <div class="modal"><div class="modal-head"><h3 class="modal-title" id="modal-title"></h3><button class="modal-close" onclick="closeModal('detail-modal')">×</button></div><div id="modal-body"></div></div>
 </div>
+
+<!-- Add Employer Modal -->
+<div class="modal-bg" id="add-emp-modal" onclick="if(event.target===this)closeModal('add-emp-modal')">
+  <div class="modal"><div class="modal-head"><h3 class="modal-title">Add New Employer</h3><button class="modal-close" onclick="closeModal('add-emp-modal')">×</button></div>
+    <div class="form-g"><label>Company Name</label><input id="ne-company" placeholder="Hotel Acropolis"></div>
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px">
+      <div class="form-g"><label>Contact Person</label><input id="ne-contact" placeholder="Full name"></div>
+      <div class="form-g"><label>Email</label><input id="ne-email" type="email" placeholder="contact@company.gr"></div>
+    </div>
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px">
+      <div class="form-g"><label>Phone</label><input id="ne-phone" placeholder="+30 210 000 0000"></div>
+      <div class="form-g"><label>Location</label><input id="ne-loc" placeholder="Athens"></div>
+    </div>
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px">
+      <div class="form-g"><label>Sector</label><select id="ne-sector"><option>Hospitality</option><option>F&B</option><option>Care Services</option><option>Housekeeping</option><option>Construction</option><option>Retail</option></select></div>
+      <div class="form-g"><label>Workers Needed</label><input id="ne-workers" type="number" value="3" min="1"></div>
+    </div>
+    <div style="display:flex;gap:10px;margin-top:8px"><button class="btn btn-p" onclick="addEmployer()">Add Employer</button><button class="btn btn-g" onclick="closeModal('add-emp-modal')">Cancel</button></div>
+  </div>
+</div>
+
+<!-- Add Candidate Modal -->
+<div class="modal-bg" id="add-cand-modal" onclick="if(event.target===this)closeModal('add-cand-modal')">
+  <div class="modal"><div class="modal-head"><h3 class="modal-title">Add New Candidate</h3><button class="modal-close" onclick="closeModal('add-cand-modal')">×</button></div>
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px">
+      <div class="form-g"><label>Full Name</label><input id="nc-name" placeholder="Juan Dela Cruz"></div>
+      <div class="form-g"><label>Email</label><input id="nc-email" type="email" placeholder="juan@email.ph"></div>
+    </div>
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px">
+      <div class="form-g"><label>Phone</label><input id="nc-phone" placeholder="+63 9XX XXX XXXX"></div>
+      <div class="form-g"><label>Location</label><input id="nc-loc" placeholder="Manila"></div>
+    </div>
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px">
+      <div class="form-g"><label>Sector</label><select id="nc-sector"><option>Hospitality</option><option>F&B</option><option>Care Services</option><option>Housekeeping</option><option>Construction</option><option>Retail</option></select></div>
+      <div class="form-g"><label>Role</label><input id="nc-role" placeholder="Housekeeper"></div>
+    </div>
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px">
+      <div class="form-g"><label>Experience</label><input id="nc-exp" placeholder="3 years"></div>
+      <div class="form-g"><label>English Level</label><select id="nc-eng"><option>A1</option><option>A2</option><option selected>B1</option><option>B2</option><option>C1</option><option>C2</option></select></div>
+    </div>
+    <div style="display:flex;gap:10px;margin-top:8px"><button class="btn btn-p" onclick="addCandidate()">Add Candidate</button><button class="btn btn-g" onclick="closeModal('add-cand-modal')">Cancel</button></div>
+  </div>
+</div>
+
+<!-- New Application Modal -->
+<div class="modal-bg" id="add-app-modal" onclick="if(event.target===this)closeModal('add-app-modal')">
+  <div class="modal"><div class="modal-head"><h3 class="modal-title">Create New Application</h3><button class="modal-close" onclick="closeModal('add-app-modal')">×</button></div>
+    <div class="form-g"><label>Employer</label><select id="na-emp"><option>Athens Grand Hotel</option><option>Crete Beach Resort</option><option>Thessaloniki Care Services</option><option>Aegean Cleaning Co.</option><option>Hellenic Senior Living</option></select></div>
+    <div class="form-g"><label>Candidate</label><select id="na-cand"></select></div>
+    <div class="form-g"><label>Role / Position</label><input id="na-role" placeholder="Housekeeper"></div>
+    <div style="display:flex;gap:10px;margin-top:8px"><button class="btn btn-p" onclick="addApplication()">Create Application</button><button class="btn btn-g" onclick="closeModal('add-app-modal')">Cancel</button></div>
+  </div>
+</div>
+
+<!-- Upload Document Modal -->
+<div class="modal-bg" id="upload-doc-modal" onclick="if(event.target===this)closeModal('upload-doc-modal')">
+  <div class="modal"><div class="modal-head"><h3 class="modal-title">Upload Document</h3><button class="modal-close" onclick="closeModal('upload-doc-modal')">×</button></div>
+    <div class="form-g"><label>Worker</label><select id="ud-worker"><option>Maria Reyes (HB-2026-0042)</option><option>Jose Cruz (HB-2026-0067)</option><option>Anna Lim (HB-2026-0089)</option></select></div>
+    <div class="form-g"><label>Document Type</label><select id="ud-type"><option>Recruitment Agreement</option><option>Job Order</option><option>Employment Contract</option><option>OEC</option><option>OWWA</option><option>PDOS</option><option>Medical Clearance</option><option>Type D Visa</option><option>Residence Permit</option><option>EFKA</option><option>AFM</option></select></div>
+    <div class="form-g"><label>File</label><div style="border:2px dashed var(--g300);border-radius:12px;padding:32px;text-align:center;cursor:pointer;background:var(--g50)" onclick="document.getElementById('ud-file').click()"><input type="file" id="ud-file" style="display:none" onchange="document.getElementById('ud-filename').textContent=this.files[0]?.name||'No file selected'"><div style="font-size:28px;margin-bottom:8px">📤</div><div style="font-size:14px;color:var(--g600);font-weight:500">Click to select file</div><div id="ud-filename" style="font-size:12px;color:var(--g400);margin-top:4px">PDF, DOC, JPG accepted</div></div></div>
+    <div class="form-g"><label>Expiry Date (if applicable)</label><input id="ud-expiry" type="date"></div>
+    <div style="display:flex;gap:10px;margin-top:8px"><button class="btn btn-p" onclick="uploadDocument()">Upload Document</button><button class="btn btn-g" onclick="closeModal('upload-doc-modal')">Cancel</button></div>
+  </div>
+</div>
+
+<!-- Add User Modal -->
 <div class="modal-bg" id="add-user-modal" onclick="if(event.target===this)closeModal('add-user-modal')">
   <div class="modal"><div class="modal-head"><h3 class="modal-title">Add New User</h3><button class="modal-close" onclick="closeModal('add-user-modal')">×</button></div>
     <div class="form-g"><label>Full Name</label><input id="nu-name" placeholder="John Doe"></div>
@@ -517,7 +584,7 @@ function filterEmployers(){renderEmployers(document.getElementById('emp-search')
 function showEmployer(id){
   const e=employers.find(x=>x.id===id);if(!e)return;
   const fields=[['Contact',e.contact],['Email',e.email],['Phone',e.phone],['Sector',e.sector],['Location',e.location],['Workers Needed',e.workers],['Status',e.status],['Joined',e.joined]];
-  openDetail(e.company,`<div class="detail-grid">${fields.map(([l,v])=>`<div class="detail-item"><div class="detail-label">${l}</div><div class="detail-val">${v}</div></div>`).join('')}</div><div style="display:flex;gap:10px"><button class="btn btn-p" onclick="alert('Demo: Edit employer')">Edit</button><button class="btn btn-o" onclick="alert('Demo: View applications')">Applications (${e.requests})</button></div>`);
+  openDetail(e.company,`<div class="detail-grid">${fields.map(([l,v])=>`<div class="detail-item"><div class="detail-label">${l}</div><div class="detail-val">${v}</div></div>`).join('')}</div><div style="display:flex;gap:10px"><button class="btn btn-p" onclick="closeModal('detail-modal');editEmployer(${id})">Edit</button><button class="btn btn-o" onclick="closeModal('detail-modal');goPage('applications')">View Applications (${e.requests})</button><button class="btn btn-d" onclick="if(confirm('Delete ${e.company}?')){employers.splice(employers.findIndex(x=>x.id===${id}),1);closeModal('detail-modal');renderEmployers();document.getElementById('emp-count').textContent=employers.length;showToast('Employer deleted.')}">Delete</button></div>`);
 }
 
 // ═══ CANDIDATES ═══
@@ -534,7 +601,7 @@ function showCandidate(id){
   const c=candidates.find(x=>x.id===id);if(!c)return;
   const fields=[['Email',c.email],['Phone',c.phone],['Sector',c.sector],['Role',c.role],['Experience',c.exp],['Location',c.loc],['Score',c.score+'/100'],['English',c.eng]];
   const docHtml=Object.entries(c.docs).map(([k,v])=>`<span class="doc-badge ${v?'doc-done':'doc-miss'}">${k.toUpperCase()} ${v?'✓':'✗'}</span>`).join('');
-  openDetail(c.name,`<div class="detail-grid">${fields.map(([l,v])=>`<div class="detail-item"><div class="detail-label">${l}</div><div class="detail-val">${v}</div></div>`).join('')}</div><h4 style="font-size:14px;font-weight:600;color:var(--g700);margin-bottom:10px">Documents</h4><div style="margin-bottom:20px">${docHtml}</div><div style="display:flex;gap:10px"><button class="btn btn-p" onclick="alert('Demo: Edit candidate')">Edit Profile</button><button class="btn btn-o" onclick="alert('Demo: Upload documents')">Upload Docs</button></div>`);
+  openDetail(c.name,`<div class="detail-grid">${fields.map(([l,v])=>`<div class="detail-item"><div class="detail-label">${l}</div><div class="detail-val">${v}</div></div>`).join('')}</div><h4 style="font-size:14px;font-weight:600;color:var(--g700);margin-bottom:10px">Documents</h4><div style="margin-bottom:20px">${docHtml}</div><div style="display:flex;gap:10px"><button class="btn btn-p" onclick="closeModal('detail-modal');editCandidate(${id})">Edit Profile</button><button class="btn btn-o" onclick="closeModal('detail-modal');showModal('upload-doc-modal')">Upload Docs</button><button class="btn btn-d" onclick="if(confirm('Delete ${c.name}?')){candidates.splice(candidates.findIndex(x=>x.id===${id}),1);closeModal('detail-modal');renderCandidates();document.getElementById('cand-count').textContent=candidates.length;showToast('Candidate deleted.')}">Delete</button></div>`);
 }
 
 // ═══ APPLICATIONS ═══
@@ -731,7 +798,7 @@ function renderDocuments(){
     });
     docs.forEach((d,i)=>{
       const stStyle=d.status==='Complete'?'background:#D1FAE5;color:#065F46':'background:#FEF3C7;color:#92400E';
-      html+=`<tr><td style="padding:10px 14px;border-bottom:1px solid var(--g100);font-weight:${i===0?'600':'400'};color:var(--g800)">${i===0?wr.worker:''}</td><td style="padding:10px 14px;border-bottom:1px solid var(--g100);font-family:monospace;font-size:12px;color:var(--g400)">${i===0?wr.app:''}</td><td style="padding:10px 14px;border-bottom:1px solid var(--g100);color:var(--g700)">${d.name}</td><td style="padding:10px 14px;border-bottom:1px solid var(--g100)"><span class="badge" style="${stStyle}">${d.status}</span></td><td style="padding:10px 14px;border-bottom:1px solid var(--g100);color:var(--g500)">${d.date||'—'}</td><td style="padding:10px 14px;border-bottom:1px solid var(--g100);color:var(--g500)">${d.exp||'—'}</td><td style="padding:10px 14px;border-bottom:1px solid var(--g100)"><button class="btn btn-g" style="font-size:11px;padding:4px 10px" onclick="alert('Demo: ${d.status==='Complete'?'Download':'Upload'} ${d.name}')">${d.status==='Complete'?'📥':'📤'}</button></td></tr>`;
+      html+=`<tr><td style="padding:10px 14px;border-bottom:1px solid var(--g100);font-weight:${i===0?'600':'400'};color:var(--g800)">${i===0?wr.worker:''}</td><td style="padding:10px 14px;border-bottom:1px solid var(--g100);font-family:monospace;font-size:12px;color:var(--g400)">${i===0?wr.app:''}</td><td style="padding:10px 14px;border-bottom:1px solid var(--g100);color:var(--g700)">${d.name}</td><td style="padding:10px 14px;border-bottom:1px solid var(--g100)"><span class="badge" style="${stStyle}">${d.status}</span></td><td style="padding:10px 14px;border-bottom:1px solid var(--g100);color:var(--g500)">${d.date||'—'}</td><td style="padding:10px 14px;border-bottom:1px solid var(--g100);color:var(--g500)">${d.exp||'—'}</td><td style="padding:10px 14px;border-bottom:1px solid var(--g100)"><button class="btn btn-g" style="font-size:11px;padding:4px 10px" onclick="${d.status==='Complete'?`showToast('Downloaded ${d.name} for ${wr.worker}')`:`toggleDocStatus('${wr.worker}','${d.name}')`}">${d.status==='Complete'?'📥':'📤'}</button></td></tr>`;
     });
   });
   html+='</tbody></table>';
@@ -933,7 +1000,7 @@ function renderReports(){
     {title:"Worker Retention Report",desc:"90/180/365-day retention rates and trends",icon:"📊",type:"PDF",auto:false},
     {title:"Supply vs Demand Analysis",desc:"Talent availability vs employer demand by category",icon:"⚡",type:"Excel",auto:false}
   ];
-  document.getElementById('reports-grid').innerHTML=reports.map(r=>`<div style="background:var(--w);border:1px solid var(--g200);border-radius:16px;padding:24px;cursor:pointer;transition:all .2s" onmouseover="this.style.borderColor='rgba(37,99,235,.2)'" onmouseout="this.style.borderColor='var(--g200)'"><div style="display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:12px"><span style="font-size:28px">${r.icon}</span><span class="badge" style="background:${r.type==='PDF'?'#FEE2E2':'#D1FAE5'};color:${r.type==='PDF'?'#991B1B':'#065F46'}">${r.type}</span></div><div style="font-size:15px;font-weight:600;color:var(--g800);margin-bottom:4px">${r.title}</div><div style="font-size:13px;color:var(--g500);margin-bottom:16px;line-height:1.5">${r.desc}</div><div style="display:flex;gap:8px"><button class="btn btn-p" style="font-size:12px;padding:8px 16px" onclick="alert('Demo: Generating ${r.title}...')">Generate</button>${r.auto?'<span style="font-size:11px;color:var(--g400);display:flex;align-items:center">Auto-scheduled</span>':''}</div></div>`).join('');
+  document.getElementById('reports-grid').innerHTML=reports.map(r=>`<div style="background:var(--w);border:1px solid var(--g200);border-radius:16px;padding:24px;cursor:pointer;transition:all .2s" onmouseover="this.style.borderColor='rgba(37,99,235,.2)'" onmouseout="this.style.borderColor='var(--g200)'"><div style="display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:12px"><span style="font-size:28px">${r.icon}</span><span class="badge" style="background:${r.type==='PDF'?'#FEE2E2':'#D1FAE5'};color:${r.type==='PDF'?'#991B1B':'#065F46'}">${r.type}</span></div><div style="font-size:15px;font-weight:600;color:var(--g800);margin-bottom:4px">${r.title}</div><div style="font-size:13px;color:var(--g500);margin-bottom:16px;line-height:1.5">${r.desc}</div><div style="display:flex;gap:8px"><button class="btn btn-p" style="font-size:12px;padding:8px 16px" onclick="generateReport(this,r.title)">Generate</button>${r.auto?'<span style="font-size:11px;color:var(--g400);display:flex;align-items:center">Auto-scheduled</span>':''}</div></div>`).join('');
 
   document.getElementById('recent-exports').innerHTML=[
     {name:"KPI Scorecard — March 2026",date:"Mar 18, 2026",type:"PDF",size:"245 KB"},
@@ -941,7 +1008,7 @@ function renderReports(){
     {name:"Compliance Audit — Q1 2026",date:"Feb 28, 2026",type:"PDF",size:"320 KB"},
     {name:"Candidate Pipeline — Feb 2026",date:"Feb 25, 2026",type:"Excel",size:"95 KB"},
     {name:"Financial Summary — Jan 2026",date:"Feb 1, 2026",type:"Excel",size:"120 KB"}
-  ].map(e=>`<div style="display:flex;align-items:center;gap:12px;padding:12px 0;border-bottom:1px solid var(--g100)"><span style="font-size:18px">${e.type==='PDF'?'📄':'📊'}</span><div style="flex:1"><div style="font-size:14px;font-weight:500;color:var(--g800)">${e.name}</div><div style="font-size:12px;color:var(--g400)">${e.date} · ${e.size}</div></div><button class="btn btn-g" style="font-size:12px;padding:6px 14px" onclick="alert('Demo: Downloading ${e.name}')">📥 Download</button></div>`).join('');
+  ].map(e=>`<div style="display:flex;align-items:center;gap:12px;padding:12px 0;border-bottom:1px solid var(--g100)"><span style="font-size:18px">${e.type==='PDF'?'📄':'📊'}</span><div style="flex:1"><div style="font-size:14px;font-weight:500;color:var(--g800)">${e.name}</div><div style="font-size:12px;color:var(--g400)">${e.date} · ${e.size}</div></div><button class="btn btn-g" style="font-size:12px;padding:6px 14px" onclick="downloadReport(e.name)">📥 Download</button></div>`).join('');
 }
 
 // ═══ ROLE-AWARE DASHBOARD ═══
@@ -972,6 +1039,156 @@ function renderWorkerDashboard(){
   const statsRow=pg.querySelector('.stats-row');
   if(statsRow)statsRow.innerHTML=`<div class="stat-card"><div class="stat-top"><span class="stat-label">Application</span><span class="stat-icon" style="background:rgba(37,99,235,.1)">📋</span></div><div class="stat-val" style="font-size:18px">${myApp.id}</div></div><div class="stat-card"><div class="stat-top"><span class="stat-label">Employer</span><span class="stat-icon" style="background:rgba(16,185,129,.1)">🏢</span></div><div class="stat-val" style="font-size:16px">${myApp.emp}</div></div><div class="stat-card"><div class="stat-top"><span class="stat-label">Stage</span><span class="stat-icon" style="background:rgba(245,158,11,.1)">📍</span></div><div class="stat-val" style="font-size:18px">${myApp.stage}</div></div><div class="stat-card"><div class="stat-top"><span class="stat-label">Progress</span><span class="stat-icon" style="background:rgba(37,99,235,.1)">📊</span></div><div class="stat-val" style="color:${myApp.progress===100?'var(--green)':'var(--blue)'}">${myApp.progress}%</div></div>`;
 }
+
+// ═══ SAVE FEEDBACK (visual confirmation) ═══
+function saveFeedback(btn,msg){
+  const orig=btn.innerHTML;btn.innerHTML='✓ '+msg;btn.style.background='var(--green)';btn.disabled=true;
+  setTimeout(()=>{btn.innerHTML=orig;btn.style.background='';btn.disabled=false},2000);
+}
+
+// ═══ ADD EMPLOYER (functional) ═══
+function addEmployer(){
+  const c=document.getElementById('ne-company').value,ct=document.getElementById('ne-contact').value,em=document.getElementById('ne-email').value,ph=document.getElementById('ne-phone').value,loc=document.getElementById('ne-loc').value,sec=document.getElementById('ne-sector').value,w=parseInt(document.getElementById('ne-workers').value)||1;
+  if(!c||!ct||!em){alert('Please fill Company, Contact, and Email.');return;}
+  employers.push({id:employers.length+1,company:c,contact:ct,email:em,phone:ph,sector:sec,location:loc,workers:w,status:'Pending',joined:new Date().toISOString().slice(0,10),requests:0});
+  closeModal('add-emp-modal');renderEmployers();
+  document.getElementById('emp-count').textContent=employers.length;
+  document.getElementById('ne-company').value='';document.getElementById('ne-contact').value='';document.getElementById('ne-email').value='';document.getElementById('ne-phone').value='';document.getElementById('ne-loc').value='';
+  showToast('Employer "'+c+'" added successfully!');
+}
+
+// ═══ EDIT EMPLOYER (functional) ═══
+function editEmployer(id){
+  const e=employers.find(x=>x.id===id);if(!e)return;
+  openDetail('Edit: '+e.company,`
+    <div class="form-g"><label>Company Name</label><input id="ee-company" value="${e.company}"></div>
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px">
+      <div class="form-g"><label>Contact</label><input id="ee-contact" value="${e.contact}"></div>
+      <div class="form-g"><label>Email</label><input id="ee-email" value="${e.email}"></div>
+    </div>
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px">
+      <div class="form-g"><label>Phone</label><input id="ee-phone" value="${e.phone}"></div>
+      <div class="form-g"><label>Location</label><input id="ee-loc" value="${e.location}"></div>
+    </div>
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px">
+      <div class="form-g"><label>Sector</label><select id="ee-sector">${['Hospitality','F&B','Care Services','Housekeeping','Construction','Retail'].map(s=>`<option${s===e.sector?' selected':''}>${s}</option>`).join('')}</select></div>
+      <div class="form-g"><label>Workers Needed</label><input id="ee-workers" type="number" value="${e.workers}"></div>
+    </div>
+    <div class="form-g"><label>Status</label><select id="ee-status"><option${e.status==='Active'?' selected':''}>Active</option><option${e.status==='Pending'?' selected':''}>Pending</option><option${e.status==='Inactive'?' selected':''}>Inactive</option></select></div>
+    <div style="display:flex;gap:10px;margin-top:8px"><button class="btn btn-p" onclick="saveEmployer(${id})">Save Changes</button><button class="btn btn-d" onclick="if(confirm('Delete ${e.company}?')){employers.splice(employers.findIndex(x=>x.id===${id}),1);closeModal('detail-modal');renderEmployers();document.getElementById('emp-count').textContent=employers.length;showToast('Employer deleted.')}">Delete</button></div>`);
+}
+function saveEmployer(id){
+  const e=employers.find(x=>x.id===id);if(!e)return;
+  e.company=document.getElementById('ee-company').value;e.contact=document.getElementById('ee-contact').value;e.email=document.getElementById('ee-email').value;e.phone=document.getElementById('ee-phone').value;e.location=document.getElementById('ee-loc').value;e.sector=document.getElementById('ee-sector').value;e.workers=parseInt(document.getElementById('ee-workers').value);e.status=document.getElementById('ee-status').value;
+  closeModal('detail-modal');renderEmployers();showToast('Employer updated!');
+}
+
+// ═══ ADD CANDIDATE (functional) ═══
+function addCandidate(){
+  const n=document.getElementById('nc-name').value,em=document.getElementById('nc-email').value,ph=document.getElementById('nc-phone').value,loc=document.getElementById('nc-loc').value,sec=document.getElementById('nc-sector').value,role=document.getElementById('nc-role').value,exp=document.getElementById('nc-exp').value,eng=document.getElementById('nc-eng').value;
+  if(!n||!em||!role){alert('Please fill Name, Email, and Role.');return;}
+  candidates.push({id:candidates.length+1,name:n,email:em,phone:ph,sector:sec,role:role,exp:exp||'1 year',loc:loc||'Manila',score:Math.floor(Math.random()*20)+70,status:'Screening',eng:eng,docs:{oec:0,owwa:0,pdos:0,med:0,visa:0}});
+  closeModal('add-cand-modal');renderCandidates();
+  document.getElementById('cand-count').textContent=candidates.length;
+  document.getElementById('nc-name').value='';document.getElementById('nc-email').value='';document.getElementById('nc-phone').value='';document.getElementById('nc-role').value='';
+  showToast('Candidate "'+n+'" added!');
+}
+
+// ═══ EDIT CANDIDATE (functional) ═══
+function editCandidate(id){
+  const c=candidates.find(x=>x.id===id);if(!c)return;
+  openDetail('Edit: '+c.name,`
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px">
+      <div class="form-g"><label>Name</label><input id="ec-name" value="${c.name}"></div>
+      <div class="form-g"><label>Email</label><input id="ec-email" value="${c.email}"></div>
+    </div>
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px">
+      <div class="form-g"><label>Phone</label><input id="ec-phone" value="${c.phone}"></div>
+      <div class="form-g"><label>Location</label><input id="ec-loc" value="${c.loc}"></div>
+    </div>
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px">
+      <div class="form-g"><label>Sector</label><select id="ec-sector">${['Hospitality','F&B','Care','Construction','Housekeeping','Retail'].map(s=>`<option${s===c.sector?' selected':''}>${s}</option>`).join('')}</select></div>
+      <div class="form-g"><label>Role</label><input id="ec-role" value="${c.role}"></div>
+    </div>
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px">
+      <div class="form-g"><label>Experience</label><input id="ec-exp" value="${c.exp}"></div>
+      <div class="form-g"><label>English</label><select id="ec-eng">${['A1','A2','B1','B2','C1','C2'].map(e=>`<option${e===c.eng?' selected':''}>${e}</option>`).join('')}</select></div>
+    </div>
+    <div class="form-g"><label>Status</label><select id="ec-status">${['Screening','Ready','Interview','Visa Pending','Deployed'].map(s=>`<option${s===c.status?' selected':''}>${s}</option>`).join('')}</select></div>
+    <div style="display:flex;gap:10px;margin-top:8px"><button class="btn btn-p" onclick="saveCandidate(${id})">Save</button><button class="btn btn-d" onclick="if(confirm('Delete ${c.name}?')){candidates.splice(candidates.findIndex(x=>x.id===${id}),1);closeModal('detail-modal');renderCandidates();document.getElementById('cand-count').textContent=candidates.length;showToast('Candidate deleted.')}">Delete</button></div>`);
+}
+function saveCandidate(id){
+  const c=candidates.find(x=>x.id===id);if(!c)return;
+  c.name=document.getElementById('ec-name').value;c.email=document.getElementById('ec-email').value;c.phone=document.getElementById('ec-phone').value;c.loc=document.getElementById('ec-loc').value;c.sector=document.getElementById('ec-sector').value;c.role=document.getElementById('ec-role').value;c.exp=document.getElementById('ec-exp').value;c.eng=document.getElementById('ec-eng').value;c.status=document.getElementById('ec-status').value;
+  closeModal('detail-modal');renderCandidates();showToast('Candidate updated!');
+}
+
+// ═══ ADD APPLICATION (functional) ═══
+function addApplication(){
+  const emp=document.getElementById('na-emp').value,cand=document.getElementById('na-cand').value,role=document.getElementById('na-role').value;
+  if(!cand||!role){alert('Please select candidate and enter role.');return;}
+  const id='HB-2026-'+String(100+applications.length+1).padStart(4,'0');
+  applications.push({id,cand,emp,role,stage:'Request',progress:5,start:new Date().toISOString().slice(0,10),deploy:null,tl:[
+    {s:'Request',d:'Today',st:'active'},{s:'Matched',d:'Pending',st:'pending'},{s:'Interview',d:'Pending',st:'pending'},{s:'DMW Docs',d:'Pending',st:'pending'},{s:'Medical',d:'Pending',st:'pending'},{s:'Visa',d:'Pending',st:'pending'},{s:'PDOS',d:'Pending',st:'pending'},{s:'Deployed',d:'Pending',st:'pending'}
+  ]});
+  closeModal('add-app-modal');renderApplications();
+  document.getElementById('app-count').textContent=applications.length;
+  showToast('Application '+id+' created for '+cand+'!');
+}
+
+// ═══ UPLOAD DOCUMENT (functional) ═══
+function uploadDocument(){
+  const workerSel=document.getElementById('ud-worker').value;
+  const docType=document.getElementById('ud-type').value;
+  const file=document.getElementById('ud-file').files[0];
+  const expiry=document.getElementById('ud-expiry').value;
+  const workerName=workerSel.split(' (')[0];
+  const wr=docRecords.find(w=>w.worker===workerName);
+  if(wr){
+    const doc=wr.docs.find(d=>d.name===docType);
+    if(doc){doc.status='Complete';doc.date=new Date().toISOString().slice(0,10);if(expiry)doc.exp=expiry;}
+  }
+  closeModal('upload-doc-modal');renderDocuments();
+  document.getElementById('ud-file').value='';
+  document.getElementById('ud-filename').textContent='PDF, DOC, JPG accepted';
+  showToast(docType+' uploaded for '+workerName+'!');
+}
+
+// ═══ TOAST NOTIFICATION ═══
+function showToast(msg){
+  const t=document.createElement('div');
+  t.style.cssText='position:fixed;bottom:24px;right:24px;background:var(--green);color:#fff;padding:14px 24px;border-radius:12px;font-size:14px;font-weight:600;font-family:var(--body);box-shadow:0 8px 30px rgba(0,0,0,.15);z-index:99999;animation:fadeIn .3s ease;display:flex;align-items:center;gap:8px';
+  t.innerHTML='✓ '+msg;
+  document.body.appendChild(t);
+  setTimeout(()=>{t.style.opacity='0';t.style.transition='opacity .3s';setTimeout(()=>t.remove(),300)},3000);
+}
+
+// ═══ TOGGLE DOC STATUS ═══
+function toggleDocStatus(workerName,docName){
+  const wr=docRecords.find(w=>w.worker===workerName);
+  if(wr){const d=wr.docs.find(x=>x.name===docName);if(d){d.status='Complete';d.date=new Date().toISOString().slice(0,10);}}
+  renderDocuments();showToast(docName+' marked as complete for '+workerName);
+}
+
+// Populate candidate select when opening add-app modal
+const origShowModal=showModal;
+showModal=function(id){
+  origShowModal(id);
+  if(id==='add-app-modal'){
+    const sel=document.getElementById('na-cand');
+    sel.innerHTML=candidates.map(c=>`<option value="${c.name}">${c.name} — ${c.role}</option>`).join('');
+  }
+};
+
+// ═══ REPORT GENERATION ═══
+function generateReport(btn,title){
+  const orig=btn.innerHTML;btn.innerHTML='⏳ Generating...';btn.disabled=true;btn.style.opacity='.7';
+  setTimeout(()=>{btn.innerHTML='✓ Ready!';btn.style.background='var(--green)';btn.style.opacity='1';
+    showToast(title+' generated successfully! Ready for download.');
+    setTimeout(()=>{btn.innerHTML=orig;btn.style.background='';btn.disabled=false},2000);
+  },1500);
+}
+function downloadReport(name){showToast('Downloading: '+name);}
 
 // ═══ INIT ═══
 document.getElementById('l-pass').addEventListener('keydown',e=>{if(e.key==='Enter')doLogin()});
